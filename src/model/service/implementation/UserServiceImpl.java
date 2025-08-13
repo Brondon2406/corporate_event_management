@@ -4,20 +4,24 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import controller.dto.Userdto;
+import controller.utilities.MappingService.MappingUser;
 import model.database.DatabaseConnection;
+import model.entity.Users;
 import model.service.UserService;
 
 public class UserServiceImpl implements UserService{
 	private static final Logger LOG = LogManager.getLogger(UserServiceImpl.class);
 	private final DatabaseConnection db;
+	private final MappingUser mapper;
 	
-	public UserServiceImpl(DatabaseConnection db) {
+	public UserServiceImpl(DatabaseConnection db,  MappingUser mapper) {
 		this.db = db;
+		this.mapper = mapper;
 	}
 
 	@Override
 	public Userdto createUser(Userdto userDTO) {
-		// TODO Auto-generated method stub
+		Users user = mapper.convertUserdtoToUsers(userDTO);
 		return null;
 	}
 
