@@ -14,9 +14,6 @@ public class TestConnexion {
 		        } else {
 		        	System.err.println(" Échec de la connexion à la base de données !");
 		        }
-		    
-		
-
 	}
 
 }

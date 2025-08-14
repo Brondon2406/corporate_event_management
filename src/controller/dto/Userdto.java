@@ -81,5 +81,17 @@ public class Userdto {
 		return "Userdto [name=" + name + ", email=" + email + ", password=" + password + ", role=" + role
 				+ ", fonction=" + fonction + "]";
 	}
+
+	
+
+	public static void loginUser() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void registerUser() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
