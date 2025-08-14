@@ -11,14 +11,15 @@ import util.Constants;
 
 public class DatabaseConnection {
 	
+	
 	private static final Logger LOG = LogManager.getLogger(MappingUserImpl.class);
 	
 	private Connection con;
 	private Connection SINGLETON;
-	private static final String DB_USER = "";
+	private static final String DB_USER = "root";
 	private static final String DB_USER_PASS = "";
-	private static final String DB_URL = "";
-	private static final String CLASS_FOR_NAME = "";
+	private static final String DB_URL = "jdbc:mysql://localhost:3307/corporate_event_management_systeme";
+	private static final String CLASS_FOR_NAME = "com.mysql.cj.jdbc.Driver";
 	
 	static {
 		try {
@@ -47,5 +48,5 @@ public class DatabaseConnection {
 		return SINGLETON;
 	}
 	
-
+	
 }
