@@ -16,8 +16,13 @@ public enum Role {
 				.collect(Collectors.toList());
 		return roles;
 	}
-	
-	public static Role fromString (String role) {
+   	public static Role fromString (Role role) {
 		return role.isEmpty() ? null : Role.fromString(role);
 	}
+	boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
 }
