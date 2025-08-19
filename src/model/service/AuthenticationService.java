@@ -4,8 +4,8 @@ import controller.dto.Userdto;
 
 public interface AuthenticationService {
 	
-	public Userdto registerUser (Userdto UserDTO);
-	public Userdto loginUser (Userdto UserDTO);
+	public Userdto registerUser ();
+	public Userdto loginUser ();
 	
 
 }
