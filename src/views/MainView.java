@@ -32,7 +32,7 @@ public class MainView {
 	    	                 continuer = false;
 	    	                 break;
 	    	              default:
-	    	                  System.out.println("Choix invalide, veuillez r�essayer.");
+	    	                  System.out.println("Choix invalide, veuillez réessayer.");
 	    	                  break;
 	    	            }
 	    	        } 
