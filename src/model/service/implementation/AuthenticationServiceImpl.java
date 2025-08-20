@@ -36,6 +36,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		try {
 			ps = connection.prepareStatement(query);
 			ps.setString(1, user.getName());
+			ps.setString(1, user.getEmail());
+			ps.setString(1, user.getPassword());
+			ps.setString(1, user.getFonction());
 			ResultSet result = ps.executeQuery();
 			if (result == null) {
 				LOG.info(Constants.ERROR_DURING_USER_INSERTION);
