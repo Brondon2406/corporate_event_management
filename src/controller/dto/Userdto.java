@@ -8,10 +8,10 @@ public class Userdto {
 	private String name;
 	private String email ;
 	private String password ;
-	private Role role;
+	private String role;
 	private String fonction;
 	
-	public Userdto(int id, String name, String email, String password, Role role, String fonction) {
+	public Userdto(int id, String name, String email, String password, String role, String fonction) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -20,7 +20,7 @@ public class Userdto {
 		this.fonction = fonction;
 	}
 	
-	public Userdto(String name, String email, String password, Role role, String fonction) {
+	public Userdto(String name, String email, String password, String role, String fonction) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
@@ -63,11 +63,11 @@ public class Userdto {
 		this.password = password;
 	}
 
-	public Role getRole() {
+	public String getRole() {
 		return role;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 

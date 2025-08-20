@@ -1,13 +1,11 @@
 package views;
 
 import java.util.Scanner;
-import model.service.AuthenticationService;
-import model.service.implementation.AuthenticationServiceImpl;
 
-public class Consoleviews {
+public class MainView {
 		 	    	
 				public static void main(String[] args) {
-					AuthenticationService authentication = new AuthenticationServiceImpl (); 
+					AuthenticationView view = new AuthenticationView();
 	    	        Scanner scanner = new Scanner(System.in);
 	    	        boolean continuer = true;
 
@@ -24,17 +22,17 @@ public class Consoleviews {
 	    	         
 						switch (choix) {
 	    	             case 1: 
-	    	            	 authentication.registerUser();
+	    	            	 view.Authenticate();
 	    	            	break;
 	    	             case 2:
-	    	            	 authentication.loginUser();
+	    	            	 view.Authenticate();
 	    	                break;
 	    	             case 3:
 	    	                 System.out.println("Au revoir !");
 	    	                 continuer = false;
 	    	                 break;
 	    	              default:
-	    	                  System.out.println("Choix invalide, veuillez réessayer.");
+	    	                  System.out.println("Choix invalide, veuillez rï¿½essayer.");
 	    	                  break;
 	    	            }
 	    	        } 
