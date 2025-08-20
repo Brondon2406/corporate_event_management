@@ -14,8 +14,8 @@ public class DatabaseConnection {
 	
 	private static final Logger LOG = LogManager.getLogger(MappingUserImpl.class);
 	
-	private Connection con;
-	private Connection SINGLETON;
+	private static Connection con;
+	private static Connection SINGLETON;
 	private static final String DB_USER = "root";
 	private static final String DB_USER_PASS = "";
 	private static final String DB_URL = "jdbc:mysql://localhost:3307/corporate_event_management_systeme";
@@ -30,7 +30,7 @@ public class DatabaseConnection {
 		}
 	}
 	
-	public Connection getConnection() {
+	private static Connection getConnection() {
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_USER, DB_USER_PASS);
 			return con;
@@ -41,7 +41,7 @@ public class DatabaseConnection {
 		}
 	}
 	
-	public Connection getInstance() {
+	public static Connection getInstance() {
 		if (SINGLETON == null) {
 			SINGLETON = getConnection();
 		}

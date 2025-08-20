@@ -51,8 +51,11 @@ public class AuthenticationView {
         int roleIndex = scanner.nextInt();
         String role = roles.get(roleIndex - 1);
 
-        System.out.print("Entrez votre fonction: ");
-        String fonction = scanner.nextLine();
+        String fonction = "";
+        do {
+        	System.out.print("Entrez votre fonction: ");
+            fonction = scanner.nextLine().trim();
+        } while (fonction.isEmpty());
        
         Userdto dto = new Userdto();
         dto.setName(name);

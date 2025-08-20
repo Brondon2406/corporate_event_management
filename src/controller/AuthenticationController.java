@@ -13,15 +13,10 @@ import util.Constants;
 
 public class AuthenticationController {
 
-	private AuthenticationService service;
-	private MappingUser mapper;
+	private AuthenticationService service = new AuthenticationServiceImpl();
+	private MappingUser mapper =  new MappingUserImpl();
 	
 	private static final Logger LOG = LogManager.getLogger(AuthenticationController.class);
-	
-	public AuthenticationController(AuthenticationServiceImpl service, MappingUserImpl mapper) {
-		this.service = service;
-		this.mapper = mapper;
-	}
 	
 	public AuthenticationController() {}
 

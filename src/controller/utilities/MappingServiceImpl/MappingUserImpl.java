@@ -15,14 +15,18 @@ import util.Constants;
 public class MappingUserImpl implements MappingUser {
 	private static final Logger LOG = LogManager.getLogger(MappingUserImpl.class);
 	private final LogEvent logEvent;
-	
+
 	public MappingUserImpl(LogEvent logEvent) {
 		this.logEvent = logEvent;
 	}
 
+	public MappingUserImpl() {
+		this.logEvent = new LogEvent();
+	}
+
 	@Override
 	public Userdto convertUserToUserdto(Users user) {
-		if(user == null) {
+		if (user == null) {
 			logEvent.setAction("convert User to Userdto");
 			logEvent.setDate(LocalDateTime.now());
 			logEvent.setDescription(Constants.USER_IS_EMPTY);
@@ -38,11 +42,10 @@ public class MappingUserImpl implements MappingUser {
 			userdto.setId(user.getId() <= 0 ? 0 : user.getId());
 			userdto.setRole(user.getRole() == null ? null : user.getRole().name().toUpperCase());
 			return userdto;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			logEvent.setAction("convert User to Userdto");
 			logEvent.setDate(LocalDateTime.now());
-			logEvent.setDescription(String.format(Constants.MAPPING_USER_DTO_ERROR, 
-					user.toString(), e.getMessage()));
+			logEvent.setDescription(String.format(Constants.MAPPING_USER_DTO_ERROR, user.toString(), e.getMessage()));
 			LOG.info(logEvent);
 			return null;
 		}
@@ -50,14 +53,14 @@ public class MappingUserImpl implements MappingUser {
 
 	@Override
 	public Users convertUserdtoToUsers(Userdto userdto) {
-		if(userdto == null) {
+		if (userdto == null) {
 			logEvent.setAction("convert Userdto to Users");
 			logEvent.setDate(LocalDateTime.now());
 			logEvent.setDescription(Constants.USER_DTO_IS_EMPTY);
 			LOG.info(logEvent.toString());
 			return null;
 		}
-		
+
 		try {
 			Users user = new Users();
 			user.setEmail(userdto.getEmail().isEmpty() ? null : userdto.getEmail());
@@ -66,11 +69,10 @@ public class MappingUserImpl implements MappingUser {
 			user.setPassword(userdto.getPassword().isEmpty() ? null : userdto.getPassword());
 			user.setRole(userdto.getRole().isEmpty() ? null : Role.fromString(userdto.getRole()));
 			return user;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			logEvent.setAction("convert Userdto to Users");
 			logEvent.setDate(LocalDateTime.now());
-			logEvent.setDescription(String.format(Constants.MAPPING_USER_ERROR, 
-					userdto.toString(), e.getMessage()));
+			logEvent.setDescription(String.format(Constants.MAPPING_USER_ERROR, userdto.toString(), e.getMessage()));
 			LOG.info(logEvent.toString());
 			return null;
 		}

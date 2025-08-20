@@ -17,7 +17,7 @@ public enum Role {
 		return roles;
 	}
    	public static Role fromString (String role) {
-		return role.isEmpty() ? null : Role.fromString(role);
+		return role.isEmpty() ? null : Role.valueOf(role);
 	}
 	boolean isEmpty() {
 		// TODO Auto-generated method stub

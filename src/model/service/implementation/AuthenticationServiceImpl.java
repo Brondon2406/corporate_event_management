@@ -16,14 +16,8 @@ import util.Constants;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
 	private static final Logger LOG = LogManager.getLogger(AuthenticationServiceImpl.class);
-	private final DatabaseConnection db;
-	Connection connection = null;
+	Connection connection = DatabaseConnection.getInstance();
 	PreparedStatement ps = null;
-
-	public AuthenticationServiceImpl(DatabaseConnection db) {
-		this.db = db;
-		connection = db.getInstance();
-	}
 
 	@Override
 	public Userdto registerUser(Users user) {
