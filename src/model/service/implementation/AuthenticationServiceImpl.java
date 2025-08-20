@@ -8,8 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import controller.dto.Userdto;
-import controller.utilities.MappingService.MappingUser;
-import controller.utilities.MappingServiceImpl.MappingUserImpl;
 import model.database.DatabaseConnection;
 import model.entity.Users;
 import model.service.AuthenticationService;
@@ -19,14 +17,11 @@ import util.Constants;
 public class AuthenticationServiceImpl implements AuthenticationService {
 	private static final Logger LOG = LogManager.getLogger(AuthenticationServiceImpl.class);
 	private final DatabaseConnection db;
-	private final MappingUser mapper;
 	Connection connection = null;
 	PreparedStatement ps = null;
 
-	public AuthenticationServiceImpl(DatabaseConnection db, MappingUserImpl mapper) {
-		super();
+	public AuthenticationServiceImpl(DatabaseConnection db) {
 		this.db = db;
-		this.mapper = mapper;
 		connection = db.getInstance();
 	}
 
@@ -36,16 +31,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		try {
 			ps = connection.prepareStatement(query);
 			ps.setString(1, user.getName());
-			ps.setString(1, user.getEmail());
-			ps.setString(1, user.getPassword());
-			ps.setString(1, user.getFonction());
+			ps.setString(2, user.getEmail());
+			ps.setString(3, user.getPassword());
+			ps.setString(4, user.getRole().name());
+			ps.setString(5, user.getFonction());
 			ResultSet result = ps.executeQuery();
 			if (result == null) {
 				LOG.info(Constants.ERROR_DURING_USER_INSERTION);
 			}
 			Userdto userDTO = new Userdto();
 			while (result.next()) {
+				userDTO.setId(result.getInt("id"));
 				userDTO.setName(result.getString("name"));
+				userDTO.setName(result.getString("email"));
+				userDTO.setName(result.getString("role"));
+				userDTO.setName(result.getString("fonction"));
 			}
 			return userDTO;
 		} catch (Exception e) {

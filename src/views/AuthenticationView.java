@@ -1,30 +1,20 @@
 package views;
 import java.util.List;
 import java.util.Scanner;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import controller.AuthenticationController;
 import controller.dto.Userdto;
 import model.entity.enumeration.Role;
 
 public class AuthenticationView {
-    
-    public static boolean checkEmail(String email) {
-        if (email == null)
-            return false;
-        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-        return email.matches(regex);
-    }
-    
-    public static boolean checkName(String nom) {
-        if (nom == null || nom.trim().isEmpty())
-            return false;
-        return nom.matches("^[A-Za-zÀ-ÖØ-öø-ÿ ]+$");
-    }
-    
-    private static Scanner scanner = new Scanner(System.in);
+	private static Scanner scanner = new Scanner(System.in);
     AuthenticationController controller = new AuthenticationController();
+    private static final Logger LOG = LogManager.getLogger(AuthenticationView.class);
     
-    public AuthenticationView() {
-    }
+    public AuthenticationView() {}
     
     public void Authenticate() {
         System.out.println("\n=== Inscription ===");
@@ -58,7 +48,8 @@ public class AuthenticationView {
             index++;
         }
         System.out.print("Choisissez un rôle (numéro): ");
-        String roleInput = scanner.nextLine();
+        int roleIndex = scanner.nextInt();
+        String role = roles.get(roleIndex - 1);
 
         System.out.print("Entrez votre fonction: ");
         String fonction = scanner.nextLine();
@@ -67,8 +58,26 @@ public class AuthenticationView {
         dto.setName(name);
         dto.setEmail(email);
         dto.setPassword(password);
+        dto.setRole(role);
         dto.setFonction(fonction);
         
+        dto = controller.RegisterController(dto);
+        if(dto == null) {
+        	System.out.print("Choisissez un rôle (numéro): ");
+        }
        
+    }
+    
+    private boolean checkEmail(String email) {
+        if (email == null)
+            return false;
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return email.matches(regex);
+    }
+    
+    private boolean checkName(String nom) {
+        if (nom == null || nom.trim().isEmpty())
+            return false;
+        return nom.matches("^[A-Za-zÀ-ÖØ-öø-ÿ ]+$");
     }
 }

@@ -25,7 +25,7 @@ public class AuthenticationController {
 	
 	public AuthenticationController() {}
 
-	public Userdto AuthenticationController(Userdto userdto) {
+	public Userdto RegisterController(Userdto userdto) {
 		if(userdto == null) {
 			LOG.error(Constants.EMPTY_USER_DTO);
 			return null;
