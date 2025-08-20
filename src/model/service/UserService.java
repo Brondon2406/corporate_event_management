@@ -9,5 +9,7 @@ public interface UserService {
 	public Userdto updateUser (Userdto userDTO);
 	public String deleteUser (int userId);
 	public Userdto getUserById (int userId);
+	
+	
 
 }

@@ -20,11 +20,7 @@ public class UserServiceImpl implements UserService{
 		
 	}
 
-	@Override
-	public Userdto createUser(Userdto userDTO) {
-		Users user = mapper.convertUserdtoToUsers(userDTO);
-		return null;
-	}
+	
 
 	@Override
 	public Userdto updateUser(Userdto userDTO) {
@@ -40,6 +36,12 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public Userdto getUserById(int userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Userdto createUser(Users user) {
 		// TODO Auto-generated method stub
 		return null;
 	}
