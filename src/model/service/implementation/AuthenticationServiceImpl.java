@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,31 +25,35 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	public Userdto registerUser(Users user) {
 		String query = Query.CREATE_USER;
 		try {
-			ps = connection.prepareStatement(query);
+			ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, user.getName());
 			ps.setString(2, user.getEmail());
 			ps.setString(3, user.getPassword());
 			ps.setString(4, user.getRole().name());
 			ps.setString(5, user.getFonction());
-			ResultSet result = ps.executeQuery();
-			if (result == null) {
+			int result = ps.executeUpdate();
+			if (result <= 0) {
 				LOG.info(Constants.ERROR_DURING_USER_INSERTION);
 			}
-			Userdto userDTO = new Userdto();
-			while (result.next()) {
-				userDTO.setId(result.getInt("id"));
-				userDTO.setName(result.getString("name"));
-				userDTO.setName(result.getString("email"));
-				userDTO.setName(result.getString("role"));
-				userDTO.setName(result.getString("fonction"));
-			}
-			return userDTO;
+			try (ResultSet rs = ps.getGeneratedKeys()) {
+		        if (rs.next()) {
+		            user.setId(rs.getInt(1));
+		        }
+		    }
+		    Userdto userDTO = new Userdto();
+		    userDTO.setId(user.getId());
+		    userDTO.setName(user.getName());
+		    userDTO.setEmail(user.getEmail());
+		    userDTO.setRole(user.getRole().name());
+		    userDTO.setFonction(user.getFonction());
+
+		    return userDTO;
+
 		} catch (Exception e) {
-			LOG.error(Constants.ERROR_CREATE_USER, e.getMessage());
-			return null;
+		    LOG.error(Constants.ERROR_CREATE_USER, e.getMessage());
+		    return null;
 		}
 	}
-
 	@Override
 	public Userdto loginUser(Users user) {
 	    String query = Query.GET_USER ;
