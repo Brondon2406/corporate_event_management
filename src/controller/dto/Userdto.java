@@ -1,5 +1,7 @@
 package controller.dto;
 
+import model.entity.enumeration.Role;
+
 public class Userdto {
 	
 	private int id;
@@ -18,9 +20,10 @@ public class Userdto {
 		this.fonction = fonction;
 	}
 	
-	public Userdto(String name, String email, String role, String fonction) {
+	public Userdto(String name, String email, String password, String role, String fonction) {
 		this.name = name;
 		this.email = email;
+		this.password = password;
 		this.role = role;
 		this.fonction = fonction;
 	}
@@ -81,5 +84,26 @@ public class Userdto {
 		return "Userdto [name=" + name + ", email=" + email + ", password=" + password + ", role=" + role
 				+ ", fonction=" + fonction + "]";
 	}
+
+	
+
+	public static boolean loginUser(String email, String password) {
+		return false;
+		
+		
+	}
+
+	public static boolean registerUser(String nom, String email, String password, Role role , String fonction) {
+		return false;
+		
+	}
+
+	public void setRole(Object role) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
 	
 }

@@ -11,13 +11,18 @@ public enum Role {
 
 	public static List<String> getUserRoles(){
 		List<String> roles = Arrays.asList(Role.values()).stream()
-				.filter(e -> e.equals(ADMIN))
+				.filter(e -> !e.equals(ADMIN))
 				.map(e-> e.name())
 				.collect(Collectors.toList());
 		return roles;
 	}
-	
-	public static Role fromString (String role) {
-		return role.isEmpty() ? null : Role.fromString(role);
+   	public static Role fromString (String role) {
+		return role.isEmpty() ? null : Role.valueOf(role);
 	}
+	boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
 }

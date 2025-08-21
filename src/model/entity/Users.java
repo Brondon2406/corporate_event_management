@@ -11,6 +11,7 @@ public class Users {
 	private Role role;
 	private String fonction;
 	
+	
 	public Users() {}
 	
 	public Users(int id, String name, String email, String password, Role role, String fonction) {
@@ -83,4 +84,6 @@ public class Users {
 		return "Users [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", role=" + role
 				+ ", fonction=" + fonction + "]";
 	}
+
+	
 }
