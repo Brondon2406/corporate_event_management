@@ -2,6 +2,7 @@ package views;
 
 import java.util.Scanner;
 
+
 public class MainView {
 		 	    	
 				public static void main(String[] args) {
@@ -19,14 +20,14 @@ public class MainView {
 	    	            System.out.print("Choisissez une option : ");
 
 	    	            int choix = scanner.nextInt();	    	            	    	            
-	    	         
+	    	            
 						switch (choix) {
 	    	             case 1: 
-	    	            	 view.Authenticate();
+	    	            	 view.registration();
 	    	            	break;
 	    	             case 2:
-	    	            	 view.Authenticate();
-	    	                break;
+	    	            	 view.connection();
+	    	            	 break;
 	    	             case 3:
 	    	                 System.out.println("Au revoir !");
 	    	                 continuer = false;

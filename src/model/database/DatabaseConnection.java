@@ -30,7 +30,7 @@ public class DatabaseConnection {
 		}
 	}
 	
-	private static Connection getConnection() {
+	public static Connection getConnection() {
 		try {
 			con = DriverManager.getConnection(DB_URL, DB_USER, DB_USER_PASS);
 			return con;
