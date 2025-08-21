@@ -34,5 +34,13 @@ public class AuthenticationController {
 		return dto;
 	}
 	
-	
+	public Userdto loginUserController (Userdto userdto) {
+		if (userdto != null) {
+			LOG.info(" Connexion réussie ! Bienvenue " + userdto.getEmail());
+        } else {
+            LOG.error(" Email ou mot de passe incorrect !");
+            return null;
+        }
+        return userdto;
+    }
 }
