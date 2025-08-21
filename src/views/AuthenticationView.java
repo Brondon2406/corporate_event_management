@@ -16,7 +16,7 @@ public class AuthenticationView {
     
     public AuthenticationView() {}
     
-    public void Authenticate() {
+    public void registration() {
         System.out.println("\n=== Inscription ===");
         
         String name;       
@@ -50,7 +50,7 @@ public class AuthenticationView {
         System.out.print("Choisissez un rôle (numéro): ");
         int roleIndex = scanner.nextInt();
         String role = roles.get(roleIndex - 1);
-
+       
         String fonction = "";
         do {
         	System.out.print("Entrez votre fonction: ");
@@ -82,5 +82,15 @@ public class AuthenticationView {
         if (nom == null || nom.trim().isEmpty())
             return false;
         return nom.matches("^[A-Za-zÀ-ÖØ-öø-ÿ ]+$");
+    }
+    
+    public void connection () {
+    	System.out.println("\n=== CONNEXION ===");
+    	
+    	 System.out.print("Entrez votre email: ");
+         String email = scanner.nextLine();
+         
+         System.out.print("Entrez votre mot de passe: ");
+         String password = scanner.nextLine();
     }
 }
