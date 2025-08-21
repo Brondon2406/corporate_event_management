@@ -3,6 +3,7 @@ package model.service.implementation;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,10 +50,31 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	}
 
 	@Override
-	public Userdto loginUser() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Userdto loginUser(Users user) {
+	    String query = Query.GET_USER ;
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(query)) {
 
-	
+	      
+	        ps.setString(1, user.getEmail());
+	        ps.setString(2, user.getPassword());
+
+	       
+	        ResultSet result = ps.executeQuery();
+	       
+	        if (result.next()) {
+	            Userdto userDTO = new Userdto();
+	            userDTO.setId(result.getInt("id"));
+	            userDTO.setEmail(result.getString("email"));
+	            userDTO.setPassword(result.getString("password"));
+	            return userDTO;
+	        } else {
+	            LOG.info(Constants.ERROR_DURING_USER_SELECTION);
+	            return null;
+	        }
+	    } catch (SQLException e) {
+	        LOG.error(Constants.ERROR_GET_USER + e.getMessage());
+	        return null;
+	    }
+	 }
 }
