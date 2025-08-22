@@ -1,4 +1,4 @@
-package controller.utilities;
+package util;
 
 public class UtilController {
 	

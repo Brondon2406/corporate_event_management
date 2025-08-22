@@ -1,16 +1,16 @@
-package controller.utilities.MappingServiceImpl;
+package model.mapping.MappingServiceImpl;
 
 import java.time.LocalDateTime;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import controller.dto.Userdto;
-import controller.utilities.MappingService.MappingUser;
+import model.dto.Userdto;
+import model.mapping.MappingService.MappingUser;
 import model.entity.LogEvent;
 import model.entity.Users;
 import model.entity.enumeration.Role;
-import util.Constants;
+import util.constants.Constants;
 
 public class MappingUserImpl implements MappingUser {
 	private static final Logger LOG = LogManager.getLogger(MappingUserImpl.class);

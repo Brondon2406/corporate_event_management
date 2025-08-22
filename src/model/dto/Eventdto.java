@@ -1,4 +1,4 @@
-package controller.dto;
+package model.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;

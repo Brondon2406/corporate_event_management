@@ -1,4 +1,4 @@
-package controller.dto;
+package model.dto;
 
 import model.entity.enumeration.Role;
 
