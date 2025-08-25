@@ -10,9 +10,9 @@ public class TestConnexion {
 		        Connection con = db.getInstance();
 
 		        if (con != null) {
-		           System.out.println(" Connexion réussie à la base de données !");
+		           System.out.println(" Connexion rï¿½ussie ï¿½ la base de donnï¿½es !");
 		        } else {
-		        	System.err.println(" Échec de la connexion à la base de données !");
+		        	System.err.println(" Echec de la connexion Ã  la base de donnï¿½es !");
 		        }
 	}
 

@@ -2,9 +2,6 @@ package views;
 import java.util.List;
 import java.util.Scanner;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import controller.AuthenticationController;
 import controller.LoginController;
 import model.dto.Userdto;
@@ -13,7 +10,6 @@ import model.entity.enumeration.Role;
 public class AuthenticationView {
 	private static Scanner scanner = new Scanner(System.in);
     AuthenticationController controller = new AuthenticationController();
-    private static final Logger LOG = LogManager.getLogger(AuthenticationView.class);
     
     public AuthenticationView() {}
     

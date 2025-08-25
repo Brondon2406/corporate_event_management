@@ -66,21 +66,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	@Override
 	public Userdto loginUser(String email, String password) {
 	    String query = Query.GET_USER;
+	    
+	    Userdto userDTO = null;
 
-	    try (Connection connection = DatabaseConnection.getInstance();
-	         PreparedStatement ps = connection.prepareStatement(query)) {
-
+	    try (Connection connection = DatabaseConnection.getInstance()){
+	         PreparedStatement ps = connection.prepareStatement(query) ;
 	        ps.setString(1, email);
 	        ps.setString(2, password);
 
 	        try (ResultSet result = ps.executeQuery()) {
 	            if (result.next()) {
-	                Userdto userDTO = new Userdto();
-	                userDTO.setId(result.getInt("id"));
-	                userDTO.setName(result.getString("name"));
-	                userDTO.setEmail(result.getString("email"));
-	                userDTO.setRole(result.getString("role"));
-	                userDTO.setFonction(result.getString("fonction"));
+	                 userDTO = new Userdto();
+	                userDTO.setName(result.getString("email"));
+	                userDTO.setEmail(result.getString("password"));            
 
 	                LOG.info("Connexion réussie pour l’utilisateur : {}", userDTO.getEmail());
 	                return userDTO;

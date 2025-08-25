@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import model.dto.Userdto;
-import model.entity.Users;
 import model.service.AuthenticationService;
 import model.service.implementation.AuthenticationServiceImpl;
 import util.constants.Constants;
