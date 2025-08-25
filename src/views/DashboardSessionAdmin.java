@@ -5,13 +5,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import controller.AuthenticationController;
 
-public class DashboardAdmin {
+public class DashboardSessionAdmin {
 
     private static Scanner scanner = new Scanner(System.in);
     AuthenticationController controller = new AuthenticationController();
-    private static final Logger LOG = LogManager.getLogger(DashboardAdmin.class);
+    private static final Logger LOG = LogManager.getLogger(DashboardSessionAdmin.class);
 
-    public void showMenu() {
+    public static void SessionAdminMenu() {
         boolean continuer = true;
 
         System.out.println("========== Tableau de bord ==========");
@@ -68,8 +68,5 @@ public class DashboardAdmin {
         scanner.close();
     }
 
-    public static void main(String[] args) {
-        DashboardAdmin dashboard = new DashboardAdmin();
-        dashboard.showMenu();
-    }
+    
 }

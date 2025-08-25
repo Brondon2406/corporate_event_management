@@ -6,7 +6,6 @@ import model.entity.Users;
 public interface AuthenticationService {
 	
 	public Userdto registerUser (Users user);
-	 public Userdto loginUser(String email, String password) ;
-		
+	public Userdto loginUser(String email, String password);
 	
 }
