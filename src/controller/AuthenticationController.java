@@ -3,13 +3,14 @@ package controller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import controller.dto.Userdto;
-import controller.utilities.MappingService.MappingUser;
-import controller.utilities.MappingServiceImpl.MappingUserImpl;
+import model.dto.Userdto;
+import model.mapping.MappingService.MappingUser;
+import model.mapping.MappingServiceImpl.MappingUserImpl;
 import model.entity.Users;
 import model.service.AuthenticationService;
 import model.service.implementation.AuthenticationServiceImpl;
-import util.Constants;
+import util.constants.Constants;
+import views.DashboardSessionAdmin;
 
 public class AuthenticationController {
 
@@ -37,6 +38,8 @@ public class AuthenticationController {
 	public Userdto loginUserController (Userdto userdto) {
 		if (userdto != null) {
 			LOG.info(" Connexion réussie ! Bienvenue " + userdto.getEmail());
+			DashboardSessionAdmin dashboard = new DashboardSessionAdmin();
+            dashboard.SessionAdminMenu();
         } else {
             LOG.error(" Email ou mot de passe incorrect !");
             return null;
