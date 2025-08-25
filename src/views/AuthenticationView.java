@@ -6,7 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import controller.AuthenticationController;
-import controller.dto.Userdto;
+import controller.LoginController;
+import model.dto.Userdto;
 import model.entity.enumeration.Role;
 
 public class AuthenticationView {
@@ -92,5 +93,8 @@ public class AuthenticationView {
          
          System.out.print("Entrez votre mot de passe: ");
          String password = scanner.nextLine();
+         
+         LoginController controller = new LoginController();
+         controller.loginUser(email, password);
     }
 }
