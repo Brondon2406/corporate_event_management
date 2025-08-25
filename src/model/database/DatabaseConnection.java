@@ -6,8 +6,8 @@ import java.sql.DriverManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import controller.utilities.MappingServiceImpl.MappingUserImpl;
-import util.Constants;
+import model.mapping.MappingServiceImpl.MappingUserImpl;
+import util.constants.Constants;
 
 public class DatabaseConnection {
 	

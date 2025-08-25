@@ -9,12 +9,12 @@ import java.sql.Statement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import controller.dto.Userdto;
+import model.dto.Userdto;
 import model.database.DatabaseConnection;
 import model.entity.Users;
 import model.service.AuthenticationService;
 import model.service.sql.Query;
-import util.Constants;
+import util.constants.Constants;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
 
@@ -63,8 +63,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    @Override
-    public Userdto loginUser(Users user) {
+    public Userdto loginUser(String email, String password) {
+    	Users user = new Users();
         String query = Query.GET_USER;
 
         try (Connection connection = DatabaseConnection.getInstance();
@@ -95,4 +95,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return null;
         }
     }
+
+
+ 
 }
