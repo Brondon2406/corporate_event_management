@@ -13,5 +13,6 @@ public class Constants {
 	public static final String EMPTY_USER_DTO = "Error in Authentication controller : USERDTO is null";
 	public static final String ERROR_GET_USER = "Error during operation to get User. Error message: {}";
 	public static final String ERROR_DURING_USER_SELECTION = "ResultGet is null";
+	public static final String AUTHENTICATION_FAILED = "authentication failure" ;
 }
 
