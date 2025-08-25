@@ -5,10 +5,10 @@ import java.util.Scanner;
 
 public class MainView {
 		 	    	
-				public static void main(String[] args) {
-					AuthenticationView view = new AuthenticationView();
-	    	        Scanner scanner = new Scanner(System.in);
-	    	        boolean continuer = true;
+		public static void main(String[] args) {
+			AuthenticationView view = new AuthenticationView();
+			Scanner scanner = new Scanner(System.in);
+	    	boolean continuer = true;
 
 	    	        System.out.println("=== Application Gestion Utilisateurs ===");
 
