@@ -63,39 +63,36 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    public Userdto loginUser(String email, String password) {
-    	Users user = new Users();
-        String query = Query.GET_USER;
+	@Override
+	public Userdto loginUser(String email, String password) {
+	    String query = Query.GET_USER;
 
-        try (Connection connection = DatabaseConnection.getInstance();
-             PreparedStatement ps = connection.prepareStatement(query)) {
+	    try (Connection connection = DatabaseConnection.getInstance();
+	         PreparedStatement ps = connection.prepareStatement(query)) {
 
-            ps.setString(1, user.getEmail());
-            ps.setString(2, user.getPassword());
+	        ps.setString(1, email);
+	        ps.setString(2, password);
 
-            try (ResultSet result = ps.executeQuery()) {
-                if (result.next()) {
-                    Userdto userDTO = new Userdto();
-                    userDTO.setId(result.getInt("id"));
-                    userDTO.setName(result.getString("name"));
-                    userDTO.setEmail(result.getString("email"));
-                    userDTO.setRole(result.getString("role"));
-                    userDTO.setFonction(result.getString("fonction"));
+	        try (ResultSet result = ps.executeQuery()) {
+	            if (result.next()) {
+	                Userdto userDTO = new Userdto();
+	                userDTO.setId(result.getInt("id"));
+	                userDTO.setName(result.getString("name"));
+	                userDTO.setEmail(result.getString("email"));
+	                userDTO.setRole(result.getString("role"));
+	                userDTO.setFonction(result.getString("fonction"));
 
-                    LOG.info("Connexion réussie pour l’utilisateur : {}", user.getEmail());
-                    return userDTO;
-                } else {
-                    LOG.warn(Constants.ERROR_DURING_USER_SELECTION);
-                    return null;
-                }
-            }
+	                LOG.info("Connexion réussie pour l’utilisateur : {}", userDTO.getEmail());
+	                return userDTO;
+	            } else {
+	                LOG.warn(Constants.ERROR_DURING_USER_SELECTION);
+	                return null;
+	            }
+	        }
 
-        } catch (SQLException e) {
-            LOG.error(Constants.ERROR_GET_USER,  e.getMessage());
-            return null;
-        }
-    }
-
-
- 
-}
+	    } catch (SQLException e) {
+	        LOG.error(Constants.ERROR_GET_USER, e);
+	        return null;
+	    }
+	}
+	}
