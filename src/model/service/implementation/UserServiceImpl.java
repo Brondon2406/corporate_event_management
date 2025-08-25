@@ -3,8 +3,8 @@ package model.service.implementation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import controller.dto.Userdto;
-import controller.utilities.MappingService.MappingUser;
+import model.dto.Userdto;
+import model.mapping.MappingService.MappingUser;
 import model.database.DatabaseConnection;
 import model.entity.Users;
 import model.service.UserService;
@@ -16,12 +16,9 @@ public class UserServiceImpl implements UserService{
 	
 	public UserServiceImpl(DatabaseConnection db,  MappingUser mapper) {
 		this.db = db;
-		this.mapper = mapper;
-		
+		this.mapper = mapper;	
 	}
-
 	
-
 	@Override
 	public Userdto updateUser(Userdto userDTO) {
 		// TODO Auto-generated method stub
