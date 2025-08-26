@@ -7,9 +7,8 @@ import model.dto.Userdto;
 import model.service.AuthenticationService;
 import model.service.implementation.AuthenticationServiceImpl;
 import util.constants.Constants;
-import views.DashboardSessionAdmin;
-import views.DashboardAdmin;
-
+import views.sessionAdmin.DashboardSessionAdmin;
+import views.admin.DashboardAdmin;
 
 
 	public class LoginController {
@@ -31,10 +30,8 @@ import views.DashboardAdmin;
             	} else if ("ANIMATORS".equalsIgnoreCase(user.getRole())) {
             		DashboardSessionAdmin.SessionAdminMenu();
             	 } else {
-            		 LOG.error(Constants.AUTHENTICATION_FAILED + user.getRole());
+            	 LOG.error(Constants.AUTHENTICATION_FAILED + user.getRole());
                  }
-
-            }       
-		
+            }       		
 	}
 }
