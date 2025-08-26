@@ -8,25 +8,33 @@ import model.service.AuthenticationService;
 import model.service.implementation.AuthenticationServiceImpl;
 import util.constants.Constants;
 import views.DashboardSessionAdmin;
+import views.DashboardAdmin;
 
 
 
-public class LoginController {
-	private static AuthenticationService authService = new AuthenticationServiceImpl();
+	public class LoginController {
+		private static AuthenticationService AuthenticationService = new AuthenticationServiceImpl();
 	
-	 private static final Logger LOG = LogManager.getLogger(LoginController.class);
+	 	private static final Logger LOG = LogManager.getLogger(LoginController.class);
 
-	public static void loginUser(String email, String password) {
+	 	public void loginUser(String email, String password) {
 		
-		Userdto user = authService.loginUser(email, password);
-        if (user != null) {
-           LOG.info("Connexion réussie !");
-            DashboardSessionAdmin.SessionAdminMenu();
-        } else {
-            LOG.error(Constants.AUTHENTICATION_FAILED);
-        }
-    }
+			Userdto user = AuthenticationService.loginUser(email, password);
+        	if (user == null) {
+        	LOG.error(Constants.AUTHENTICATION_FAILED);
+        	} else {
+            	LOG.info("Connexion réussie !");
+            	if ("ADMIN".equalsIgnoreCase(user.getRole())) {
+            		DashboardAdmin.AdminMenu();
+            	} else if ("COLLABORATORS".equalsIgnoreCase(user.getRole())) {
+            		DashboardSessionAdmin.SessionAdminMenu();            	            	
+            	} else if ("ANIMATORS".equalsIgnoreCase(user.getRole())) {
+            		DashboardSessionAdmin.SessionAdminMenu();
+            	 } else {
+            		 LOG.error(Constants.AUTHENTICATION_FAILED + user.getRole());
+                 }
+
+            }       
 		
-
-
+	}
 }
