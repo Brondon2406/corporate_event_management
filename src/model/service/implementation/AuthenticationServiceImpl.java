@@ -24,8 +24,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public Userdto registerUser(Users user) {
         String query = Query.CREATE_USER;
 
-        try (
-             PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
