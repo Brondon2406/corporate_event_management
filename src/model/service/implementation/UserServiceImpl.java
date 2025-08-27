@@ -3,7 +3,6 @@ package model.service.implementation;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,15 +24,15 @@ public class UserServiceImpl implements UserService{
 		 try (PreparedStatement ps = connection.prepareStatement(query)) {
 			 
 			 	ps.setString(1, userDTO.getName());
-		        ps.setString(1, userDTO.getEmail());
-		        ps.setString(2, userDTO.getPassword());
-		        ps.setInt(3, userDTO.getId());
+		        ps.setString(2, userDTO.getEmail());
+		        ps.setString(3, userDTO.getPassword());
+		        ps.setInt(4, userDTO.getId());
 
 		        int rows = ps.executeUpdate();
 		        return rows > 0;
 
 		    } catch (SQLException e) {
-		        LOG.error("Erreur updateUser: {}", e.getMessage());
+		        LOG.error("Erreur updateUser: {}", e);
 		        return false;
 		    }
 		}
