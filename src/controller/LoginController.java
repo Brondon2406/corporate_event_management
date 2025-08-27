@@ -26,9 +26,9 @@ import views.admin.DashboardAdmin;
             	if ("ADMIN".equalsIgnoreCase(user.getRole())) {
             		DashboardAdmin.AdminMenu();
             	} else if ("COLLABORATORS".equalsIgnoreCase(user.getRole())) {
-            		DashboardSessionAdmin.SessionAdminMenu(user);            	            	
+            		DashboardSessionAdmin.SessionAdminMenu(user, null);            	            	
             	} else if ("ANIMATORS".equalsIgnoreCase(user.getRole())) {
-            		DashboardSessionAdmin.SessionAdminMenu(user);
+            		DashboardSessionAdmin.SessionAdminMenu(user, null);
             	 } else {
             	 LOG.error(Constants.AUTHENTICATION_FAILED + user.getRole());
                  }
