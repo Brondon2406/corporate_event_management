@@ -10,7 +10,7 @@ public class Eventdto {
 	private LocalDateTime dateDebut ;
 	private LocalDateTime dateFin ;
 	private String typeEvent;
-	private EventRoomdto evenRoom;
+	private EventRoom evenRoom;
 	private List<Userdto> users;
 	
 	public Eventdto(int id, String title, LocalDateTime dateDebut, LocalDateTime dateFin, String typeEvent,
@@ -33,7 +33,6 @@ public class Eventdto {
 		this.evenRoom = evenRoom;
 		this.users = users;
 	}
-
 
 	public int getId() {
 		return id;
