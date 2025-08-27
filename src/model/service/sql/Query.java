@@ -6,5 +6,5 @@ public class Query {
 
 	public static final String GET_USER ="SELECT * FROM users WHERE email = ? AND password = ?";
 
-	public static final String UPDATE_USER = "UPDATE users SET email = ?, password = ?, role = ? WHERE id = ?";
+	public static final String UPDATE_USER = "UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?";
 }
