@@ -15,5 +15,9 @@ public class Constants {
 	public static final String ERROR_DURING_USER_SELECTION = "ResultGet is null";
 	public static final String AUTHENTICATION_FAILED = "authentication failure" ;
 	public static final String ERROR_UPDATE_USER = "Error during user update" ; 
+	public static final String EMPTY_EVENT_DTO = "Error in Event controller : EVENTDTO is null";
+	public static final String ERROR_DURING_EVENT_INSERTION = "ResultSet is null";
+	public static final String ERROR_CREATE_EVENT = "Error during operation to create event. Error message: {}";
+
 }
 
