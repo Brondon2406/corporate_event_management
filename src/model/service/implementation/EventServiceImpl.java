@@ -53,7 +53,7 @@ public class EventServiceImpl implements EventService {
                eventDTO.setDateDebut(event.getDateDebut());
                eventDTO.setDateFin(event.getDateFin());
                eventDTO.setTypeEvent(event.getTypeEvent().name());
-               eventDTO.setEvenRoom(event.getEventRoom());
+               eventDTO.setEventRoom(event.getEventRoom());
 
                LOG.info("Utilisateur créé avec succès : {}", event.getTitle());
                return eventDTO;

@@ -12,8 +12,8 @@ import util.constants.Constants;
 
 
 
-public class SessionAdminController {	
-	private static final Logger LOG = LogManager.getLogger(SessionAdminController.class);
+public class UserController {	
+	private static final Logger LOG = LogManager.getLogger(UserController.class);
 	private UserService userService = new UserServiceImpl();
 		
 	public void updateUser(Userdto userDTO, String newName, String newEmail, String newPassword) {
@@ -29,3 +29,5 @@ public class SessionAdminController {
 	    }
 	}
 }
+
+

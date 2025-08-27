@@ -17,4 +17,11 @@ public enum TypeEvent {
 				.collect(Collectors.toList());
 		return roles;
 	}
+
+	public static TypeEvent fromString(String typeEvent) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 }

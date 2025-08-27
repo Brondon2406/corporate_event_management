@@ -3,6 +3,8 @@ package model.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import model.entity.EventRoom;
+
 public class Eventdto {
 	
 	private int id ;
@@ -10,29 +12,31 @@ public class Eventdto {
 	private LocalDateTime dateDebut ;
 	private LocalDateTime dateFin ;
 	private String typeEvent;
-	private EventRoom evenRoom;
+	private EventRoom eventRoom;
 	private List<Userdto> users;
 	
 	public Eventdto(int id, String title, LocalDateTime dateDebut, LocalDateTime dateFin, String typeEvent,
-			EventRoomdto evenRoom) {
+			EventRoom eventRoom) {
 		this.id = id;
 		this.title = title;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.typeEvent = typeEvent;
-		this.evenRoom = evenRoom;
+		this.eventRoom = eventRoom;
 	}
 
 	public Eventdto(String title, LocalDateTime dateDebut, LocalDateTime dateFin, String typeEvent,
-			EventRoomdto evenRoom, List<Userdto> users) {
+			EventRoom eventRoom, List<Userdto> users) {
 		super();
 		this.title = title;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.typeEvent = typeEvent;
-		this.evenRoom = evenRoom;
+		this.eventRoom = eventRoom;
 		this.users = users;
 	}
+	
+	public Eventdto() {}
 
 	public int getId() {
 		return id;
@@ -74,12 +78,12 @@ public class Eventdto {
 		this.typeEvent = typeEvent;
 	}
 
-	public EventRoomdto getEvenRoom() {
-		return evenRoom;
+	public EventRoom getEventRoom() {
+		return eventRoom;
 	}
 
-	public void setEvenRoom(EventRoomdto evenRoom) {
-		this.evenRoom = evenRoom;
+	public void setEventRoom(EventRoom eventRoom) {
+		this.eventRoom = eventRoom;
 	}
 
 	public List<Userdto> getUsers() {

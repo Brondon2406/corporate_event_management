@@ -46,6 +46,8 @@ public class Event {
 		this.users = users;
 	}
 	
+	public Event() {}
+	
 	public int getId() {
 		return id;
 	}

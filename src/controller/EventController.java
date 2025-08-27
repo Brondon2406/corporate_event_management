@@ -5,15 +5,15 @@ import org.apache.logging.log4j.Logger;
 
 import model.dto.Eventdto;
 import model.entity.Event;
-import model.mapping.MappingService.MappingUser;
-import model.mapping.MappingServiceImpl.MappingUserImpl;
+import model.mapping.MappingService.MappingEvent;
+import model.mapping.MappingServiceImpl.MappingEventImpl;
 import model.service.EventService;
 import model.service.implementation.EventServiceImpl;
 import util.constants.Constants;
 
 public class EventController {
-	private static final Logger LOG = LogManager.getLogger(UserController.class);
-	private MappingUser mapper =  new MappingUserImpl();
+	private static final Logger LOG = LogManager.getLogger(EventController.class);
+	private MappingEvent mapper =  new MappingEventImpl();
 	private EventService EventService = new EventServiceImpl();
 	
 	public boolean EventCreatController(Eventdto eventdto) {

@@ -73,10 +73,10 @@ public class AuthenticationView {
         return email.matches(regex);
     }
     
-    private boolean checkName(String nom) {
-        if (nom == null || nom.trim().isEmpty())
+    private boolean checkName(String name) {
+        if (name == null || name.trim().isEmpty())
             return false;
-        return nom.matches("^[A-Za-zÀ-ÖØ-öø-ÿ ]+$");
+        return name.matches("^[A-Za-zÀ-ÖØ-öø-ÿ ]+$");
     }
     
     public void connection () {
