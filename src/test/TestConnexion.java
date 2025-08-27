@@ -5,12 +5,11 @@ import model.database.DatabaseConnection;
 
 public class TestConnexion {
 
-	public static void main(String[] args) {
-		        DatabaseConnection db = new DatabaseConnection();
-		        Connection con = db.getInstance();
+	public static void Test() {
+		        Connection connection = DatabaseConnection.getInstance();
 
-		        if (con != null) {
-		           System.out.println(" Connexion r�ussie � la base de donn�es !");
+		        if (connection != null) {
+		           System.out.println(" Connexion r�ussie à la base de données !");
 		        } else {
 		        	System.err.println(" Echec de la connexion à la base de donn�es !");
 		        }

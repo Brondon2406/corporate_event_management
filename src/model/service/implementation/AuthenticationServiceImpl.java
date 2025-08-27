@@ -75,10 +75,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	      try (ResultSet result = ps.executeQuery()) {
 	          if (result.next()) {
-	              userDTO = new Userdto();	             
-	              userDTO.setName(result.getString("email"));
-	              userDTO.setEmail(result.getString("password"));           
+	              userDTO = new Userdto();	 
+	              userDTO.setName(result.getString("name"));
+	              userDTO.setEmail(result.getString("email"));
+	              userDTO.setPassword(result.getString("password"));           
 	              userDTO.setRole(result.getString("role"));
+	              userDTO.setId(result.getInt("id"));
+
 	              
 	              LOG.info("Connexion réussie pour l’utilisateur : {}", userDTO.getEmail());	              
 	          } else {

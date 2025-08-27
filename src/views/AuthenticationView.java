@@ -11,8 +11,6 @@ public class AuthenticationView {
 	private static Scanner scanner = new Scanner(System.in);
     AuthenticationController controller = new AuthenticationController();
     
-    public AuthenticationView() {}
-    
     public void registration() {
         System.out.println("\n=== Inscription ===");
         
