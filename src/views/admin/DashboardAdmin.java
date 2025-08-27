@@ -2,16 +2,12 @@ package views.admin;
 
 import java.util.Scanner;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import controller.AuthenticationController;
 
 public class DashboardAdmin {
 	private static Scanner scanner = new Scanner(System.in);
     AuthenticationController controller = new AuthenticationController();
-    private static final Logger LOG = LogManager.getLogger(DashboardAdmin.class);
-
+    
     public static void AdminMenu() {
         boolean continuer = true;
 
@@ -45,54 +41,54 @@ public class DashboardAdmin {
 
             switch (choix) {
                 case 1:
-                    LOG.info("Modifier un Utilisateur ");
+                   // LOG.info("Modifier un Utilisateur ");
                     
                     break;
                 case 2:
-                    LOG.info("Supprimer un Utilisateur");
+                   // LOG.info("Supprimer un Utilisateur");
                    
                     break;
                 case 3:
-                    LOG.info("Rechercher un Utilisateur par son Id  ");
+                    //LOG.info("Rechercher un Utilisateur par son Id  ");
                     
                     break;
                 case 4:
-                    LOG.info("Lister les utlisateurs ");
+                   // LOG.info("Lister les utlisateurs ");
                     
                     break;
                 case 5:
-                    LOG.info("Ajouter un planning  ");
+                 //   LOG.info("Ajouter un planning  ");
                     break;
                     
                 case 6:
-                    LOG.info("Modifier un planning  ");
+                 //   LOG.info("Modifier un planning  ");
                     break;
                     
                 case 7:
-                    LOG.info("Supprimer un planning  ");
+                 //   LOG.info("Supprimer un planning  ");
                     break;
                 case 8:
-                    LOG.info("Lister les Evenemants par periode  ");
+                  //  LOG.info("Lister les Evenemants par periode  ");
                     break;
                     
                 case 9:
-                    LOG.info("Ajouter un Salle  ");
+                 //   LOG.info("Ajouter un Salle  ");
                     break;
                     
                 case 10:
-                    LOG.info("Modifier un Salle  ");
+                //    LOG.info("Modifier un Salle  ");
                     break;
                     
                 case 11:
-                    LOG.info("Supprimer un Salle  ");
+                //    LOG.info("Supprimer un Salle  ");
                     break;
                     
                 case 12:
-                    LOG.info("Rechercher la salle par son Id  ");
+                 //   LOG.info("Rechercher la salle par son Id  ");
                     break;
                     
                 case 13:
-                    LOG.info("Lister les Salles  ");
+                 //   LOG.info("Lister les Salles  ");
                     break;
                     
                
