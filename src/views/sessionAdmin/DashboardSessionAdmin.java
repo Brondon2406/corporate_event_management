@@ -2,11 +2,12 @@ package views.sessionAdmin;
 
 import java.util.Scanner;
 import model.dto.Userdto;
+import model.entity.EventRoom;
 
 public class DashboardSessionAdmin {
     private static Scanner scanner = new Scanner(System.in);
 
-    public static void SessionAdminMenu(Userdto userDTO) {
+    public static void SessionAdminMenu(Userdto userDTO,  EventRoom room) {
     	
     	SessionAdminView sessionview = new SessionAdminView();
         boolean continuer = true;
@@ -32,7 +33,7 @@ public class DashboardSessionAdmin {
                     
                     break;
                 case 2:
-                   // LOG.info("Créer un événement ");
+                	sessionview.registEvent(userDTO, room);
                    
                     break;
                 case 3:
@@ -59,5 +60,5 @@ public class DashboardSessionAdmin {
         scanner.close();
     }
 
-    
+	
 }

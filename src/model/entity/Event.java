@@ -12,35 +12,37 @@ public class Event {
 	private LocalDateTime dateDebut ;
 	private LocalDateTime dateFin ;
 	private TypeEvent typeEvent;
-	private EventRoom evenRoom;
+	private EventRoom eventRoom;
 	private List<Users> users;
 	
+	
+	
 	public Event(int id, String title, LocalDateTime dateDebut, LocalDateTime dateFin, TypeEvent typeEvent,
-			EventRoom evenRoom) {
+			EventRoom eventRoom) {
 		this.id = id;
 		this.title = title;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.typeEvent = typeEvent;
-		this.evenRoom = evenRoom;
+		this.eventRoom = eventRoom;
 	}
 	public Event(String title, LocalDateTime dateDebut, LocalDateTime dateFin, TypeEvent typeEvent,
-			EventRoom evenRoom) {
+			EventRoom eventRoom) {
 		this.title = title;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.typeEvent = typeEvent;
-		this.evenRoom = evenRoom;
+		this.eventRoom = eventRoom;
 	}
 	
-	public Event(String title, LocalDateTime dateDebut, LocalDateTime dateFin, TypeEvent typeEvent, EventRoom evenRoom,
+	public Event(String title, LocalDateTime dateDebut, LocalDateTime dateFin, TypeEvent typeEvent, EventRoom eventRoom,
 			List<Users> users) {
 		super();
 		this.title = title;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.typeEvent = typeEvent;
-		this.evenRoom = evenRoom;
+		this.eventRoom = eventRoom;
 		this.users = users;
 	}
 	
@@ -74,11 +76,11 @@ public class Event {
 	public void setTypeEvent(TypeEvent typeEvent) {
 		this.typeEvent = typeEvent;
 	}
-	public EventRoom getEvenRoom() {
-		return evenRoom;
+	public EventRoom getEventRoom() {
+		return eventRoom;
 	}
-	public void setEvenRoom(EventRoom evenRoom) {
-		this.evenRoom = evenRoom;
+	public void setEventRoom(EventRoom eventRoom) {
+		this.eventRoom = eventRoom;
 	}
 	public List<Users> getUsers() {
 		return users;

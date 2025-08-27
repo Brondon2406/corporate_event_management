@@ -19,13 +19,7 @@ public class AuthenticationController {
 	
 	private static final Logger LOG = LogManager.getLogger(AuthenticationController.class);
 	
-	public AuthenticationController() {}
-
 	public Userdto RegisterController(Userdto userdto) {
-		if(userdto == null) {
-			LOG.error(Constants.EMPTY_USER_DTO);
-			return null;
-		}
 		Users user = mapper.convertUserdtoToUsers(userdto);
 		Userdto dto = service.registerUser(user);
 		if(dto == null) {
