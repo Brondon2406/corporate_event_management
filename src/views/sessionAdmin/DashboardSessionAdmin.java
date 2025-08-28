@@ -5,60 +5,63 @@ import model.dto.Userdto;
 import model.entity.EventRoom;
 
 public class DashboardSessionAdmin {
-    private static Scanner scanner = new Scanner(System.in);
+	private static Scanner scanner = new Scanner(System.in);
 
-    public static void SessionAdminMenu(Userdto userDTO,  EventRoom room) {
-    	
-    	SessionAdminView sessionview = new SessionAdminView();
-        boolean continuer = true;
+	public static void SessionAdminMenu(Userdto userDTO, EventRoom room) {
 
-        System.out.println("========== Tableau de bord ==========");
+		SessionAdminView sessionview = new SessionAdminView();
+		boolean continuer = true;
 
-        while (continuer) {
-            System.out.println("\nMenu principal :");
-            System.out.println("1 - Modifier mon profil ");
-            System.out.println("2 - Créer un événement");
-            System.out.println("3 - Modifier un événement");
-            System.out.println("4 - Supprimer un événement");
-            System.out.println("5 - Rechercher un evenement par son Id ");
-            System.out.println("6 - Se deconnecter");
+		System.out.println("========== Tableau de bord ==========");
 
-            System.out.print("Choisissez une option : ");
-            int choix = scanner.nextInt();
-            scanner.nextLine(); 
+		while (continuer) {
+			System.out.println("\nMenu principal :");
+			System.out.println("1 - Modifier mon profil ");
+			System.out.println("2 - Créer un événement");
+			System.out.println("3 - Modifier un événement");
+			System.out.println("4 - Supprimer un événement");
+			System.out.println("5 - Rechercher un evenement par son Id ");
+			System.out.println("6 - Lister les événements");
+			System.out.println("7 - Se deconnecter");
 
-            switch (choix) {
-                case 1:
-                	sessionview.updateUser(userDTO);
-                    
-                    break;
-                case 2:
-                	sessionview.registEvent(userDTO, room);
-                   
-                    break;
-                case 3:
-                   // LOG.info("Modification d’un événement ");
-                    
-                    break;
-                case 4:
-                  //  LOG.info("Suppression d’un événement ");
-                    
-                    break;
-                case 5:
-                   // LOG.info("Rechercher un evenement par son Id  ");
-                    break;
-                case 6:
-                    System.out.println("Au revoir !");
-                    continuer = false;
-                    break;
-                default:
-                    System.out.println("Choix invalide, veuillez réessayer.");
-                    break;
-            }
-        }
+			System.out.print("Choisissez une option : ");
+			int choix = scanner.nextInt();
+			scanner.nextLine();
 
-        scanner.close();
-    }
+			switch (choix) {
+			case 1:
+				sessionview.updateUser(userDTO);
 
-	
+				break;
+			case 2:
+				sessionview.registEvent();
+
+				break;
+			case 3:
+				sessionview.updateEvent();
+
+				break;
+			case 4:
+				sessionview.deleteEvent();
+
+				break;
+			case 5:
+
+				break;
+			case 6:
+				sessionview.listEvents();
+				break;
+			case 7:
+				System.out.println("Au revoir !");
+				continuer = false;
+				break;
+			default:
+				System.out.println("Choix invalide, veuillez réessayer.");
+				break;
+			}
+		}
+
+		scanner.close();
+	}
+
 }

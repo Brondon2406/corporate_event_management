@@ -11,24 +11,21 @@ import model.service.AuthenticationService;
 import model.service.implementation.AuthenticationServiceImpl;
 import util.constants.Constants;
 
-
 public class AuthenticationController {
 
 	private AuthenticationService service = new AuthenticationServiceImpl();
-	private MappingUser mapper =  new MappingUserImpl();
-	
+	private MappingUser mapper = new MappingUserImpl();
+
 	private static final Logger LOG = LogManager.getLogger(AuthenticationController.class);
-	
+
 	public Userdto RegisterController(Userdto userdto) {
 		Users user = mapper.convertUserdtoToUsers(userdto);
 		Userdto dto = service.registerUser(user);
-		if(dto == null) {
+		if (dto == null) {
 			LOG.error(Constants.EMPTY_USER_DTO);
 			return null;
 		}
 		return dto;
 	}
-	
 
-	
 }

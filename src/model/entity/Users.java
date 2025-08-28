@@ -6,14 +6,14 @@ public class Users {
 
 	private int id;
 	private String name;
-	private String email ;
-	private String password ;
+	private String email;
+	private String password;
 	private Role role;
 	private String fonction;
-	
-	
-	public Users() {}
-	
+
+	public Users() {
+	}
+
 	public Users(int id, String name, String email, String password, Role role, String fonction) {
 		this.id = id;
 		this.name = name;
@@ -22,7 +22,7 @@ public class Users {
 		this.role = role;
 		this.fonction = fonction;
 	}
-	
+
 	public Users(String name, String email, String password, Role role, String fonction) {
 		this.name = name;
 		this.email = email;
@@ -85,5 +85,4 @@ public class Users {
 				+ ", fonction=" + fonction + "]";
 	}
 
-	
 }

@@ -7,7 +7,7 @@ public class Planing {
 	private int id;
 	private int numberOfWeek;
 	private List<Event> events;
-	
+
 	public Planing(int id, int numberOfWeek, List<Event> events) {
 		this.id = id;
 		this.numberOfWeek = numberOfWeek;

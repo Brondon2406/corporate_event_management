@@ -1,38 +1,59 @@
 package controller;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import model.dto.Eventdto;
-import model.entity.Event;
-import model.mapping.MappingService.MappingEvent;
-import model.mapping.MappingServiceImpl.MappingEventImpl;
+
 import model.service.EventService;
 import model.service.implementation.EventServiceImpl;
 import util.constants.Constants;
 
 public class EventController {
 	private static final Logger LOG = LogManager.getLogger(EventController.class);
-	private MappingEvent mapper =  new MappingEventImpl();
-	private EventService EventService = new EventServiceImpl();
-	
+	private EventService eventService = new EventServiceImpl();
+
 	public boolean EventCreatController(Eventdto eventdto) {
-	    if (eventdto == null) {
-	        LOG.error(Constants.EMPTY_EVENT_DTO);
-	        return false;
-	        }
-	  
-	    Event event = mapper.convertEventdtoToEvent(eventdto);
+		if (eventdto == null) {
+			LOG.error(Constants.EMPTY_EVENT_DTO);
+			return false;
+		}
 
-	    Eventdto dto = EventService.registerEvent(event);
+		Eventdto dto = eventService.registerEvent(eventdto);
 
-	    if (dto != null) {
-	        LOG.info("Événement créé avec succès !");
-	        return true;
-	    } else {
-	        LOG.error("Erreur lors de la création de l'événement.");
-	        return false;
-	    }
+		if (dto != null) {
+			LOG.info("Événement créé avec succès !");
+			return true;
+		} else {
+			LOG.error(Constants.ERROR_DURING_EVENT_INSERTION);
+			return false;
+		}
 	}
 
+	public boolean updateEventController(Eventdto event) {
+		if (event == null) {
+			LOG.error(Constants.EMPTY_EVENT_DTO);
+			return false;
+		}
+		boolean success = eventService.updateEvent(event);
+
+		if (success) {
+			LOG.info("Événement créé avec succès !");
+			return true;
+		} else {
+			LOG.error(Constants.ERROR_DURING_EVENT_SELECTION);
+			return false;
+		}
+
+	}
+
+	public boolean deleteEvent(int eventId) {
+		return eventService.deleteEvent(eventId);
+	}
+
+	public List<Eventdto> getAllEvents() {
+		return eventService.getAllEvents();
+	}
 }

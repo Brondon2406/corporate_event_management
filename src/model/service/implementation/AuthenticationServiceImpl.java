@@ -18,82 +18,80 @@ import util.constants.Constants;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private static final Logger LOG = LogManager.getLogger(AuthenticationServiceImpl.class);
-    Connection connection = DatabaseConnection.getInstance();
-    @Override
-    public Userdto registerUser(Users user) {
-        String query = Query.CREATE_USER;
+	private static final Logger LOG = LogManager.getLogger(AuthenticationServiceImpl.class);
+	Connection connection = DatabaseConnection.getInstance();
 
-        try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+	@Override
+	public Userdto registerUser(Users user) {
+		String query = Query.CREATE_USER;
 
-            ps.setString(1, user.getName());
-            ps.setString(2, user.getEmail());
-            ps.setString(3, user.getPassword());
-            ps.setString(4, user.getRole().name());
-            ps.setString(5, user.getFonction());
+		try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
-            int result = ps.executeUpdate();
-            if (result <= 0) {
-                LOG.error(Constants.ERROR_DURING_USER_INSERTION);
-                return null;
-            }
+			ps.setString(1, user.getName());
+			ps.setString(2, user.getEmail());
+			ps.setString(3, user.getPassword());
+			ps.setString(4, user.getRole().name());
+			ps.setString(5, user.getFonction());
 
-           
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                if (rs.next()) {
-                    user.setId(rs.getInt(1));
-                }
-            }
+			int result = ps.executeUpdate();
+			if (result <= 0) {
+				LOG.error(Constants.ERROR_DURING_USER_INSERTION);
+				return null;
+			}
 
-          
-            Userdto userDTO = new Userdto();
-            userDTO.setId(user.getId());
-            userDTO.setName(user.getName());
-            userDTO.setEmail(user.getEmail());
-            userDTO.setRole(user.getRole().name());
-            userDTO.setFonction(user.getFonction());
+			try (ResultSet rs = ps.getGeneratedKeys()) {
+				if (rs.next()) {
+					user.setId(rs.getInt(1));
+				}
+			}
 
-            LOG.info("Utilisateur créé avec succès : {}", user.getEmail());
-            return userDTO;
+			Userdto userDTO = new Userdto();
+			userDTO.setId(user.getId());
+			userDTO.setName(user.getName());
+			userDTO.setEmail(user.getEmail());
+			userDTO.setRole(user.getRole().name());
+			userDTO.setFonction(user.getFonction());
 
-        } catch (SQLException e) {
-            LOG.error(Constants.ERROR_CREATE_USER, e);
-            return null;
-        }
-    }
+			LOG.info("Utilisateur créé avec succès : {}", user.getEmail());
+			return userDTO;
+
+		} catch (SQLException e) {
+			LOG.error(Constants.ERROR_CREATE_USER, e);
+			return null;
+		}
+	}
 
 	@Override
 	public Userdto loginUser(String email, String password) {
-	    String query = Query.GET_USER;
-	    
-	    Userdto userDTO = null;
+		String query = Query.GET_USER;
 
-	    try {
-	      PreparedStatement ps = connection.prepareStatement(query) ;
-	      ps.setString(1, email);
-	      ps.setString(2, password);
+		Userdto userDTO = null;
 
-	      try (ResultSet result = ps.executeQuery()) {
-	          if (result.next()) {
-	              userDTO = new Userdto();	 
-	              userDTO.setName(result.getString("name"));
-	              userDTO.setEmail(result.getString("email"));
-	              userDTO.setPassword(result.getString("password"));           
-	              userDTO.setRole(result.getString("role"));
-	              userDTO.setId(result.getInt("id"));
+		try {
+			PreparedStatement ps = connection.prepareStatement(query);
+			ps.setString(1, email);
+			ps.setString(2, password);
 
-	              
-	              LOG.info("Connexion réussie pour l’utilisateur : {}", userDTO.getEmail());	              
-	          } else {
-	              LOG.warn(Constants.ERROR_DURING_USER_SELECTION);
-	              return null;
-	          }
-	      }
-	    } catch (SQLException e) {
-       LOG.error(Constants.ERROR_GET_USER, e);
-       return null;
-	  }
-	
-     return userDTO;
-    }
+			try (ResultSet result = ps.executeQuery()) {
+				if (result.next()) {
+					userDTO = new Userdto();
+					userDTO.setName(result.getString("name"));
+					userDTO.setEmail(result.getString("email"));
+					userDTO.setPassword(result.getString("password"));
+					userDTO.setRole(result.getString("role"));
+					userDTO.setId(result.getInt("id"));
+
+					LOG.info("Connexion réussie pour l’utilisateur : {}", userDTO.getEmail());
+				} else {
+					LOG.warn(Constants.ERROR_DURING_USER_SELECTION);
+					return null;
+				}
+			}
+		} catch (SQLException e) {
+			LOG.error(Constants.ERROR_GET_USER, e);
+			return null;
+		}
+
+		return userDTO;
+	}
 }

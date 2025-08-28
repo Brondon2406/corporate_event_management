@@ -1,9 +1,16 @@
 package model.service;
 
+import java.util.List;
+
 import model.dto.Eventdto;
-import model.entity.Event;
 
 public interface EventService {
-   public Eventdto registerEvent(Event event);              
-   
+	public Eventdto registerEvent(Eventdto event);
+
+	public boolean deleteEvent(int eventId);
+
+	public boolean updateEvent(Eventdto event);
+
+	public List<Eventdto> getAllEvents();
+
 }

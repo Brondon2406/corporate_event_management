@@ -13,29 +13,29 @@ import model.entity.Users;
 import model.service.UserService;
 import model.service.sql.Query;
 
-public class UserServiceImpl implements UserService{
-	
+public class UserServiceImpl implements UserService {
+
 	private static final Logger LOG = LogManager.getLogger(UserServiceImpl.class);
-	Connection connection = DatabaseConnection.getInstance();  
-	
+	Connection connection = DatabaseConnection.getInstance();
+
 	@Override
 	public boolean updateUser(Userdto userDTO) {
-		String query = Query.UPDATE_USER ;
-		 try (PreparedStatement ps = connection.prepareStatement(query)) {
-			 
-			 	ps.setString(1, userDTO.getName());
-		        ps.setString(2, userDTO.getEmail());
-		        ps.setString(3, userDTO.getPassword());
-		        ps.setInt(4, userDTO.getId());
+		String query = Query.UPDATE_USER;
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
 
-		        int rows = ps.executeUpdate();
-		        return rows > 0;
+			ps.setString(1, userDTO.getName());
+			ps.setString(2, userDTO.getEmail());
+			ps.setString(3, userDTO.getPassword());
+			ps.setInt(4, userDTO.getId());
 
-		    } catch (SQLException e) {
-		        LOG.error("Erreur updateUser: {}", e);
-		        return false;
-		    }
+			int rows = ps.executeUpdate();
+			return rows > 0;
+
+		} catch (SQLException e) {
+			LOG.error("Erreur updateUser: {}", e);
+			return false;
 		}
+	}
 
 	@Override
 	public String deleteUser(int userId) {
@@ -55,5 +55,4 @@ public class UserServiceImpl implements UserService{
 		return null;
 	}
 
-	
 }

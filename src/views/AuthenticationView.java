@@ -36,16 +36,34 @@ public class AuthenticationView {
         String password = scanner.nextLine();
 
         List<String> roles = Role.getUserRoles();
-        System.out.println("Liste des roles : ");
+        System.out.println("Liste des rôles disponibles : ");
         int index = 0;
-        for (String role : roles) {
-            System.out.println((index + 1) + "- " + role);
+        for (String roleItem : roles) {
+            System.out.println((index + 1) + "- " + roleItem);
             index++;
         }
-        System.out.print("Choisissez un rôle (numéro): ");
-        int roleIndex = scanner.nextInt();
-        String role = roles.get(roleIndex - 1);
-       
+
+        String role = null;
+        boolean choixValide = false;
+
+        while (!choixValide) {
+            System.out.print("Choisissez un rôle (numéro entre 1 et " + roles.size() + ") : ");
+
+            if (scanner.hasNextInt()) { 
+                int roleIndex = scanner.nextInt();
+
+                if (roleIndex >= 1 && roleIndex <= roles.size()) {
+                    role = roles.get(roleIndex - 1);
+                    choixValide = true;
+                } else {
+                    System.out.println(" Numéro invalide ! Veuillez choisir un nombre entre 1 et " + roles.size() + ".");
+                }
+            } else {
+                System.out.println("Entrée invalide ! Veuillez entrer un chiffre.");
+                scanner.next();
+            }
+        }
+
         String fonction = "";
         do {
         	System.out.print("Entrez votre fonction: ");

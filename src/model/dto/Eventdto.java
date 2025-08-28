@@ -6,15 +6,15 @@ import java.util.List;
 import model.entity.EventRoom;
 
 public class Eventdto {
-	
-	private int id ;
-	private String title ;
-	private LocalDateTime dateDebut ;
-	private LocalDateTime dateFin ;
+
+	private int id;
+	private String title;
+	private LocalDateTime dateDebut;
+	private LocalDateTime dateFin;
 	private String typeEvent;
 	private EventRoom eventRoom;
 	private List<Userdto> users;
-	
+
 	public Eventdto(int id, String title, LocalDateTime dateDebut, LocalDateTime dateFin, String typeEvent,
 			EventRoom eventRoom) {
 		this.id = id;
@@ -25,8 +25,8 @@ public class Eventdto {
 		this.eventRoom = eventRoom;
 	}
 
-	public Eventdto(String title, LocalDateTime dateDebut, LocalDateTime dateFin, String typeEvent,
-			EventRoom eventRoom, List<Userdto> users) {
+	public Eventdto(String title, LocalDateTime dateDebut, LocalDateTime dateFin, String typeEvent, EventRoom eventRoom,
+			List<Userdto> users) {
 		super();
 		this.title = title;
 		this.dateDebut = dateDebut;
@@ -35,8 +35,9 @@ public class Eventdto {
 		this.eventRoom = eventRoom;
 		this.users = users;
 	}
-	
-	public Eventdto() {}
+
+	public Eventdto() {
+	}
 
 	public int getId() {
 		return id;

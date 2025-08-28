@@ -8,7 +8,8 @@ public class LogEvent {
 	private String action;
 	private String description;
 
-	public LogEvent() {}
+	public LogEvent() {
+	}
 
 	public LogEvent(LocalDateTime date, String action, String description) {
 		this.date = date;
