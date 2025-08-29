@@ -17,6 +17,10 @@ public class EventRoom {
 		this.capacity = capacity;
 	}
 
+	public EventRoom() {
+
+	}
+
 	public int getId() {
 		return id;
 	}

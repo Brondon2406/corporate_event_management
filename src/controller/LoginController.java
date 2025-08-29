@@ -7,7 +7,7 @@ import model.dto.Userdto;
 import model.service.AuthenticationService;
 import model.service.implementation.AuthenticationServiceImpl;
 import util.constants.Constants;
-import views.sessionAdmin.DashboardSessionAdmin;
+import views.sessionadmin.DashboardSessionAdmin;
 import views.admin.DashboardAdmin;
 
 public class LoginController {

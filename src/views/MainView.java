@@ -9,16 +9,25 @@ public class MainView {
 		Scanner scanner = new Scanner(System.in);
 		boolean continuer = true;
 
-		System.out.println("=== Application Gestion Utilisateurs ===");
+		System.out.println("=== Application de Gestion D'Evenements ===");
 
 		while (continuer) {
 			System.out.println("\nMenu principal :");
 			System.out.println("1 - Inscription");
 			System.out.println("2 - Connexion");
 			System.out.println("3 - Quitter");
-			System.out.print("Choisissez une option : ");
 
-			int choix = scanner.nextInt();
+			int choix = -1;
+			while (choix == -1) {
+				System.out.print("Choisissez une option : ");
+				String input = scanner.nextLine();
+
+				try {
+					choix = Integer.parseInt(input);
+				} catch (NumberFormatException e) {
+					System.out.println("Veuillez entrer un nombre valide .");
+				}
+			}
 
 			switch (choix) {
 			case 1:

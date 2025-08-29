@@ -36,7 +36,7 @@ public class Constants {
 	public static final String ERROR_DURING_EVENT_DELETION = "Delete operation failed or no row was affected";
 	public static final String EMPTY_EVENT_DTO_DELETE = "Error in Event delete operation: EVENTDTO is null";
 	public static final String ERROR_GET_USER_BY_ID = "Error retrieving the user by ID. Message: {}";
-	public static final String NO_EVENT_FOUND = "Aucun événement trouvé avec l'ID {}";
-	public static final String NO_USER_FOUND = "Aucun utilisateur trouvé avec l'ID {}";
+	public static final String NO_EVENT_FOUND = "No event found with ID {}";
+	public static final String NO_USER_FOUND = "No user found with ID {}";
 
 }
