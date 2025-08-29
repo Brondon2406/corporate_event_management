@@ -38,5 +38,6 @@ public class Constants {
 	public static final String ERROR_GET_USER_BY_ID = "Error retrieving the user by ID. Message: {}";
 	public static final String NO_EVENT_FOUND = "No event found with ID {}";
 	public static final String NO_USER_FOUND = "No user found with ID {}";
+	public static final String ERROR_GET_EVENT_BY_ID = "Error retrieving the user by ID. Message: {}";
 
 }
