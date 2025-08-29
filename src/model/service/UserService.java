@@ -9,7 +9,7 @@ public interface UserService {
 
 	public boolean updateUser(Userdto userDTO);
 
-	public String deleteUser(int userId);
+	public boolean deleteUser(int userId);
 
 	public Userdto getUserById(int userId);
 
