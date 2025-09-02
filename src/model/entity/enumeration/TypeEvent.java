@@ -16,5 +16,5 @@ public enum TypeEvent {
 	public static TypeEvent fromString(String typeEvent) {
 	return typeEvent.isEmpty() ? null : TypeEvent.valueOf(typeEvent);
 	}
-
+	
 }

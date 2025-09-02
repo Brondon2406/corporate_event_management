@@ -30,11 +30,21 @@ public class MappingEventImpl implements MappingEvent {
 			Eventdto eventdto = new Eventdto();
 
 			eventdto.setId(event.getId() <= 0 ? 0 : event.getId());
-			eventdto.setTitle(event.getTitle().isEmpty() ? null : event.getTitle());
+			eventdto.setTitle(event.getTitle() == null || event.getTitle().isEmpty() ? null : event.getTitle());
 			eventdto.setDateDebut(event.getDateDebut() == null ? null : event.getDateDebut());
 			eventdto.setDateFin(event.getDateFin() == null ? null : event.getDateFin());
 			eventdto.setTypeEvent(event.getTypeEvent() == null ? null : event.getTypeEvent().name().toUpperCase());
 			eventdto.setEventRoom(event.getEventRoom() == null ? null : event.getEventRoom());
+			eventdto.setFormat(event.getFormat() == null ? null : event.getFormat().name().toUpperCase());
+			eventdto.setModerator(event.getModerator() == null ? null : event.getModerator());
+			eventdto.setTutor(event.getTutor() == null ? null : event.getTutor());
+			eventdto.setUsers(event.getUsers() == null ? null : event.getUsers());
+			eventdto.setExternalParticipantsEmails(
+					event.getExternalParticipantsEmails() == null ? null : event.getExternalParticipantsEmails()
+
+			);
+
+			return eventdto;
 		} catch (Exception e) {
 			logEvent.setAction("convert Event to Eventdto");
 			logEvent.setDate(LocalDateTime.now());
@@ -42,7 +52,7 @@ public class MappingEventImpl implements MappingEvent {
 			LOG.info(logEvent.toString());
 			return null;
 		}
-		return null;
+
 	}
 
 	@Override
@@ -61,10 +71,7 @@ public class MappingEventImpl implements MappingEvent {
 			event.setTitle(eventdto.getTitle() == null || eventdto.getTitle().isEmpty() ? null : eventdto.getTitle());
 			event.setDateDebut(eventdto.getDateDebut() == null ? null : eventdto.getDateDebut());
 			event.setDateFin(eventdto.getDateFin() == null ? null : eventdto.getDateFin());
-			event.setTypeEvent(
-					eventdto.getTypeEvent().isEmpty() ? null : TypeEvent.fromString(eventdto.getTypeEvent()));
-			// user.setRole(userdto.getRole().isEmpty() ? null :
-			// Role.fromString(userdto.getRole()));
+			event.setTypeEvent(eventdto.getTypeEvent().isEmpty() ? null : TypeEvent.fromString(eventdto.getTypeEvent()));
 		} catch (Exception e) {
 			logEvent.setAction("convert Eventdto to Event");
 			logEvent.setDate(LocalDateTime.now());

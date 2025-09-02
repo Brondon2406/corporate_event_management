@@ -95,9 +95,4 @@ public class Userdto {
 
 	}
 
-	public void setRole(Object role) {
-		// TODO Auto-generated method stub
-
-	}
-
 }
