@@ -11,7 +11,6 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import controller.UserController;
 import model.dto.Userdto;
 import model.database.DatabaseConnection;
 import model.entity.Users;
