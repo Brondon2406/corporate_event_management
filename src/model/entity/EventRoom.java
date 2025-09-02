@@ -5,20 +5,16 @@ public class EventRoom {
 	private int id;
 	private String name;
 	private int capacity;
+	private boolean active;
 
-	public EventRoom(int id, String name, int capacity) {
+	public EventRoom() {
+	}
+
+	public EventRoom(int id, String name, int capacity, boolean active) {
 		this.id = id;
 		this.name = name;
 		this.capacity = capacity;
-	}
-
-	public EventRoom(String name, int capacity) {
-		this.name = name;
-		this.capacity = capacity;
-	}
-
-	public EventRoom() {
-
+		this.active = active;
 	}
 
 	public int getId() {
@@ -43,5 +39,19 @@ public class EventRoom {
 
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	
+	@Override
+	public String toString() {
+		return "EventRoom [id=" + id + ", name=" + name + ", capacity=" + capacity + ", active=" + active + "]";
 	}
 }
