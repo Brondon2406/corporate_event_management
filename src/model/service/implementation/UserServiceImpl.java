@@ -5,10 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import controller.UserController;
 import model.dto.Userdto;
 import model.database.DatabaseConnection;
 import model.entity.Users;
@@ -82,23 +85,24 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean deleteUser(int userId) {
-		 String query = Query.DELETE_USER; 
-	        try (PreparedStatement ps = connection.prepareStatement(query)) {
-	            ps.setInt(1, userId);
-	            int rows = ps.executeUpdate();
+		String query = Query.DELETE_USER;
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+			ps.setInt(1, userId);
+			int rows = ps.executeUpdate();
 
-	            if (rows > 0) {
-	                LOG.info("Utilisateur avec ID {} supprimé avec succès", userId);
-	                return true;
-	            } else {
-	                LOG.warn(Constants.NO_USER_FOUND, userId);
-	                return false;
-	            }
-	        } catch (SQLException e) {
-	            LOG.error(Constants.ERROR_DELETE_USER, userId, e);
-	            return false;
-	        }
+			if (rows > 0) {
+				LOG.info("Utilisateur avec ID {} supprimé avec succès", userId);
+				return true;
+			} else {
+				LOG.warn(Constants.NO_USER_FOUND, userId);
+				return false;
+			}
+		} catch (SQLException e) {
+			LOG.error(Constants.ERROR_DELETE_USER, userId, e);
+			return false;
+		}
 	}
+
 	@Override
 	public Userdto getUserById(int userId) {
 		String query = Query.SELECT_USER_BY_ID;
@@ -122,6 +126,30 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return user;
+	}
+
+	@Override
+	public List<Userdto> getAllUsers() {
+	    List<Userdto> users = new ArrayList<>();
+	    String query = "SELECT id, name, email, role FROM users";
+
+	    try (Connection con = DatabaseConnection.getInstance();
+	         PreparedStatement ps = con.prepareStatement(query);
+	         ResultSet rs = ps.executeQuery()) {
+
+	        while (rs.next()) {
+	            Userdto user = new Userdto();
+	            user.setId(rs.getInt("id"));
+	            user.setName(rs.getString("name"));
+	            user.setEmail(rs.getString("email"));
+	            user.setRole(rs.getString("role"));
+	            users.add(user);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return users;
 	}
 
 }
