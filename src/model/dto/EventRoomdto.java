@@ -5,18 +5,16 @@ public class EventRoomdto {
 	private int id;
 	private String name;
 	private int capacity;
+	private boolean active;
 
-	public EventRoomdto(int capacity, String name) {
-		super();
-		this.name = name;
-		this.capacity = capacity;
+	public EventRoomdto() {
 	}
 
-	public EventRoomdto(int id, String name, int capacity) {
-		super();
+	public EventRoomdto(int id, String name, int capacity, boolean active) {
 		this.id = id;
 		this.name = name;
 		this.capacity = capacity;
+		this.active = active;
 	}
 
 	public int getId() {
@@ -41,5 +39,18 @@ public class EventRoomdto {
 
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	@Override
+	public String toString() {
+		return "EventRoomdto [id=" + id + ", name=" + name + ", capacity=" + capacity + ", active=" + active + "]";
 	}
 }
