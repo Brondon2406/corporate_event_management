@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,7 +15,7 @@ import util.constants.Constants;
 
 public class UserController {
 	private static final Logger LOG = LogManager.getLogger(UserController.class);
-	private UserService userService = new UserServiceImpl();
+	private static UserService userService = new UserServiceImpl();
 	private MappingUser mapper = new MappingUserImpl();
 
 	public boolean userCreateController(Userdto userdto) {
@@ -56,4 +58,7 @@ public class UserController {
 		return userService.getUserById(id);
 	}
 
+	public static List<Userdto> getAllUsers() {
+		return userService.getAllUsers();
+	}
 }
