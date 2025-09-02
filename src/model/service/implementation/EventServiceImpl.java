@@ -25,8 +25,7 @@ public class EventServiceImpl implements EventService {
 	public Eventdto createEvent(Eventdto event) {
 		String query = Query.CREATE_EVENT;
 
-		try (Connection connection = DatabaseConnection.getConnection();
-				PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+		try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
 			ps.setString(1, event.getTitle());
 			ps.setObject(2, event.getDateDebut());

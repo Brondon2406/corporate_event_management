@@ -35,9 +35,17 @@ public class DashboardAdmin {
 
 			System.out.println("\n14 - Se deconnecter");
 
-			System.out.print("Choisissez une option : ");
-			int choix = scanner.nextInt();
-			scanner.nextLine();
+			int choix = -1;
+			while (choix == -1) {
+			    System.out.print("Choisissez une option : ");
+			    String input = scanner.nextLine();
+
+			    try {
+			        choix = Integer.parseInt(input);
+			    } catch (NumberFormatException e) {
+			        System.out.println("Veuillez entrer un nombre valide .");
+			    }
+			}
 
 			switch (choix) {
 			case 1:
