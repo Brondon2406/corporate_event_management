@@ -95,4 +95,9 @@ public class Userdto {
 
 	}
 
+	public static Object stream() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

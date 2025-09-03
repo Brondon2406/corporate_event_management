@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import model.dto.Eventdto;
-import model.entity.EventRoom;
+
 import model.service.EventService;
 import model.service.implementation.EventServiceImpl;
 import util.constants.Constants;
@@ -17,13 +17,14 @@ public class EventController {
 	private EventService eventService = new EventServiceImpl();
 
 
-	public boolean EventCreatController(Eventdto eventdto) {
-		if (eventdto == null) {
-			LOG.error(Constants.EMPTY_EVENT_DTO);
-			return false;
-		}
 
-		Eventdto dto = eventService.createEvent(eventdto);
+	public boolean createEvent(Eventdto event) {	
+		if (event.getEventRoom() == null) {
+			LOG.error(Constants.EMPTY_EVENT_DTO);
+			return eventService.createEvent(event) != null;
+		}
+	   
+			Eventdto dto = eventService.createEvent(event);
 
 		if (dto != null) {
 			LOG.info("Événement créé avec succès !");
@@ -33,12 +34,13 @@ public class EventController {
 			return false;
 		}
 	}
+		
 
-	public boolean updateEventController(Eventdto eventDTO,  String newtitle, LocalDateTime newdateDebut, LocalDateTime newdateFin, EventRoom neweventRoom) {
+	public boolean updateEventController(Eventdto eventDTO,  String newtitle, LocalDateTime newdateDebut, LocalDateTime newdateFin, String newTypeEvent) {
 		eventDTO.setTitle(newtitle);
 		eventDTO.setDateDebut(newdateDebut);
 		eventDTO.setDateFin(newdateFin);
-		eventDTO.setEventRoom(neweventRoom);		
+		eventDTO.setTypeEvent(newTypeEvent);		
 		
 		
 		boolean success = eventService.updateEvent(eventDTO);
@@ -64,4 +66,10 @@ public class EventController {
 	public List<Eventdto> getAllEvents() {
 		return eventService.getAllEvents();
 	}
+	
+	public boolean createEventWithUsers(Eventdto event, List<Integer> participantIds) {
+	    return eventService.createEventWithUsers(event, participantIds);
+	}
+
+
 }

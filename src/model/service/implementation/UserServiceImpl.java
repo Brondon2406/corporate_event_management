@@ -27,8 +27,8 @@ public class UserServiceImpl implements UserService {
 	public Userdto createUser(Users user) {
 		String query = Query.CREATE_USER;
 
-		try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-
+		try  {
+			PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, user.getName());
 			ps.setString(2, user.getEmail());
 			ps.setString(3, user.getPassword());
@@ -66,7 +66,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean updateUser(Userdto userDTO) {
 		String query = Query.UPDATE_USER;
-		try (PreparedStatement ps = connection.prepareStatement(query)) {
+		try {
+			PreparedStatement ps = connection.prepareStatement(query);
 
 			ps.setString(1, userDTO.getName());
 			ps.setString(2, userDTO.getEmail());
@@ -85,7 +86,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean deleteUser(int userId) {
 		String query = Query.DELETE_USER;
-		try (PreparedStatement ps = connection.prepareStatement(query)) {
+		try {
+			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setInt(1, userId);
 			int rows = ps.executeUpdate();
 
@@ -107,7 +109,8 @@ public class UserServiceImpl implements UserService {
 		String query = Query.SELECT_USER_BY_ID;
 		Userdto user = null;
 
-		try (PreparedStatement ps = connection.prepareStatement(query)) {
+		try  {
+			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setInt(1, userId);
 
 			try (ResultSet rs = ps.executeQuery()) {
@@ -130,11 +133,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<Userdto> getAllUsers() {
 	    List<Userdto> users = new ArrayList<>();
-	    String query = "SELECT id, name, email, role FROM users";
+	    String query = Query.GET_ALL_USERS;
 
-	    try (Connection con = DatabaseConnection.getInstance();
-	         PreparedStatement ps = con.prepareStatement(query);
-	         ResultSet rs = ps.executeQuery()) {
+	    try {
+	    	PreparedStatement ps = connection.prepareStatement(query);
+	    	 ResultSet rs = ps.executeQuery();
 
 	        while (rs.next()) {
 	            Userdto user = new Userdto();

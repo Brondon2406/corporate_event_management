@@ -16,4 +16,8 @@ public interface EventService {
 
 	public List<Eventdto> getAllEvents();
 
+	boolean createEventWithUsers(Eventdto event, List<Integer> participantIds);
+
+	boolean linkUsersToEvent(int eventId, List<Integer> userIds);
+
 }

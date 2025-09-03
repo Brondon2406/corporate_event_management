@@ -1,12 +1,16 @@
 package model.mapping.MappingServiceImpl;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import model.dto.Eventdto;
+
 import model.entity.Event;
+
 import model.entity.LogEvent;
 import model.entity.enumeration.TypeEvent;
 import model.mapping.MappingService.MappingEvent;
@@ -27,32 +31,25 @@ public class MappingEventImpl implements MappingEvent {
 		}
 
 		try {
-			Eventdto eventdto = new Eventdto();
-
-			eventdto.setId(event.getId() <= 0 ? 0 : event.getId());
-			eventdto.setTitle(event.getTitle() == null || event.getTitle().isEmpty() ? null : event.getTitle());
-			eventdto.setDateDebut(event.getDateDebut() == null ? null : event.getDateDebut());
-			eventdto.setDateFin(event.getDateFin() == null ? null : event.getDateFin());
-			eventdto.setTypeEvent(event.getTypeEvent() == null ? null : event.getTypeEvent().name().toUpperCase());
-			eventdto.setEventRoom(event.getEventRoom() == null ? null : event.getEventRoom());
-			eventdto.setFormat(event.getFormat() == null ? null : event.getFormat().name().toUpperCase());
-			eventdto.setModerator(event.getModerator() == null ? null : event.getModerator());
-			eventdto.setTutor(event.getTutor() == null ? null : event.getTutor());
-			eventdto.setUsers(event.getUsers() == null ? null : event.getUsers());
-			eventdto.setExternalParticipantsEmails(
-					event.getExternalParticipantsEmails() == null ? null : event.getExternalParticipantsEmails()
-
-			);
+			Eventdto eventdto = new Eventdto(event.getId() > 0 ? event.getId() : 0,
+					(event.getTitle() != null && !event.getTitle().isEmpty()) ? event.getTitle() : null,
+					event.getDateDebut(), event.getDateFin(),
+					(event.getTypeEvent() != null) ? event.getTypeEvent().name() : null, event.getEventRoom(),
+					(event.getFormat() != null) ? event.getFormat().name() : null, event.getModerator(), // déjà String
+					event.getTutor(),
+					(event.getExternalParticipantsEmails() != null) ? event.getExternalParticipantsEmails()
+							: new ArrayList<>(),
+					(event.getUsers() != null) ? event.getUsers() : new ArrayList<>(), 0);
 
 			return eventdto;
+
 		} catch (Exception e) {
 			logEvent.setAction("convert Event to Eventdto");
 			logEvent.setDate(LocalDateTime.now());
 			logEvent.setDescription(String.format(Constants.MAPPING_EVENT_DTO_ERROR, event.toString(), e.getMessage()));
-			LOG.info(logEvent.toString());
+			LOG.error(logEvent.toString(), e);
 			return null;
 		}
-
 	}
 
 	@Override
@@ -71,7 +68,8 @@ public class MappingEventImpl implements MappingEvent {
 			event.setTitle(eventdto.getTitle() == null || eventdto.getTitle().isEmpty() ? null : eventdto.getTitle());
 			event.setDateDebut(eventdto.getDateDebut() == null ? null : eventdto.getDateDebut());
 			event.setDateFin(eventdto.getDateFin() == null ? null : eventdto.getDateFin());
-			event.setTypeEvent(eventdto.getTypeEvent().isEmpty() ? null : TypeEvent.fromString(eventdto.getTypeEvent()));
+			event.setTypeEvent(
+					eventdto.getTypeEvent().isEmpty() ? null : TypeEvent.fromString(eventdto.getTypeEvent()));
 		} catch (Exception e) {
 			logEvent.setAction("convert Eventdto to Event");
 			logEvent.setDate(LocalDateTime.now());

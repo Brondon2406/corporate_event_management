@@ -46,236 +46,283 @@ public class SessionAdminView {
 		UserController.updateUserController(userDTO, newName, newEmail, newPassword);
 	}
 
-	public void registEvent() {
-		System.out.println("========== CREATION D'EVENEMENT ==========");
+		public void registEvent() {
+		    System.out.println("========== CREATION D'EVENEMENT ==========");
 
-		String title;
-		do {
-			System.out.print("Entrez le nom : ");
-			title = scanner.nextLine().trim();
-			if (!checkTitle(title)) {
-				System.out.println("Title invalide ! (pas de chiffres ni de symboles)");
-			}
-		} while (!checkTitle(title));
+		    
+		    String title;
+		    do {
+		        System.out.print("Entrez le nom : ");
+		        title = scanner.nextLine().trim();
+		        if (!checkTitle(title)) {
+		            System.out.println("Titre invalide ! (pas de chiffres ni de symboles)");
+		        }
+		    } while (!checkTitle(title));
 
-		LocalDateTime dateDebut = null;
-		while (dateDebut == null) {
-			System.out.print("Date de début (yyyy-MM-dd HH:mm) : ");
-			String inputDebut = scanner.nextLine();
-			try {
-				dateDebut = LocalDateTime.parse(inputDebut, formatter);
-			} catch (DateTimeParseException e) {
-				System.out.println("Format invalide ! Exemple attendu : 2025-01-01 07:30");
-			}
+		   
+		    LocalDateTime maintenant = LocalDateTime.now();
+		    LocalDateTime limite = maintenant.plusWeeks(2);
+
+		    LocalDateTime dateDebut = null;
+		    while (dateDebut == null) {
+		        System.out.print("Date de début (yyyy-MM-dd HH:mm) : ");
+		        String inputDebut = scanner.nextLine();
+		        try {
+		            dateDebut = LocalDateTime.parse(inputDebut, formatter);
+		            if (dateDebut.isBefore(limite)) {
+		                System.out.println("La date de début doit être au moins deux semaines après aujourd'hui !");
+		                dateDebut = null;
+		            }
+		        } catch (DateTimeParseException e) {
+		            System.out.println("Format invalide ! Exemple attendu : 2025-01-01 07:30");
+		        }
+		    }
+
+		    LocalDateTime dateFin = null;
+		    while (dateFin == null || dateFin.isBefore(dateDebut)) {
+		        System.out.print("Date de fin (yyyy-MM-dd HH:mm) : ");
+		        String inputFin = scanner.nextLine();
+		        try {
+		            dateFin = LocalDateTime.parse(inputFin, formatter);
+		            if (dateFin.isBefore(dateDebut)) {
+		                System.out.println("La date de fin doit être après la date de début !");
+		            }
+		        } catch (DateTimeParseException e) {
+		            System.out.println("Format invalide ! Exemple attendu : 2025-01-01 07:30");
+		        }
+		    }
+
+
+		    List<String> typeEvents = TypeEvent.getAllTypeEvent();
+		    System.out.println("Liste des Types d'événement : ");
+		    for (int i = 0; i < typeEvents.size(); i++) {
+		        System.out.println((i + 1) + "- " + typeEvents.get(i));
+		    }
+		    int typeEventIndex = -1;
+		    String typeEvent = null;
+		    while (true) {
+		        System.out.print("Choisissez un Type d'événement (numéro): ");
+		        if (scanner.hasNextInt()) {
+		            typeEventIndex = scanner.nextInt();
+		            scanner.nextLine();
+		            if (typeEventIndex >= 1 && typeEventIndex <= typeEvents.size()) {
+		                typeEvent = typeEvents.get(typeEventIndex - 1);
+		                break;
+		            } else {
+		                System.out.println("Numéro invalide. Veuillez entrer un nombre entre 1 et " + typeEvents.size() + ".");
+		            }
+		        } else {
+		            System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+		            scanner.next();
+		        }
+		    }
+
+		    EventRoomController roomController = new EventRoomController();
+		    List<EventRoom> salles = roomController.getAllActiveRooms();
+		    EventRoom eventroom = null;
+		    while (eventroom == null) {
+		        System.out.println("Liste des salles disponibles :");
+		        for (EventRoom r : salles) {
+		            System.out.println(r.getId() + " - " + r.getName());
+		        }
+
+		        System.out.print("ID de la salle : ");
+		        try {
+		            int id = Integer.parseInt(scanner.nextLine());
+		            eventroom = roomController.findRoomById(id);
+		            if (eventroom == null) {
+		                System.out.println("Salle invalide ! Veuillez réessayer.");
+		            }
+		        } catch (NumberFormatException e) {
+		            System.out.println("Entrée invalide ! Veuillez entrer un nombre.");
+		        }
+		    }
+
+		    List<String> formatList = Format.getAllFormat();
+		    System.out.println("Liste des Formats d'événement : ");
+		    for (int i = 0; i < formatList.size(); i++) {
+		        System.out.println((i + 1) + "- " + formatList.get(i));
+		    }
+		    int formatIndex = -1;
+		    String format = null;
+		    while (true) {
+		        System.out.print("Choisissez un format d'événement (numéro): ");
+		        if (scanner.hasNextInt()) {
+		            formatIndex = scanner.nextInt();
+		            scanner.nextLine();
+		            if (formatIndex >= 1 && formatIndex <= formatList.size()) {
+		            	format = formatList.get(formatIndex - 1);
+		                break;
+		            } else {
+		                System.out.println("Numéro invalide. Veuillez entrer un nombre entre 1 et " + formatList.size() + ".");
+		            }
+		        } else {
+		            System.out.println("Entrée invalide. Veuillez entrer un nombre.");
+		            scanner.next();
+		        }
+		    }
+
+		    System.out.println("===== Choisir le Tuteur =====");
+		    List<Userdto> allUsers = UserController.getAllUsers();
+		    for (int i = 0; i < allUsers.size(); i++) {
+		        System.out.println((i + 1) + " - " + allUsers.get(i).getName() + " (" + allUsers.get(i).getEmail() + ")");
+		    }
+		    System.out.print("Numéro du tuteur : ");
+		    int tutorIndex = Integer.parseInt(scanner.nextLine());
+		    Userdto tutor = allUsers.get(tutorIndex - 1);
+		    String tutors = tutor.getName();
+
+		    System.out.println("===== Choisir le Modérateur =====");
+		    for (int i = 0; i < allUsers.size(); i++) {
+		        System.out.println((i + 1) + " - " + allUsers.get(i).getName() + " (" + allUsers.get(i).getEmail() + ")");
+		    }
+		    System.out.print("Numéro du modérateur : ");
+		    int moderatorIndex = Integer.parseInt(scanner.nextLine());
+		    Userdto moderator = allUsers.get(moderatorIndex - 1);
+		    String moderators = tutor.getName();
+		    
+		    System.out.print("ID du planning (ou 0 si aucun) : ");
+		    int idPlanning = 0;
+		    try {
+		        idPlanning = Integer.parseInt(scanner.nextLine().trim());
+		    } catch (NumberFormatException e) {
+		        System.out.println("ID invalide. La valeur 0 sera utilisée.");
+		    }
+
+
+		    System.out.println("=== Liste des participants disponibles ===");
+		    for (Userdto user : allUsers) {
+		        System.out.println(user.getId() + " - " + user.getEmail());
+		    }
+
+		    System.out.print("Entrez les ID des participants séparés par des virgules (ex: 1,3,5) : ");
+		    String input = scanner.nextLine().trim();
+		    List<Integer> participantIds = new ArrayList<>();
+
+		    if (!input.isEmpty()) {
+		        String[] parts = input.split(",");
+		        for (String part : parts) {
+		            try {
+		                int id = Integer.parseInt(part.trim());
+		                participantIds.add(id);
+		            } catch (NumberFormatException e) {
+		                System.out.println("ID invalide ignoré : " + part);
+		            }
+		        }
+		    }
+		    
+		    List<String> externalParticipants = new ArrayList<>();
+		    boolean addExt = true;
+		    while (addExt) {
+		        System.out.print("Entrer email d’un participant externe (vide pour arrêter) : ");
+		        String email = scanner.nextLine().trim();
+		        if (email.isEmpty()) {
+		            addExt = false;
+		        } else {
+		            externalParticipants.add(email);
+		        }
+		    }
+
+
+		    Eventdto event = new Eventdto(
+		        0,
+		        title,
+		        dateDebut,
+		        dateFin,
+		        typeEvent,
+		        eventroom,
+		       format,
+		        moderator.getEmail(), 
+		        tutor.getEmail(), 
+		        idPlanning,
+		        externalParticipants,
+		         allUsers
+		    );
+		    event.setTitle(title);
+		    event.setDateDebut(dateDebut);
+		    event.setDateFin(dateFin);
+		    event.setTypeEvent(typeEvent);
+		    event.setEventRoom(eventroom);
+		    event.setFormat(format);
+		    event.setModerator(moderators);
+		    event.setTutor(tutors);
+		    event.setIdPlanning(idPlanning);
+		    event.setUsers(allUsers);
+		    event.setExternalParticipantsEmails(externalParticipants);
+
+		    boolean success = eventController.createEvent(event);
+
+		    if (success) {
+		        System.out.println("Événement créé avec succès !");
+		    } else {
+		        System.out.println("Erreur lors de la création de l'événement.");
+		    }
 		}
 
-		LocalDateTime dateFin = null;
-		while (dateFin == null || dateFin.isBefore(dateDebut)) {
-			System.out.print("Date de fin (yyyy-MM-dd HH:mm) : ");
-			String inputFin = scanner.nextLine();
-			try {
-				dateFin = LocalDateTime.parse(inputFin, formatter);
-				if (dateFin.isBefore(dateDebut)) {
-					System.out.println(" La date de fin doit être après la date de début !");
-				}
-			} catch (DateTimeParseException e) {
-				System.out.println("Format invalide ! Exemple attendu : 2025-01-01 07:30");
-			}
+		private boolean checkTitle(String title) {
+		    if (title == null || title.trim().isEmpty())
+		        return false;
+		    return title.matches("^[A-Za-zÀ-ÖØ-öø-ÿ ]+$");
 		}
 
-		if (dateFin.isBefore(dateDebut)) {
-			LOG.error("La date de fin doit être après la date de début !");
-			return;
-		}
-
-		List<String> typeEvents = TypeEvent.getAllTypeEvent();
-		System.out.println("Liste des Types d'événement : ");
-		for (int i = 0; i < typeEvents.size(); i++) {
-			System.out.println((i + 1) + "- " + typeEvents.get(i));
-		}
-
-		int typeEventIndex = -1;
-		String typeEvent = null;
-
-		while (true) {
-			System.out.print("Choisissez un Type d'événement (numéro): ");
-			if (scanner.hasNextInt()) {
-				typeEventIndex = scanner.nextInt();
-				scanner.nextLine();
-				if (typeEventIndex >= 1 && typeEventIndex <= typeEvents.size()) {
-					typeEvent = typeEvents.get(typeEventIndex - 1);
-					break;
-				} else {
-					LOG.error("Numéro invalide. Veuillez entrer un nombre entre 1 et " + typeEvents.size() + ".");
-				}
-			} else {
-				LOG.info("Entrée invalide. Veuillez entrer un nombre.");
-				scanner.next();
-			}
-		}
-
-		EventRoom eventroom = null;
-		while (eventroom == null) {
-			System.out.println("Liste des salles disponibles :");
-			EventRoomController roomController = new EventRoomController();
-			List<EventRoom> salles = roomController.getAllActiveRooms();
-
-			for (EventRoom r : salles) {
-				System.out.println(r.getId() + " - " + r.getName());
-			}
-
-			System.out.print("ID de la salle : ");
-			int id = Integer.parseInt(scanner.nextLine());
-
-			eventroom = roomController.findRoomById(id);
-			if (eventroom == null) {
-				LOG.info("Salle invalide !");
-			}
-		}
-		
-		List<String> format = Format.getAllFormat();
-		System.out.println("Liste des Formats d'événement : ");
-		for (int i = 0; i < format.size(); i++) {
-			System.out.println((i + 1) + "- " + format.get(i));
-		}
-		int formatIndex = -1;
-		while (true) {
-			System.out.print("Choisissez un format d'événement (numéro): ");
-			if (scanner.hasNextInt()) {
-				formatIndex = scanner.nextInt();
-				scanner.nextLine();
-				if (formatIndex >= 1 && formatIndex <= format.size()) {
-					break;
-				} else {
-					LOG.error("Numéro invalide. Veuillez entrer un nombre entre 1 et " + typeEvents.size() + ".");
-				}
-			} else {
-				LOG.info("Entrée invalide. Veuillez entrer un nombre.");
-				scanner.next();
-			}
-		}
-
-		System.out.println("===== Choisir le Tuteur =====");
-		List<Userdto> allUsers = UserController.getAllUsers();
-		for (int i = 0; i < allUsers.size(); i++) {
-			System.out.println((i + 1) + " - " + allUsers.get(i).getName() + " (" + allUsers.get(i).getEmail() + ")");
-		}
-		System.out.print("Numéro du tuteur : ");
-		int tutorIndex = Integer.parseInt(scanner.nextLine());
-		Userdto tutor = allUsers.get(tutorIndex - 1);
-
-		System.out.println("===== Choisir le Modérateur =====");
-		for (int i = 0; i < allUsers.size(); i++) {
-			System.out.println((i + 1) + " - " + allUsers.get(i).getName() + " (" + allUsers.get(i).getEmail() + ")");
-		}
-		System.out.print("Numéro du modérateur : ");
-		int moderatorIndex = Integer.parseInt(scanner.nextLine());
-		Userdto moderator = allUsers.get(moderatorIndex - 1);
-
-		List<Userdto> users = new ArrayList<>();
-		boolean addMore = true;
-
-		while (addMore) {
-			System.out.println("Ajouter des participants internes (ex: 1,3,5) ou 0 pour arrêter : ");
-
-			for (int i = 0; i < allUsers.size(); i++) {
-				System.out
-						.println((i + 1) + " - " + allUsers.get(i).getName() + " (" + allUsers.get(i).getEmail() + ")");
-			}
-
-			String input = scanner.nextLine().trim();
-
-			if (input.equals("0")) {
-				addMore = false;
-			} else {
-
-				String[] parts = input.split(",");
-				for (String part : parts) {
-					try {
-						int choice = Integer.parseInt(part.trim());
-						if (choice > 0 && choice <= allUsers.size()) {
-							users.add(allUsers.get(choice - 1));
-						} else {
-							System.out.println("Numéro invalide : " + choice);
-						}
-					} catch (NumberFormatException e) {
-						System.out.println(" Entrée invalide : " + part);
-					}
-				}
-			}
-		}
-
-		List<String> externalParticipants = new ArrayList<>();
-		boolean addExt = true;
-		while (addExt) {
-			System.out.print("Entrer email d’un participant externe (vide pour arrêter) : ");
-			String email = scanner.nextLine().trim();
-			if (email.isEmpty()) {
-				addExt = false;
-			} else {
-				externalParticipants.add(email);
-			}
-		}
-
-		Eventdto event = new Eventdto(title, dateDebut, dateFin, typeEvent, eventroom, users, moderator,tutor);
-
-		boolean success = eventController.EventCreatController(event);
-
-		if (success) {
-			LOG.info("Événement créé avec succès !");
-		} else {
-			LOG.error("Erreur lors de la création de l'événement.");
-		}
-	}
-
-	private boolean checkTitle(String title) {
-		if (title == null || title.trim().isEmpty())
-			return false;
-		return title.matches("^[A-Za-zÀ-ÖØ-öø-ÿ ]+$");
-	}
 
 	public void updateEvent() {
-		System.out.print("ID de l'événement à modifier : ");
-		int id = Integer.parseInt(scanner.nextLine());
+	    System.out.print("ID de l'événement à modifier : ");
+	    int id = Integer.parseInt(scanner.nextLine());
 
-		System.out.print("Nouveau titre : ");
-		String newtitle = scanner.nextLine();
+	    System.out.print("Nouveau titre : ");
+	    String newTitle = scanner.nextLine();
 
-		System.out.print("Nouvelle date début (yyyy-MM-dd HH:mm) : ");
-		LocalDateTime newdateDebut = LocalDateTime.parse(scanner.nextLine(), formatter);
+	    System.out.print("Nouvelle date début (yyyy-MM-dd HH:mm) : ");
+	    LocalDateTime newDateDebut = LocalDateTime.parse(scanner.nextLine(), formatter);
 
-		System.out.print("Nouvelle date fin (yyyy-MM-dd HH:mm) : ");
-		LocalDateTime newdateFin = LocalDateTime.parse(scanner.nextLine(), formatter);
+	    System.out.print("Nouvelle date fin (yyyy-MM-dd HH:mm) : ");
+	    LocalDateTime newDateFin = LocalDateTime.parse(scanner.nextLine(), formatter);
 
-		System.out.print("Nouveau type : ");
-		String newtypeEvent = scanner.nextLine();
+	    System.out.print("Nouveau type : ");
+	    String newTypeEvent = scanner.nextLine();
 
-		System.out.print("Nouvel ID de salle : ");
-		int roomId = Integer.parseInt(scanner.nextLine());
+	    System.out.print("Nouvel ID de salle : ");
+	    int roomId = Integer.parseInt(scanner.nextLine());
 
-		System.out.print("Nouveau nom de salle : ");
-		String roomName = scanner.nextLine();
+	    System.out.print("Nouveau nom de salle : ");
+	    String roomName = scanner.nextLine();
 
-		List<Userdto> participants = new ArrayList<>();
-		boolean addMore = true;
+	
+	    EventRoom room = new EventRoom();
+	    room.setId(roomId);
+	    room.setName(roomName);
 
-		while (addMore) {
-			System.out.print("Ajouter l'email d'un participant (ou vide pour arrêter) : ");
-			String email = scanner.nextLine();
+	
+	    List<Userdto> users = new ArrayList<>();
+	    while (true) {
+	        System.out.print("Ajouter l'email d'un participant (ou vide pour arrêter) : ");
+	        String email = scanner.nextLine();
 
-			if (email.isEmpty()) {
-				addMore = false;
-			} else {
-				Userdto user = new Userdto();
-				user.setEmail(email);
-				participants.add(user);
-			}
-		}
+	        if (email.isEmpty()) {
+	            break;
+	        } else {
+	            Userdto user = new Userdto();
+	            user.setEmail(email);
+	            users.add(user);
+	        }
+	    }
 
-		Eventdto eventDTO = new Eventdto(id, newtitle, newdateDebut, newdateFin, newtypeEvent, roomName, roomName, roomName, null);
-		boolean success = eventController.updateEventController(eventDTO, newtitle, newdateDebut, newdateFin, null);
+	  
+	    Eventdto eventDTO = new Eventdto(id, newTitle, newDateDebut, newDateFin,
+	                                     newTypeEvent, room, null, null, null, null, users, roomId);
+	    eventDTO.setUsers(users);
 
+	 
+	    boolean success = eventController.updateEventController(eventDTO, newTitle, newDateDebut, newDateFin, newTypeEvent);
+
+	    if (success) {
+	        System.out.println("Événement mis à jour avec succès !");
+	    } else {
+	        System.out.println("Échec de la mise à jour de l'événement.");
+	    }
 	}
+
 
 	public void deleteEvent() {
 		System.out.print("ID de l'événement à supprimer : ");

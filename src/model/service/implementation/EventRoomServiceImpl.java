@@ -17,17 +17,40 @@ import model.service.sql.Query;
 import util.constants.Constants;
 
 public class EventRoomServiceImpl implements EventRoomService {
-    
+
     private static final Logger LOG = LogManager.getLogger(EventRoomServiceImpl.class);
-    Connection connection = DatabaseConnection.getInstance();
+    private final Connection connection = DatabaseConnection.getInstance();
+
+    @Override
+    public EventRoom findByRoomById(int id) {
+        String query = Query.SELECT_EVENTROOM_BY_ID;
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    EventRoom room = new EventRoom();
+                    room.setId(rs.getInt("id"));
+                    room.setName(rs.getString("name"));
+                    room.setCapacity(rs.getInt("capacity"));
+                    room.setActive(rs.getBoolean("active"));
+                    return room; 
+                }
+            }
+        } catch (SQLException e) {
+            LOG.error(Constants.NO_ROOM_FOUND + " " + e.getMessage(), e);
+        }
+
+        return null; // si salle non trouvée
+    }
 
     @Override
     public EventRoom findByIdAndName(int id, String name) {
         String query = Query.SELECT_EVENTROOM_BY_ID_AND_NAME;
+
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-            
             ps.setInt(1, id);
-            ps.setString(2, name);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -40,8 +63,9 @@ public class EventRoomServiceImpl implements EventRoomService {
                 }
             }
         } catch (SQLException e) {
-            LOG.error(Constants.DATABASE_CONNECTION_ERROR  + e.getMessage(), e);
+            LOG.error("Erreur SQL lors de la récupération de la salle", e);
         }
+
         return null;
     }
 
@@ -65,29 +89,7 @@ public class EventRoomServiceImpl implements EventRoomService {
         } catch (SQLException e) {
             LOG.error(Constants.NO_ACTIVE_ROOMS + " " + e.getMessage(), e);
         }
+
         return rooms;
-    }
-
-    @Override
-    public EventRoom findByRoomById(int id) {
-        String query = Query.SELECT_EVENTROOM_BY_ID;
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setInt(1, id);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    EventRoom room = new EventRoom();
-                    room.setId(rs.getInt("id"));
-                    room.setName(rs.getString("name"));
-                    room.setCapacity(rs.getInt("capacity"));
-                    room.setActive(rs.getBoolean("active"));
-                    return room;
-                }
-            }
-        } catch (SQLException e) {
-            LOG.error(Constants.NO_ROOM_FOUND + " " + e.getMessage(), e);
-        }
-        return null;
     }
 }

@@ -85,4 +85,9 @@ public class Users {
 				+ ", fonction=" + fonction + "]";
 	}
 
+	public static Object stream() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -63,7 +63,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	@Override
 	public Userdto loginUser(String email, String password) {
-		String query = Query.GET_USER;
+		String query = Query.GET_USER; 
 
 		Userdto userDTO = null;
 
