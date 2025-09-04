@@ -1,5 +1,7 @@
 package util.constants;
 
+import org.apache.logging.log4j.message.Message;
+
 public class Constants {
 
 	public static final String USER_DTO_IS_EMPTY = "User dto submited is empty.";
@@ -49,5 +51,7 @@ public class Constants {
 	public static final String ERROR_UPDATE_PLANNING = "Error during operation to update Planning";
 	public static final String ERROR_CREATE_PLANNING = "Error during operation to create Planning";
 	public static final String ERROR_DURING_PLANNING_INSERTION = "Insertion operation returned no result or affected 0 rows";
+	public static final String EMPTY_PLANNING_DTO = "Error in planning controller: PlanningDTO is null";
+
 
 }

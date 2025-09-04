@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import model.database.DatabaseConnection;
 import model.dto.Planningdto;
+import model.entity.Planning;
 import model.service.PlanningService;
 import model.service.sql.Query;
 import util.constants.Constants;
@@ -20,7 +21,7 @@ public class PlanningServiceImpl implements PlanningService {
 	Connection connection = DatabaseConnection.getInstance();
 
 	@Override
-	public Planningdto createPlanning(Planningdto planning) {
+	public Planningdto createPlanning(Planning planning) {
 		String query = Query.CREATE_PLANNING;
 
 		try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {

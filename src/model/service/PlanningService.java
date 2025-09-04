@@ -1,10 +1,11 @@
 package model.service;
 
 import model.dto.Planningdto;
+import model.entity.Planning;
 
 public interface PlanningService {
 	
-	public Planningdto createPlanning(Planningdto planning);
+	public Planningdto createPlanning(Planning planning);
 
 	public boolean updatePlanning(Planningdto planning);
 

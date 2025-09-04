@@ -29,7 +29,7 @@ public class UserController {
 		Userdto dto = userService.createUser(user);
 
 		if (dto != null) {
-			LOG.info("Événement créé avec succès !");
+			LOG.info("utilisateur créé avec succès !");
 			return true;
 		} else {
 			LOG.error(Constants.ERROR_DURING_USER_INSERTION);
