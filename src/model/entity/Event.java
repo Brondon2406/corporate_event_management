@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import model.entity.enumeration.TypeEvent;
+import model.dto.EventRoomdto;
 import model.dto.Userdto;
 import model.entity.enumeration.Format;
 
@@ -14,7 +15,7 @@ public class Event {
 	private LocalDateTime dateDebut;
 	private LocalDateTime dateFin;
 	private TypeEvent typeEvent;
-	private EventRoom eventRoom;
+	private EventRoomdto eventRoom;
 	private Format format;
 	private String moderator;
 	private String tutor;
@@ -22,7 +23,7 @@ public class Event {
 	private List<String> externalParticipantsEmails;
 
 	public Event(int id, String title, LocalDateTime dateDebut, LocalDateTime dateFin, TypeEvent typeEvent,
-			EventRoom eventRoom, Format format,List<String> externalParticipantsEmails, String moderator, String tutor, List<Userdto> users) {
+			EventRoomdto eventRoom, Format format,List<String> externalParticipantsEmails, String moderator, String tutor, List<Userdto> users) {
 		this.id = id;
 		this.title = title;
 		this.dateDebut = dateDebut;
@@ -37,7 +38,7 @@ public class Event {
 	}
 
 	public Event(String title, LocalDateTime dateDebut, LocalDateTime dateFin, TypeEvent typeEvent,
-			EventRoom eventRoom, Format format, String moderator, String tutor, List<Userdto> users, List<String> externalParticipantsEmails) {
+			EventRoomdto eventRoom, Format format, String moderator, String tutor, List<Userdto> users, List<String> externalParticipantsEmails) {
 		this.title = title;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
@@ -51,7 +52,7 @@ public class Event {
 	}
 
 	
-	public Event(String title, LocalDateTime dateDebut, LocalDateTime dateFin, TypeEvent typeEvent, EventRoom eventRoom,
+	public Event(String title, LocalDateTime dateDebut, LocalDateTime dateFin, TypeEvent typeEvent, EventRoomdto eventRoom,
 			List<Userdto> users, Format format, String moderator, String tutor) {
 		super();
 		this.title = title;
@@ -108,11 +109,11 @@ public class Event {
 		this.typeEvent = typeEvent;
 	}
 
-	public EventRoom getEventRoom() {
+	public EventRoomdto getEventRoom() {
 		return eventRoom;
 	}
 
-	public void setEventRoom(EventRoom eventRoom) {
+	public void setEventRoom(EventRoomdto eventRoom) {
 		this.eventRoom = eventRoom;
 	}
 

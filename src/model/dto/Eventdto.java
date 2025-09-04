@@ -13,18 +13,17 @@ public class Eventdto {
 	private LocalDateTime dateDebut;
 	private LocalDateTime dateFin;
 	private String typeEvent;
-	private EventRoom eventRoom;
+	private EventRoomdto eventRoom;
 	private String format;
 	private String moderator;
 	private String tutor;
 	private int idPlanning;
 	private List<Userdto> users;
 	private List<String> externalParticipantsEmails;
-	
 
 	public Eventdto(int id, String title, LocalDateTime dateDebut, LocalDateTime dateFin, String typeEvent,
-			EventRoom eventRoom, String format, String moderator, String tutor, List<String> externalParticipantsEmails,
-			List<Userdto> users, int idPlanning) {
+			EventRoomdto eventRoom, String format, String moderator, String tutor,
+			List<String> externalParticipantsEmails, List<Userdto> users, int idPlanning) {
 		this.id = id;
 		this.title = title;
 		this.dateDebut = dateDebut;
@@ -39,12 +38,10 @@ public class Eventdto {
 		this.externalParticipantsEmails = externalParticipantsEmails;
 	}
 
-	public Eventdto(int id, String string, LocalDateTime localDateTime, LocalDateTime localDateTime2, String string2,
-			String string3, String string4, String string5, EventRoom eventRoom2) {
-	}
+	
 
-	public Eventdto(String title, LocalDateTime dateDebut, LocalDateTime dateFin, String typeEvent, EventRoom eventRoom,
-			List<Userdto> users, String moderator, String tutor, int idPlanning) {
+	public Eventdto(String title, LocalDateTime dateDebut, LocalDateTime dateFin, String typeEvent,
+			EventRoomdto eventRoom, List<Userdto> users, String moderator, String tutor, int idPlanning) {
 		super();
 		this.title = title;
 		this.dateDebut = dateDebut;
@@ -56,20 +53,21 @@ public class Eventdto {
 		this.tutor = tutor;
 		this.idPlanning = idPlanning;
 
-
+	}
+	
+	public Eventdto(int id, String string, LocalDateTime localDateTime, LocalDateTime localDateTime2, String string2,
+			String string3, String string4, String string5, EventRoom eventRoom2) {
 	}
 
 	public Eventdto(String title2, LocalDateTime dateDebut2, LocalDateTime dateFin2, String typeEvent2,
 			EventRoom eventroom2, List<Userdto> users2, Userdto moderator2, Userdto tutor2) {
-		// TODO Auto-generated constructor stub
 	}
 
-	public Eventdto(int id, String title, LocalDateTime dateDebut, LocalDateTime dateFin, String typeEvent,
-            EventRoom eventRoom, String format, String moderator, String tutor, int idPlanning,
-            List<String> externalParticipantsEmails, List<Userdto> users) {
-		
-	}
+	public Eventdto(int id, String newTitle, LocalDateTime newDateDebut, LocalDateTime newDateFin, String newTypeEvent,
+			EventRoomdto newRoom, String newFormat, String email, String email2, int i, List<String> newExternal,
+			List<Userdto> newUsers) {
 
+	}
 
 	public int getId() {
 		return id;
@@ -111,11 +109,11 @@ public class Eventdto {
 		this.typeEvent = typeEvent;
 	}
 
-	public EventRoom getEventRoom() {
+	public EventRoomdto getEventRoom() {
 		return eventRoom;
 	}
 
-	public void setEventRoom(EventRoom neweventRoom) {
+	public void setEventRoom(EventRoomdto neweventRoom) {
 		this.eventRoom = neweventRoom;
 	}
 
@@ -174,6 +172,5 @@ public class Eventdto {
 				+ moderator + ", tutor=" + tutor + ", idPlanning=" + idPlanning + ", users=" + users
 				+ ", externalParticipantsEmails=" + externalParticipantsEmails + "]";
 	}
-	
-	
+
 }
