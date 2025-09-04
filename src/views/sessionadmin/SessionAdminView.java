@@ -13,10 +13,9 @@ import org.apache.logging.log4j.Logger;
 import controller.EventController;
 import controller.EventRoomController;
 import controller.UserController;
-
+import model.dto.EventRoomdto;
 import model.dto.Eventdto;
 import model.dto.Userdto;
-import model.entity.EventRoom;
 import model.entity.enumeration.Format;
 import model.entity.enumeration.TypeEvent;
 
@@ -116,11 +115,11 @@ public class SessionAdminView {
 		}
 
 		EventRoomController roomController = new EventRoomController();
-		List<EventRoom> salles = roomController.getAllActiveRooms();
-		EventRoom eventroom = null;
+		List<EventRoomdto> salles = roomController.getAllActiveRooms();
+		EventRoomdto eventroom = null;
 		while (eventroom == null) {
 			System.out.println("Liste des salles disponibles :");
-			for (EventRoom r : salles) {
+			for (EventRoomdto r : salles) {
 				System.out.println(r.getId() + " - " + r.getName());
 			}
 
@@ -285,13 +284,13 @@ public class SessionAdminView {
 
 		
 		EventRoomController roomController = new EventRoomController();
-		List<EventRoom> salles = roomController.getAllActiveRooms();
-		for (EventRoom r : salles) {
+		List<EventRoomdto> salles = roomController.getAllActiveRooms();
+		for (EventRoomdto r : salles) {
 			System.out.println(r.getId() + " - " + r.getName());
 		}
 		System.out.print("Nouvel ID de salle : ");
 		int roomId = Integer.parseInt(scanner.nextLine());
-		EventRoom newRoom = roomController.findRoomById(roomId);
+		EventRoomdto newRoom = roomController.findRoomById(roomId);
 
 		
 		List<Userdto> allUsers = UserController.getAllUsers();
