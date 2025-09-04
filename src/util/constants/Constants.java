@@ -43,5 +43,11 @@ public class Constants {
 	public static final String EMPTY_ROOM_NAME = "Room name cannot be empty!";
 	public static final String NO_ROOM_FOUND = "No matching room found.";
 	public static final String NO_ACTIVE_ROOMS = "No active rooms available.";
+	public static final String ERROR_GET_PLANNING_BY_ID = "Error retrieving planning by ID";
+	public static final String ERROR_DELETE_PLANNING = "Error during operation to delete Planning";
+	public static final String NO_PLANNING_FOUND = "No planning found with ID";
+	public static final String ERROR_UPDATE_PLANNING = "Error during operation to update Planning";
+	public static final String ERROR_CREATE_PLANNING = "Error during operation to create Planning";
+	public static final String ERROR_DURING_PLANNING_INSERTION = "Insertion operation returned no result or affected 0 rows";
 
 }
