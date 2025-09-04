@@ -1,7 +1,5 @@
 package util.constants;
 
-import org.apache.logging.log4j.message.Message;
-
 public class Constants {
 
 	public static final String USER_DTO_IS_EMPTY = "User dto submited is empty.";
@@ -52,6 +50,17 @@ public class Constants {
 	public static final String ERROR_CREATE_PLANNING = "Error during operation to create Planning";
 	public static final String ERROR_DURING_PLANNING_INSERTION = "Insertion operation returned no result or affected 0 rows";
 	public static final String EMPTY_PLANNING_DTO = "Error in planning controller: PlanningDTO is null";
-
+	public static final String PLANNING_IS_EMPTY = "Planning submitted is empty.";
+	public static final String PLANNING_DTO_IS_EMPTY = "PlanningDto submitted is empty.";
+	public static final String MAPPING_PLANNING_ERROR = "Error during mapping between Planning and PlanningDto.";
+	public static final String EVENTROOM_IS_EMPTY = "EventRoom submitted is empty.";
+	public static final String EVENTROOM_DTO_IS_EMPTY = "EventRoomDto submitted is empty.";
+	public static final String EVENTROOM_DTO_ERROR = "Error during the process to map EventRoom to EventRoomDto.";
+	public static final String EVENTROOM_PLANNING_ERROR = "Error linking EventRoom with Planning.";
+	public static final String MAPPING_EVENTROOM_ERROR = "Error during mapping between EventRoom and EventRoomDto.";
+	public static final String ERROR_DURING_EVENTROOM_INSERTION = "Error during operation to insert EventRoom.";
+	public static final String ERROR_CREATE_EVENTROOM = "Error during operation to create EventRoom.";
+	public static final String ERROR_UPDATE_EVENTROOM = "Error during operation to update EventRoom.";
+	public static final String ERROR_DELETE_EVENTROOM = "Error during operation to delete EventRoom.";
 
 }
