@@ -41,4 +41,10 @@ public class Query {
 	public static final String DELETE_PLANNING = "DELETE FROM planning WHERE id = ?";
 
 	public static final String UPDATE_PLANNING = "UPDATE planning SET motif = ?, date_debut = ?, date_fin = ? WHERE id = ?";
+
+	public static final String CREATE_EVENTROOM ="INSERT INTO event_rooms(name, capacity, active) VALUES (?, ?, ?)";
+
+	public static final String UPDATE_EVENTROOM = "UPDATE event_rooms SET name = ?, capacity = ?, active = ? WHERE id = ?";
+
+	public static final String DELETE_EVENTROOM ="DELETE FROM event_rooms WHERE id = ?";
 }
