@@ -195,14 +195,12 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public boolean createEventWithUsers(Eventdto event, List<Integer> participantIds) {
 		try {
-			// 1️⃣ Création de l'événement
-			Eventdto createdEvent = createEvent(event); // méthode existante qui retourne l'id généré
+			Eventdto createdEvent = createEvent(event); 
 			if (createdEvent == null)
 				return false;
 
 			int eventId = createdEvent.getId();
 
-			// 2️⃣ Insertion des participants
 			String query = "INSERT INTO event_users (event_id, user_id) VALUES (?, ?)";
 			try (PreparedStatement ps = connection.prepareStatement(query)) {
 				for (Integer userId : participantIds) {

@@ -42,7 +42,7 @@ public class EventRoomServiceImpl implements EventRoomService {
             LOG.error(Constants.NO_ROOM_FOUND + " " + e.getMessage(), e);
         }
 
-        return null; // si salle non trouvée
+        return null; 
     }
 
     @Override
