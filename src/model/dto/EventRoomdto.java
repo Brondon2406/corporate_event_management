@@ -53,4 +53,6 @@ public class EventRoomdto {
 	public String toString() {
 		return "EventRoomdto [id=" + id + ", name=" + name + ", capacity=" + capacity + ", active=" + active + "]";
 	}
+
+	
 }

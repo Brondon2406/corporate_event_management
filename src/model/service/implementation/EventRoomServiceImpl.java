@@ -31,8 +31,7 @@ public class EventRoomServiceImpl implements EventRoomService {
 			PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, eventRoom.getName());
 			ps.setInt(2, eventRoom.getCapacity());
-			ps.setBoolean(3, eventRoom.isActive());
-			ps.setBoolean(4, true);
+			ps.setBoolean(3, true);
 
 			int result = ps.executeUpdate();
 			if (result <= 0) {
@@ -46,35 +45,36 @@ public class EventRoomServiceImpl implements EventRoomService {
 				}
 			}
 
-			EventRoomdto eventRoomDTO = new EventRoomdto();
-			eventRoomDTO.setId(eventRoom.getId());
-			eventRoomDTO.setName(eventRoom.getName());
-			eventRoomDTO.setCapacity(eventRoom.getCapacity());
-			eventRoomDTO.setActive(true);
+			EventRoomdto eventRoomdto = new EventRoomdto();
+			eventRoomdto.setId(eventRoom.getId());
+			eventRoomdto.setName(eventRoom.getName());
+			eventRoomdto.setCapacity(eventRoom.getCapacity());
+			eventRoomdto.setActive(true);
 			
 			LOG.info("Utilisateur créé avec succès : {}", eventRoom.getName());
-			return eventRoomDTO;
+			return eventRoomdto;
 
 		} catch (SQLException e) {
-			LOG.error(Constants.ERROR_CREATE_EVENTROOM +"EventRoom= "+ eventRoom, e);
+			LOG.error(Constants.ERROR_CREATE_EVENTROOM, e);
 			return null;
 		}
 	}
 
 	@Override
-	public boolean updateEventRoom(EventRoomdto EventRoomDTO) {
+	public boolean updateEventRoom(EventRoomdto EventRoomdto) {
 		String query = Query.UPDATE_EVENTROOM;
 		try {
 			PreparedStatement ps = connection.prepareStatement(query);
 
-			ps.setString(1, EventRoomDTO.getName());
-			ps.setInt(2, EventRoomDTO.getId());
-			ps.setInt(3, EventRoomDTO.getCapacity());
+			ps.setString(1, EventRoomdto.getName());	
+			ps.setInt(2, EventRoomdto.getCapacity());
+			ps.setBoolean(3, EventRoomdto.isActive());
+			ps.setInt(4, EventRoomdto.getId());
 
 			int rows = ps.executeUpdate();
 			return rows > 0;
 		} catch (SQLException e) {
-			LOG.error(Constants.ERROR_UPDATE_EVENTROOM + " EventRoomDTO=" + EventRoomDTO, e);
+			LOG.error(Constants.ERROR_UPDATE_EVENTROOM, e);
 			return false;
 		}
 	}
@@ -120,7 +120,7 @@ public class EventRoomServiceImpl implements EventRoomService {
 				}
 			}
 		} catch (SQLException e) {
-			LOG.error(Constants.NO_ROOM_FOUND + " ID= " + e.getMessage(), e);
+			LOG.error(Constants.NO_ROOM_FOUND, e);
 		}
 
 		return eventRoom;
@@ -144,7 +144,7 @@ public class EventRoomServiceImpl implements EventRoomService {
 				}
 			}
 		} catch (SQLException e) {
-			LOG.error("Erreur SQL lors de la récupération de la salle", e);
+			LOG.error(Constants.ERROR_DURING_EVENTROOM_SELECTION, e);
 		}
 
 		return null;
@@ -166,10 +166,60 @@ public class EventRoomServiceImpl implements EventRoomService {
 			}
 
 		} catch (SQLException e) {
-			LOG.error(Constants.NO_ACTIVE_ROOMS + " " + e.getMessage(), e);
+			LOG.error(Constants.NO_ACTIVE_ROOMS, e);
 		}
 
 		return rooms;
 	}
+
+	@Override
+	public List<EventRoomdto> getAllRooms() {
+	    String query = Query.SELECT_ALL_ROOMS;
+	    List<EventRoomdto> rooms = new ArrayList<>();
+
+	    try (PreparedStatement ps = connection.prepareStatement(query);
+	         ResultSet rs = ps.executeQuery()) {
+
+	        while (rs.next()) {
+	            EventRoomdto room = new EventRoomdto();
+	            room.setId(rs.getInt("id"));
+	            room.setName(rs.getString("name"));
+	            room.setCapacity(rs.getInt("capacity"));
+	            room.setActive(rs.getBoolean("active"));
+	            rooms.add(room);
+	        }
+
+	    } catch (SQLException e) {
+	        LOG.error(Constants.ERROR_GET_ALL_ROOMS, e);
+	    }
+
+	    return rooms;
+	}
+
+	@Override
+	public EventRoomdto getRoomById(int roomId) {
+	    String query = Query.SELECT_EVENTROOM_BY_ID;
+	    EventRoomdto room = null;
+
+	    try (PreparedStatement ps = connection.prepareStatement(query)) {
+	        ps.setInt(1, roomId);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                room = new EventRoomdto();
+	                room.setId(rs.getInt("id"));
+	                room.setName(rs.getString("name"));
+	                room.setCapacity(rs.getInt("capacity"));
+	                room.setActive(rs.getBoolean("active"));
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        LOG.error(Constants.ERROR_GET_ROOM_BY_ID , e);
+	    }
+
+	    return room;
+	}
+
 
 }
