@@ -8,18 +8,12 @@ public class Planningdto {
 	private String motif;
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
-	private String tutorPlanning;
+	private Userdto tutorPlanning;
+	
+	
 
-	public Planningdto(int id, String motif, LocalDate dateDebut, LocalDate dateFin, String tutorPlanning) {
-		super();
-		this.id = id;
-		this.motif = motif;
-		this.dateDebut = dateDebut;
-		this.dateFin = dateFin;
-		this.tutorPlanning = tutorPlanning;
-	}
 
-	public Planningdto(String motif, LocalDate dateDebut, LocalDate dateFin, String tutorPlanning) {
+	public Planningdto(String motif, LocalDate dateDebut, LocalDate dateFin, Userdto tutorPlanning) {
 		super();
 		this.motif = motif;
 		this.dateDebut = dateDebut;
@@ -29,6 +23,14 @@ public class Planningdto {
 
 	public Planningdto() {
 		super();
+	}
+
+	public Planningdto(int id, String newMotif, LocalDate newDateDebut, LocalDate newDateFin, Userdto newTutorPlanning) {
+		super();
+		this.motif = newMotif;
+		this.dateDebut = newDateDebut;
+		this.dateFin = newDateFin;
+		this.tutorPlanning = newTutorPlanning;
 	}
 
 	public int getId() {
@@ -51,8 +53,8 @@ public class Planningdto {
 		return dateDebut;
 	}
 
-	public void setDateDebut(LocalDate dateDebut) {
-		this.dateDebut = dateDebut;
+	public void setDateDebut(LocalDate dateDebut2) {
+		this.dateDebut = dateDebut2;
 	}
 
 	public LocalDate getDateFin() {
@@ -63,29 +65,20 @@ public class Planningdto {
 		this.dateFin = dateFin;
 	}
 
-	public String getTutorPlanning() {
+	public Userdto getTutorPlanning() {
 		return tutorPlanning;
 	}
 
-	public void setTutorPlanning(String tutorPlanning) {
-		this.tutorPlanning = tutorPlanning;
+	public void setTutorPlanning(Userdto tutor) {
+		this.tutorPlanning = tutor;
 	}
 
 	@Override
 	public String toString() {
-		return "Planingdto [id=" + id + ", motif=" + motif + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin
-				+ ", numberOfWeek=" + ", tutorPlanning=" + tutorPlanning + "]";
-
+		return "Planningdto [id=" + id + ", motif=" + motif + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin
+				+ ", tutorPlanning=" + tutorPlanning + "]";
 	}
 
-	public void setDateFin(Object object) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void setDateDebut(Object object) {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 }

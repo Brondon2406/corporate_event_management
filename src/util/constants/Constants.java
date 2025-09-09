@@ -1,5 +1,6 @@
 package util.constants;
 
+
 public class Constants {
 
 	public static final String USER_DTO_IS_EMPTY = "User dto submited is empty.";
@@ -56,11 +57,20 @@ public class Constants {
 	public static final String EVENTROOM_IS_EMPTY = "EventRoom submitted is empty.";
 	public static final String EVENTROOM_DTO_IS_EMPTY = "EventRoomDto submitted is empty.";
 	public static final String EVENTROOM_DTO_ERROR = "Error during the process to map EventRoom to EventRoomDto.";
-	public static final String EVENTROOM_PLANNING_ERROR = "Error linking EventRoom with Planning.";
 	public static final String MAPPING_EVENTROOM_ERROR = "Error during mapping between EventRoom and EventRoomDto.";
 	public static final String ERROR_DURING_EVENTROOM_INSERTION = "Error during operation to insert EventRoom.";
 	public static final String ERROR_CREATE_EVENTROOM = "Error during operation to create EventRoom.";
 	public static final String ERROR_UPDATE_EVENTROOM = "Error during operation to update EventRoom.";
 	public static final String ERROR_DELETE_EVENTROOM = "Error during operation to delete EventRoom.";
+	public static final String ERROR_GET_ROOM_BY_ID = "Error retrieving room by ID";
+	public static final String ERROR_DELETE_ROOM = "Error deleting the room";
+	public static final String ERROR_UPDATE_ROOM = "Error updating the room";
+	public static final String ERROR_DURING_EVENTROOM_SELECTION = "ResultSet is null or EventRoom not found";
+	public static final String EMPTY_ROOM_DTO = "Room DTO submitted is empty";
+	public static final String ERROR_DURING_ROOM_INSERTION = "Error during room insertion!";
+	public static final String ERROR_CREATE_ROOM = "Error while creating the room";
+	public static final String ERROR_GET_PLANNING = "Error during operation to get planning. Error message: {}";
+	public static final String ERROR_GET_PLANNING_BY_PERIOD = "Error during operation to get planning by piriod. Error message: {}";
+	public static final String ERROR_GET_ALL_ROOMS = "Error retrieving all rooms";
 
 }

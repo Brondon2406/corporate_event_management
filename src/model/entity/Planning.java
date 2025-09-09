@@ -2,32 +2,32 @@ package model.entity;
 
 import java.time.LocalDate;
 
+import model.dto.Userdto;
+
 public class Planning {
 
 	private int id;
 	private String motif;
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
-	private int numberOfWeek;
-	private String tutorPlanning;
+	private Userdto tutorPlanning;
 	
-	public Planning (int id, String motif, LocalDate dateDebut, LocalDate dateFin, int numberOfWeek, String tutorPlanning  ) {
+	public Planning (int id, String motif, LocalDate dateDebut, LocalDate dateFin, Userdto tutorPlanning  ) {
 		super();
 		this.id = id;
 		this.motif = motif;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
-		this.numberOfWeek = numberOfWeek;
+		
 		this.tutorPlanning = tutorPlanning;
 		
 	}
 	
-	public Planning (String motif, LocalDate dateDebut, LocalDate dateFin, int numberOfWeek, String tutorPlanning  ) {
+	public Planning (String motif, LocalDate dateDebut, LocalDate dateFin, Userdto tutorPlanning  ) {
 		super();
 		this.motif = motif;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
-		this.numberOfWeek = numberOfWeek;
 		this.tutorPlanning = tutorPlanning;
 		
 	}
@@ -70,20 +70,12 @@ public class Planning {
 		this.dateFin = dateFin;
 	}
 
-	public int getNumberOfWeek() {
-		return numberOfWeek;
-	}
-
-	public void setNumberOfWeek(int numberOfWeek) {
-		this.numberOfWeek = numberOfWeek;
-	}
-
-	public String getTutorPlanning() {
+	public Userdto getTutorPlanning() {
 		return tutorPlanning;
 	}
 
-	public void setTutorPlanning(String tutorPlanning) {
-		this.tutorPlanning = tutorPlanning;
+	public void setTutorPlanning(Userdto userdto) {
+		this.tutorPlanning = userdto;
 	}
 
 	
