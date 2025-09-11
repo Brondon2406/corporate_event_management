@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum Role {
-	ADMIN, COLLABORATORS, ANIMATORS;
+	ADMIN, PLANNING_ROOM_MANAGER, COLLABORATORS, ANIMATORS;
 
 	public static List<String> getUserRoles() {
-		List<String> roles = Arrays.asList(Role.values()).stream().filter(e -> !e.equals(ADMIN)).map(e -> e.name())
+		List<String> roles = Arrays.asList(Role.values())
+				.stream()
+				.filter(e -> !e.equals(ADMIN) && !e.equals(PLANNING_ROOM_MANAGER))
+				.map(e -> e.name())
 				.collect(Collectors.toList());
 		return roles;
 	}
@@ -18,7 +21,6 @@ public enum Role {
 	}
 
 	boolean isEmpty() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
