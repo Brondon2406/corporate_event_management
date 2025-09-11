@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import java.util.List;
 
-import model.entity.EventRoom;
+import model.entity.enumeration.StatusEvents;
 
 public class Eventdto {
 
@@ -13,17 +13,18 @@ public class Eventdto {
 	private LocalDateTime dateDebut;
 	private LocalDateTime dateFin;
 	private String typeEvent;
-	private EventRoomdto eventRoom;
 	private String format;
+	private EventRoomdto eventRoom;
+	private String status;
 	private String moderator;
 	private String tutor;
-	private int idPlanning;
+	private Planningdto idPlanning;
 	private List<Userdto> users;
 	private List<String> externalParticipantsEmails;
 
 	public Eventdto(int id, String title, LocalDateTime dateDebut, LocalDateTime dateFin, String typeEvent,
-			EventRoomdto eventRoom, String format, String moderator, String tutor,
-			List<String> externalParticipantsEmails, List<Userdto> users, int idPlanning) {
+			EventRoomdto eventRoom, String format, String moderator, String tutor, String status,
+			List<String> externalParticipantsEmails, List<Userdto> users, Planningdto idPlanning) {
 		this.id = id;
 		this.title = title;
 		this.dateDebut = dateDebut;
@@ -31,6 +32,7 @@ public class Eventdto {
 		this.typeEvent = typeEvent;
 		this.eventRoom = eventRoom;
 		this.format = format;
+		this.setStatus(status);
 		this.moderator = moderator;
 		this.idPlanning = idPlanning;
 		this.tutor = tutor;
@@ -38,35 +40,23 @@ public class Eventdto {
 		this.externalParticipantsEmails = externalParticipantsEmails;
 	}
 
-	
-
 	public Eventdto(String title, LocalDateTime dateDebut, LocalDateTime dateFin, String typeEvent,
-			EventRoomdto eventRoom, List<Userdto> users, String moderator, String tutor, int idPlanning) {
-		super();
+			EventRoomdto eventRoom, List<Userdto> users, String moderator, String tutor, Planningdto idPlanning,
+			String status) {
 		this.title = title;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.typeEvent = typeEvent;
 		this.eventRoom = eventRoom;
+		this.setStatus(status);
 		this.users = users;
 		this.format = moderator;
 		this.tutor = tutor;
 		this.idPlanning = idPlanning;
 
 	}
-	
-	public Eventdto(int id, String string, LocalDateTime localDateTime, LocalDateTime localDateTime2, String string2,
-			String string3, String string4, String string5, EventRoom eventRoom2) {
-	}
 
-	public Eventdto(String title2, LocalDateTime dateDebut2, LocalDateTime dateFin2, String typeEvent2,
-			EventRoom eventroom2, List<Userdto> users2, Userdto moderator2, Userdto tutor2) {
-	}
-
-	public Eventdto(int id, String newTitle, LocalDateTime newDateDebut, LocalDateTime newDateFin, String newTypeEvent,
-			EventRoomdto newRoom, String newFormat, String email, String email2, int i, List<String> newExternal,
-			List<Userdto> newUsers) {
-
+	public Eventdto() {
 	}
 
 	public int getId() {
@@ -157,12 +147,20 @@ public class Eventdto {
 		this.format = format;
 	}
 
-	public int getIdPlanning() {
+	public Planningdto getIdPlanning() {
 		return idPlanning;
 	}
 
-	public void setIdPlanning(int idPlanning) {
+	public void setIdPlanning(Planningdto idPlanning) {
 		this.idPlanning = idPlanning;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	@Override
@@ -171,6 +169,14 @@ public class Eventdto {
 				+ ", typeEvent=" + typeEvent + ", eventRoom=" + eventRoom + ", format=" + format + ", moderator="
 				+ moderator + ", tutor=" + tutor + ", idPlanning=" + idPlanning + ", users=" + users
 				+ ", externalParticipantsEmails=" + externalParticipantsEmails + "]";
+	}
+
+	public void setModerator(Userdto newModerator) {
+		
+	}
+
+	public void setStatus(StatusEvents pending) {
+		
 	}
 
 }

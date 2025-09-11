@@ -9,8 +9,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import model.database.DatabaseConnection;
+import model.dto.EventRoomdto;
 import model.dto.Eventdto;
-import model.entity.EventRoom;
+import model.dto.Planningdto;
 import model.service.EventService;
 import model.service.sql.Query;
 import util.constants.Constants;
@@ -21,29 +22,22 @@ public class EventServiceImpl implements EventService {
 	Connection connection = DatabaseConnection.getInstance();
 
 	@Override
-	public Eventdto createEvent(Eventdto event) {
-
-		if (event == null || event.getEventRoom() == null) {
-			throw new IllegalArgumentException("Données de l'événement invalides. Salle manquante.");
-		}
-
+	public Eventdto createEvent(Eventdto events) {
 		String query = Query.CREATE_EVENT;
 
 		try {
-			if (event.getEventRoom() == null) {
-				LOG.error("Aucune salle sélectionnée pour l'événement !");
-				throw new IllegalArgumentException("La salle d'événement ne peut pas être null.");
-			}
+
 			PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			ps.setString(1, event.getTitle());
-			ps.setObject(2, event.getDateDebut());
-			ps.setObject(3, event.getDateFin());
-			ps.setString(4, event.getTypeEvent());
-			ps.setString(5, event.getFormat());
-			ps.setString(6, event.getModerator());
-			ps.setString(7, event.getTutor());
-			ps.setInt(8, event.getIdPlanning());
-			ps.setInt(9, event.getEventRoom().getId());
+			ps.setString(1, events.getTitle());
+			ps.setObject(2, events.getDateDebut());
+			ps.setObject(3, events.getDateFin());
+			ps.setString(4, events.getTypeEvent());
+			ps.setString(5, events.getFormat());
+			ps.setString(6, events.getModerator());
+			ps.setString(7, events.getTutor());
+			ps.setInt(8, events.getIdPlanning().getId());
+			ps.setInt(9, events.getEventRoom().getId());
+			ps.setString(10, events.getStatus());
 
 			int result = ps.executeUpdate();
 			if (result <= 0) {
@@ -53,40 +47,28 @@ public class EventServiceImpl implements EventService {
 
 			try (ResultSet rs = ps.getGeneratedKeys()) {
 				if (rs.next()) {
-					event.setId(rs.getInt(1));
+					events.setId(rs.getInt(1));
 				}
 			}
+			Eventdto eventdto = new Eventdto();
+			eventdto.setId(events.getId());
+			eventdto.setDateDebut(events.getDateDebut());
+			eventdto.setDateFin(events.getDateFin());
+			eventdto.setTypeEvent(events.getTypeEvent());
+			eventdto.setFormat(events.getFormat());
+			eventdto.setModerator(events.getModerator());
+			eventdto.setTutor(events.getTutor());
+			eventdto.setIdPlanning(events.getIdPlanning());
+			eventdto.setEventRoom(events.getEventRoom());
+			eventdto.setUsers(events.getUsers());
+			eventdto.setStatus(events.getStatus());
 
-			LOG.info("Événement créé avec succès : {}", event.getTitle());
-			return event;
+			LOG.info("Événement créé avec succès : {}", eventdto.getTitle());
+			return eventdto;
 
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_CREATE_EVENT, e);
 			return null;
-		}
-	}
-
-	@Override
-	public boolean linkUsersToEvent(int eventId, List<Integer> userIds) {
-		if (userIds == null || userIds.isEmpty())
-			return true; // Rien à faire
-
-		String query = Query.INSERT_EVENT_USER;
-
-		try (PreparedStatement ps = connection.prepareStatement(query)) {
-			for (Integer userId : userIds) {
-				ps.setInt(1, eventId);
-				ps.setInt(2, userId);
-				ps.addBatch();
-			}
-
-			int[] results = ps.executeBatch();
-			LOG.info("Participants liés à l'événement ID {} : {}", eventId, results.length);
-			return true;
-
-		} catch (SQLException e) {
-			LOG.error("Erreur lors de l'insertion des participants pour l'événement ID " + eventId, e);
-			return false;
 		}
 	}
 
@@ -102,7 +84,6 @@ public class EventServiceImpl implements EventService {
 			ps.setString(4, event.getTypeEvent());
 			ps.setString(5, event.getFormat());
 			ps.setString(6, event.getModerator());
-			ps.setString(7, event.getTutor());
 			ps.setInt(8, event.getEventRoom().getId());
 
 			int rows = ps.executeUpdate();
@@ -138,82 +119,199 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public Eventdto getEventById(int id) {
-		List<Eventdto> events = new ArrayList<>();
-		String query = Query.SELECT_EVENT_BY_ID;
-		Eventdto eventdto = null;
+		String query = Query.GET_EVENT_BY_ID;
+		Eventdto events = null;
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
-
 			ps.setInt(1, id);
 
 			try (ResultSet rs = ps.executeQuery()) {
 				if (rs.next()) {
-					EventRoom eventRoom = new EventRoom(rs.getInt("room_id"), rs.getString("room_name"),
-							rs.getInt("room_capacity"), rs.getBoolean("room_active"));
+					Eventdto event = new Eventdto();
+					event.setId(rs.getInt("id"));
+					event.setTitle(rs.getString("title"));
+					event.setDateDebut((LocalDateTime) rs.getObject("date_debut"));
+					event.setDateFin((LocalDateTime) rs.getObject("date_fin"));
+					event.setTypeEvent(rs.getString("type_event"));
+					event.setFormat(rs.getString("format"));
+					int eventRoomId = rs.getInt("room_id");
+					EventRoomdto eventRoom = new EventRoomdto();
+					eventRoom.setId(eventRoomId);
+					event.setStatus(rs.getString("status"));
+					event.setModerator(rs.getString("moderator"));
+					event.setTutor(rs.getString("tutor"));
+					int planningId = rs.getInt("id_planning");
+					Planningdto idplanning = new Planningdto();
+					idplanning.setId(planningId);
 
-					Eventdto event = new Eventdto(rs.getInt("id"), rs.getString("title"),
-							rs.getObject("date_debut", LocalDateTime.class),
-							rs.getObject("date_fin", LocalDateTime.class), rs.getString("type_event"),
-							rs.getString("format"), rs.getString("moderator"), rs.getString("tutor"), eventRoom
-
-					);
-					events.add(event);
 				}
+
 			}
+
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_GET_EVENT_BY_ID, e);
-		}
-		return eventdto;
-	}
-
-	@Override
-	public List<Eventdto> getAllEvents() {
-		List<Eventdto> events = new ArrayList<>();
-		String query = Query.GET_ALL_EVENTS;
-
-		try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
-
-			while (rs.next()) {
-				EventRoom eventroom = new EventRoom(rs.getInt("room_id"), rs.getString("room_name"),
-						rs.getInt("room_capacity"), rs.getBoolean("room_active"));
-
-				Eventdto event = new Eventdto(rs.getInt("id"), rs.getString("title"),
-						rs.getObject("date_debut", java.time.LocalDateTime.class),
-						rs.getObject("date_fin", java.time.LocalDateTime.class), rs.getString("type_event"),
-						rs.getString("format"), rs.getString("moderator"), rs.getString("tutor"), eventroom
-
-				);
-
-				events.add(event);
-			}
-
-		} catch (SQLException e) {
-			LOG.error(Constants.ERROR_GET_ALL_EVENTS, e);
 		}
 		return events;
 	}
 
 	@Override
-	public boolean createEventWithUsers(Eventdto event, List<Integer> participantIds) {
-		try {
-			Eventdto createdEvent = createEvent(event); 
-			if (createdEvent == null)
-				return false;
+	public List<Eventdto> getAllEvents() {
+		String query = Query.GET_ALL_EVENTS;
+		List<Eventdto> eventdto = new ArrayList<>();
 
-			int eventId = createdEvent.getId();
+		try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
 
-			String query = "INSERT INTO event_users (event_id, user_id) VALUES (?, ?)";
-			try (PreparedStatement ps = connection.prepareStatement(query)) {
-				for (Integer userId : participantIds) {
-					ps.setInt(1, eventId);
-					ps.setInt(2, userId);
-					ps.addBatch();
-				}
-				ps.executeBatch();
+			while (rs.next()) {
+				Eventdto event = new Eventdto();
+				event.setId(rs.getInt("id"));
+				event.setTitle(rs.getString("title"));
+				event.setDateDebut((LocalDateTime) rs.getObject("date_debut"));
+				event.setDateFin((LocalDateTime) rs.getObject("date_fin"));
+				event.setTypeEvent(rs.getString("type_event"));
+				event.setFormat(rs.getString("format_event"));
+
+				int eventRoomId = rs.getInt("room_id");
+				EventRoomdto eventRoom = new EventRoomdto();
+				eventRoom.setId(eventRoomId);
+				event.setEventRoom(eventRoom);
+
+				event.setStatus(rs.getString("status"));
+				event.setModerator(rs.getString("moderator"));
+				event.setTutor(rs.getString("tutor"));
+
+				int planningId = rs.getInt("id_planning");
+				Planningdto idPlanning = new Planningdto();
+				idPlanning.setId(planningId);
+				event.setIdPlanning(idPlanning);
+
+				eventdto.add(event);
 			}
 
-			return true;
 		} catch (SQLException e) {
-			LOG.error("Erreur lors de l'ajout des participants à l'événement", e);
+			LOG.error(Constants.ERROR_GET_ALL_EVENTS, e);
+		}
+		return eventdto;
+	}
+
+	@Override
+	public boolean linkUsersToEvent(int eventId, List<Integer> internalUsersIds, List<String> externalUsersEmails) {
+		String query = Query.LINK_EVENT_WITH_INTERNAL_USERS;
+
+		
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+			for (Integer userId : internalUsersIds) {
+				ps.setInt(1, eventId);
+				ps.setInt(2, userId);
+				ps.addBatch();
+			}
+
+			int[] results = ps.executeBatch();
+
+			String queryExternal = Query.LINK_EVENT_WITH_EXTERNAL_USERS;
+			try (PreparedStatement psExternal = connection.prepareStatement(queryExternal)) {
+				for (String email : externalUsersEmails) {
+					psExternal.setInt(1, eventId);
+					psExternal.setString(2, email);
+					psExternal.addBatch();
+				}
+				psExternal.executeBatch();
+			}
+			LOG.info("Participants liés à l'événement ID {} : {}", eventId, results.length);
+			return true;
+
+		} catch (SQLException e) {
+			LOG.error("Erreur lors de l'insertion des participants pour l'événement ID " + eventId, e);
+			return false;
+		}
+	}
+	
+	@Override
+	public List<Integer> getInternalUsersForEvent(int eventId) {
+	    List<Integer> internalUsers = new ArrayList<>();
+	    String query = "SELECT user_id FROM event_users WHERE event_id = ?";
+
+	    try (PreparedStatement ps = connection.prepareStatement(query)) {
+	        ps.setInt(1, eventId);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                internalUsers.add(rs.getInt("user_id"));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        LOG.error("Erreur lors de la récupération des utilisateurs internes pour l'événement ID " + eventId, e);
+	    }
+	    return internalUsers;
+	}
+
+	@Override
+	public List<String> getExternalUsersForEvent(int eventId) {
+	    List<String> externalUsers = new ArrayList<>();
+	    String query = "SELECT external_email FROM event_users WHERE event_id = ?";
+
+	    try (PreparedStatement ps = connection.prepareStatement(query)) {
+	        ps.setInt(1, eventId);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                externalUsers.add(rs.getString("external_email"));
+	            }
+	        }
+	    } catch (SQLException e) {
+	        LOG.error("Erreur lors de la récupération des utilisateurs externes pour l'événement ID " + eventId, e);
+	    }
+	    return externalUsers;
+	}
+
+
+	@Override
+	public boolean updateParticipantsForEvent(int eventId, List<Integer> internalUsersToAdd,
+			List<Integer> internalUsersToRemove, List<String> externalUsersToAdd, List<String> externalUsersToRemove) {
+
+		try {
+
+			String addInternalQuery = Query.ADD_INTERNAL_USERS;
+			try (PreparedStatement psAdd = connection.prepareStatement(addInternalQuery)) {
+				for (Integer userId : internalUsersToAdd) {
+					psAdd.setInt(1, eventId);
+					psAdd.setInt(2, userId);
+					psAdd.addBatch();
+				}
+				psAdd.executeBatch();
+			}
+
+			String removeInternalQuery = Query.REMOVE_INTERNAL_USERS;
+			try (PreparedStatement psRemove = connection.prepareStatement(removeInternalQuery)) {
+				for (Integer userId : internalUsersToRemove) {
+					psRemove.setInt(1, eventId);
+					psRemove.setInt(2, userId);
+					psRemove.addBatch();
+				}
+				psRemove.executeBatch();
+			}
+
+			String addExternalQuery = Query.ADD_EXTERNAL_USERS;
+			try (PreparedStatement psAddExt = connection.prepareStatement(addExternalQuery)) {
+				for (String email : externalUsersToAdd) {
+					psAddExt.setInt(1, eventId);
+					psAddExt.setString(2, email);
+					psAddExt.addBatch();
+				}
+				psAddExt.executeBatch();
+			}
+
+			String removeExternalQuery = Query.REMOVE_EXTERNAL_USERS;
+			try (PreparedStatement psRemoveExt = connection.prepareStatement(removeExternalQuery)) {
+				for (String email : externalUsersToRemove) {
+					psRemoveExt.setInt(1, eventId);
+					psRemoveExt.setString(2, email);
+					psRemoveExt.addBatch();
+				}
+				psRemoveExt.executeBatch();
+			}
+
+			LOG.info("Mise à jour des participants pour l'événement ID {}", eventId);
+			return true;
+
+		} catch (SQLException e) {
+			LOG.error("Erreur lors de la mise à jour des participants pour l'événement ID " + eventId, e);
 			return false;
 		}
 	}

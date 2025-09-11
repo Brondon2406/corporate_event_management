@@ -32,15 +32,13 @@ public class AdminView {
 			currentUser.setName(name);
 		}
 
-		System.out.print(
-				"Prénom actuel : " + currentUser.getFirstName() + " | Nouveau prénom (laisser vide pour conserver) : ");
+		System.out.print("Prénom actuel : " + currentUser.getFirstName() + " | Nouveau prénom (laisser vide pour conserver) : ");			
 		String firstName = scanner.nextLine().trim();
 		if (!firstName.isEmpty() && checkName(firstName)) {
 			currentUser.setFirstName(firstName);
 		}
 
-		System.out.print(
-				"Email actuel : " + currentUser.getEmail() + " | Nouveau email (laisser vide pour conserver) : ");
+		System.out.print("Email actuel : " + currentUser.getEmail() + " | Nouveau email (laisser vide pour conserver) : ");				
 		String email = scanner.nextLine().trim();
 		if (!email.isEmpty() && checkEmail(email)) {
 			currentUser.setEmail(email);
@@ -52,8 +50,7 @@ public class AdminView {
 			currentUser.setPassword(password);
 		}
 
-		System.out.print("Fonction actuelle : " + currentUser.getFonction()
-				+ " | Nouvelle fonction (laisser vide pour conserver) : ");
+		System.out.print("Fonction actuelle : " + currentUser.getFonction()+ " | Nouvelle fonction (laisser vide pour conserver) : ");			
 		String fonction = scanner.nextLine().trim();
 		if (!fonction.isEmpty()) {
 			currentUser.setFonction(fonction);
@@ -267,7 +264,7 @@ public class AdminView {
 			}
 		}
 	}
-
+/*
 	public void listPendingEvents() {
 
 	}
@@ -295,4 +292,5 @@ public class AdminView {
 	public void manageGlobalEvents() {
 
 	}
+	*/
 }
