@@ -28,10 +28,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
 			ps.setString(1, user.getName());
-			ps.setString(2, user.getEmail());
-			ps.setString(3, user.getPassword());
-			ps.setString(4, user.getRole().name());
-			ps.setString(5, user.getFonction());
+			ps.setString(2, user.getFirstName());
+			ps.setString(3, user.getEmail());
+			ps.setString(4, user.getPassword());
+			ps.setString(5, user.getRole().name());
+			ps.setString(6, user.getFonction());
 
 			int result = ps.executeUpdate();
 			if (result <= 0) {
@@ -48,7 +49,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 			Userdto userDTO = new Userdto();
 			userDTO.setId(user.getId());
 			userDTO.setName(user.getName());
+			userDTO.setFirstName(user.getFirstName());
 			userDTO.setEmail(user.getEmail());
+			userDTO.setPassword(user.getPassword());
 			userDTO.setRole(user.getRole().name());
 			userDTO.setFonction(user.getFonction());
 
@@ -63,7 +66,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	@Override
 	public Userdto loginUser(String email, String password) {
-		String query = Query.GET_USER; 
+		String query = Query.GET_USER;
 
 		Userdto userDTO = null;
 
@@ -76,6 +79,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				if (result.next()) {
 					userDTO = new Userdto();
 					userDTO.setName(result.getString("name"));
+					userDTO.setFirstName(result.getString("first_name"));
 					userDTO.setEmail(result.getString("email"));
 					userDTO.setPassword(result.getString("password"));
 					userDTO.setRole(result.getString("role"));

@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import controller.AuthenticationController;
 import controller.LoginController;
+import controller.UserController;
 import model.dto.Userdto;
 import model.entity.enumeration.Role;
 
@@ -13,8 +14,8 @@ public class AuthenticationView {
     
     public void registration() {
         System.out.println("\n=== Inscription ===");
-        
-        String name;       
+
+        String name;
         do {
             System.out.print("Entrez votre nom : ");
             name = scanner.nextLine().trim();
@@ -22,8 +23,17 @@ public class AuthenticationView {
                 System.out.println("Nom invalide ! (pas de chiffres ni de symboles)");
             }
         } while (!checkName(name));
-        
-        String email;      
+
+        String firstName;
+        do {
+            System.out.print("Entrez votre prénom : ");
+            firstName = scanner.nextLine().trim();
+            if (!checkName(firstName)) {
+                System.out.println("Nom invalide ! (pas de chiffres ni de symboles)");
+            }
+        } while (!checkName(firstName));
+
+        String email;
         do {
             System.out.print("Entrez votre email : ");
             email = scanner.nextLine();
@@ -37,52 +47,52 @@ public class AuthenticationView {
 
         List<String> roles = Role.getUserRoles();
         System.out.println("Liste des rôles disponibles : ");
-        int index = 0;
-        for (String roleItem : roles) {
-            System.out.println((index + 1) + "- " + roleItem);
-            index++;
+        for (int i = 0; i < roles.size(); i++) {
+            System.out.println((i + 1) + "- " + roles.get(i));
         }
 
         String role = null;
         boolean choixValide = false;
-
         while (!choixValide) {
             System.out.print("Choisissez un rôle (numéro entre 1 et " + roles.size() + ") : ");
-
-            if (scanner.hasNextInt()) { 
+            if (scanner.hasNextInt()) {
                 int roleIndex = scanner.nextInt();
-
+                scanner.nextLine();
                 if (roleIndex >= 1 && roleIndex <= roles.size()) {
                     role = roles.get(roleIndex - 1);
                     choixValide = true;
                 } else {
-                    System.out.println(" Numéro invalide ! Veuillez choisir un nombre entre 1 et " + roles.size() + ".");
+                    System.out.println("Numéro invalide ! Veuillez choisir un nombre entre 1 et " + roles.size() + ".");
                 }
             } else {
                 System.out.println("Entrée invalide ! Veuillez entrer un chiffre.");
-                scanner.next();
+                scanner.nextLine(); 
             }
         }
 
-        String fonction = "";
+        String fonction;
         do {
-        	System.out.print("Entrez votre fonction: ");
+            System.out.print("Entrez votre fonction: ");
             fonction = scanner.nextLine().trim();
         } while (fonction.isEmpty());
-       
+
         Userdto dto = new Userdto();
         dto.setName(name);
+        dto.setFirstName(firstName);
         dto.setEmail(email);
         dto.setPassword(password);
         dto.setRole(role);
         dto.setFonction(fonction);
-        
+
         dto = controller.RegisterController(dto);
         if(dto == null) {
-        	System.out.print("Choisissez un rôle (numéro): ");
+            System.out.println("Erreur lors de l'inscription ! Veuillez réessayer.");
+            return;
         }
-       
+
+        System.out.println("Utilisateur créé avec succès : " + dto.getEmail());
     }
+
     
     private boolean checkEmail(String email) {
         if (email == null)
@@ -108,5 +118,14 @@ public class AuthenticationView {
          
          LoginController controller = new LoginController();
          controller.loginUser(email, password);
+         Userdto user = controller.loginUser(email, password);
+
+         if (user != null) {
+             UserController.setCurrentUser(user);
+
+             System.out.println("Connexion réussie ! Bienvenue " + user.getFirstName() + " " + user.getName() + ".");
+         } else {
+             System.out.println("Échec de la connexion ! Email ou mot de passe invalide.");
+         }
     }
 }
