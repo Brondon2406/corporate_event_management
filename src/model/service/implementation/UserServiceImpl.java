@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Userdto getUserById(int userId) {
-		String query = Query.SELECT_USER_BY_ID;
+		String query = Query.GET_USER_BY_ID;
 		Userdto user = null;
 
 		try {

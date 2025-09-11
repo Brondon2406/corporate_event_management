@@ -130,7 +130,7 @@ public class PlanningServiceImpl implements PlanningService {
 
 	@Override
 	public Planningdto getPlanningById(int planningId) {
-		String query = Query.SELECT_PLANNING_BY_ID;
+		String query = Query.GET_PLANNING_BY_ID;
 		Planningdto planning = null;
 
 		try {
@@ -158,7 +158,7 @@ public class PlanningServiceImpl implements PlanningService {
 
 	@Override
 	public List<Planningdto> getEventsByPeriod(LocalDate debut, LocalDate fin) {
-		String query = Query.SELECT_PLANNINGS_BY_PERIOD;
+		String query = Query.GET_PLANNINGS_BY_PERIOD;
 		List<Planningdto> plannings = new ArrayList<>();
 
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
@@ -193,7 +193,7 @@ public class PlanningServiceImpl implements PlanningService {
 
 	@Override
 	public List<Planningdto> getAllPlannings() {
-		String query = Query.SELECT_ALL_PLANNING;
+		String query = Query.GET_ALL_PLANNING;
 		List<Planningdto> planningdto = new ArrayList<>();
 
 		try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {

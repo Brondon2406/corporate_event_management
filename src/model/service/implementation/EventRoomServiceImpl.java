@@ -103,7 +103,7 @@ public class EventRoomServiceImpl implements EventRoomService {
 
 	@Override
 	public EventRoomdto findByRoomById(int id) {
-		String query = Query.SELECT_EVENTROOM_BY_ID;
+		String query = Query.GET_EVENTROOM_BY_ID;
 		EventRoomdto eventRoom = null;
 
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
@@ -128,7 +128,7 @@ public class EventRoomServiceImpl implements EventRoomService {
 
 	@Override
 	public EventRoomdto findByIdAndName(int id, String name) {
-		String query = Query.SELECT_EVENTROOM_BY_ID_AND_NAME;
+		String query = Query.GET_EVENTROOM_BY_ID_AND_NAME;
 
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
 			ps.setInt(1, id);
@@ -152,7 +152,7 @@ public class EventRoomServiceImpl implements EventRoomService {
 
 	@Override
 	public List<EventRoomdto> getAllActiveRooms() {
-		String query = Query.SELECT_ALL_ACTIVE_ROOMS;
+		String query = Query.GET_ALL_ACTIVE_ROOMS;
 		List<EventRoomdto> rooms = new ArrayList<>();
 
 		try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
@@ -174,11 +174,12 @@ public class EventRoomServiceImpl implements EventRoomService {
 
 	@Override
 	public List<EventRoomdto> getAllRooms() {
-	    String query = Query.SELECT_ALL_ROOMS;
+	    String query = Query.GET_ALL_EVENTROOMS;
 	    List<EventRoomdto> rooms = new ArrayList<>();
 
-	    try (PreparedStatement ps = connection.prepareStatement(query);
-	         ResultSet rs = ps.executeQuery()) {
+	    try  {
+	    	PreparedStatement ps = connection.prepareStatement(query);
+	         ResultSet rs = ps.executeQuery();
 
 	        while (rs.next()) {
 	            EventRoomdto room = new EventRoomdto();
@@ -198,7 +199,7 @@ public class EventRoomServiceImpl implements EventRoomService {
 
 	@Override
 	public EventRoomdto getRoomById(int roomId) {
-	    String query = Query.SELECT_EVENTROOM_BY_ID;
+	    String query = Query.GET_EVENTROOM_BY_ID;
 	    EventRoomdto room = null;
 
 	    try (PreparedStatement ps = connection.prepareStatement(query)) {
