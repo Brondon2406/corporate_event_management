@@ -82,10 +82,9 @@ public class UserController {
 	public List<Userdto> findUsersByRoleController(String role) {
 	    if (role == null || role.isEmpty()) {
 	        LOG.error("Rôle fourni est vide !");
-	        return new ArrayList<>(); // renvoyer une liste vide
+	        return new ArrayList<>(); 
 	    }
 
-	    // Appel au service
 	    List<Userdto> users = userService.findUsersByRole(role);
 
 	    if (users == null || users.isEmpty()) {
