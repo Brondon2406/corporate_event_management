@@ -1,27 +1,30 @@
 package model.dto;
 
-import model.entity.enumeration.Role;
-
 public class Userdto {
 
 	private int id;
 	private String name;
+	private String firstName;
 	private String email;
 	private String password;
 	private String role;
 	private String fonction;
 
-	public Userdto(int id, String name, String email, String password, String role, String fonction) {
+	public Userdto(int id, String name, String email, String password, String role, String fonction, String firstName) {
 		this.id = id;
 		this.name = name;
+		this.firstName = firstName;
 		this.email = email;
 		this.password = password;
 		this.role = role;
 		this.fonction = fonction;
 	}
 
-	public Userdto(String name, String email, String password, String role, String fonction) {
+	
+
+	public Userdto(String name, String email, String password, String role, String fonction, String firstName) {
 		this.name = name;
+		this.firstName = firstName;
 		this.email = email;
 		this.password = password;
 		this.role = role;
@@ -45,6 +48,13 @@ public class Userdto {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 	public String getEmail() {
@@ -81,22 +91,8 @@ public class Userdto {
 
 	@Override
 	public String toString() {
-		return "Userdto [name=" + name + ", email=" + email + ", password=" + password + ", role=" + role
-				+ ", fonction=" + fonction + "]";
-	}
-
-	public static boolean loginUser(String email, String password) {
-		return false;
-
-	}
-
-	public static boolean registerUser(String nom, String email, String password, Role role, String fonction) {
-		return false;
-
-	}
-
-	public static Object stream() {
-		return null;
+		return "Userdto [id=" + id + ", name=" + name + ", firstName=" + firstName + ", email=" + email + ", password="
+				+ password + ", role=" + role + ", fonction=" + fonction + "]";
 	}
 
 }

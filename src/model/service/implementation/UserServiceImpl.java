@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 
 import model.dto.Userdto;
 import model.database.DatabaseConnection;
-import model.entity.Users;
 import model.service.UserService;
 import model.service.sql.Query;
 import util.constants.Constants;
@@ -21,19 +20,21 @@ import util.constants.Constants;
 public class UserServiceImpl implements UserService {
 
 	private static final Logger LOG = LogManager.getLogger(UserServiceImpl.class);
+
 	Connection connection = DatabaseConnection.getInstance();
 
 	@Override
-	public Userdto createUser(Users user) {
+	public Userdto createUser(Userdto user) {
 		String query = Query.CREATE_USER;
 
-		try  {
+		try {
 			PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, user.getName());
-			ps.setString(2, user.getEmail());
-			ps.setString(3, user.getPassword());
-			ps.setString(4, user.getRole().name());
-			ps.setString(5, user.getFonction());
+			ps.setString(2, user.getFirstName());
+			ps.setString(3, user.getEmail());
+			ps.setString(4, user.getPassword());
+			ps.setString(5, user.getRole());
+			ps.setString(6, user.getFonction());
 
 			int result = ps.executeUpdate();
 			if (result <= 0) {
@@ -49,12 +50,13 @@ public class UserServiceImpl implements UserService {
 
 			Userdto userDTO = new Userdto();
 			userDTO.setId(user.getId());
+			userDTO.setFirstName(user.getFirstName());
 			userDTO.setName(user.getName());
 			userDTO.setEmail(user.getEmail());
-			userDTO.setRole(user.getRole().name());
+			userDTO.setRole(user.getRole());
 			userDTO.setFonction(user.getFonction());
 
-			LOG.info("Utilisateur créé avec succès : {}", user.getEmail());
+			LOG.info("Événement créé avec succès : {}", user.getEmail());
 			return userDTO;
 
 		} catch (SQLException e) {
@@ -70,9 +72,10 @@ public class UserServiceImpl implements UserService {
 			PreparedStatement ps = connection.prepareStatement(query);
 
 			ps.setString(1, userDTO.getName());
-			ps.setString(2, userDTO.getEmail());
-			ps.setString(3, userDTO.getPassword());
-			ps.setInt(4, userDTO.getId());
+			ps.setString(2, userDTO.getFirstName());
+			ps.setString(3, userDTO.getEmail());
+			ps.setString(4, userDTO.getPassword());
+			ps.setInt(5, userDTO.getId());
 
 			int rows = ps.executeUpdate();
 			return rows > 0;
@@ -109,7 +112,7 @@ public class UserServiceImpl implements UserService {
 		String query = Query.SELECT_USER_BY_ID;
 		Userdto user = null;
 
-		try  {
+		try {
 			PreparedStatement ps = connection.prepareStatement(query);
 			ps.setInt(1, userId);
 
@@ -117,6 +120,7 @@ public class UserServiceImpl implements UserService {
 				if (rs.next()) {
 					user = new Userdto();
 					user.setId(rs.getInt("id"));
+					user.setFirstName(rs.getString("first_name"));
 					user.setName(rs.getString("name"));
 					user.setEmail(rs.getString("email"));
 					user.setRole(rs.getString("role"));
@@ -130,28 +134,58 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
+	public List<Userdto> findUsersByRole(String role) {
+		List<Userdto> users = new ArrayList<>();
+		String query = Query.GET_USERS_BY_ROLE;
+
+		try {
+			PreparedStatement stmt = connection.prepareStatement(query);
+
+			stmt.setString(1, role);
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Userdto user = new Userdto();
+				user.setId(rs.getInt("id"));
+				user.setName(rs.getString("name"));
+				user.setFirstName(rs.getString("first_name"));
+				user.setEmail(rs.getString("email"));
+				user.setRole(rs.getString("role"));
+				user.setFonction(rs.getString("fonction"));
+				users.add(user);
+			}
+
+		} catch (SQLException e) {
+		LOG.error(Constants.ERROR_DURING_GET_USERS_BY_ROLE, e);
+		}
+
+		return users;
+	}
+
 	@Override
 	public List<Userdto> getAllUsers() {
-	    List<Userdto> users = new ArrayList<>();
-	    String query = Query.GET_ALL_USERS;
+		String query = Query.GET_ALL_USERS;
+		List<Userdto> users = new ArrayList<>();
 
-	    try {
-	    	PreparedStatement ps = connection.prepareStatement(query);
-	    	 ResultSet rs = ps.executeQuery();
+		try {
+			PreparedStatement ps = connection.prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
 
-	        while (rs.next()) {
-	            Userdto user = new Userdto();
-	            user.setId(rs.getInt("id"));
-	            user.setName(rs.getString("name"));
-	            user.setEmail(rs.getString("email"));
-	            user.setRole(rs.getString("role"));
-	            users.add(user);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
+			while (rs.next()) {
+				Userdto user = new Userdto();
+				user.setId(rs.getInt("id"));
+				user.setName(rs.getString("name"));
+				user.setFirstName(rs.getString("first_name"));
+				user.setEmail(rs.getString("email"));
+				user.setRole(rs.getString("role"));
+				user.setFonction(rs.getString("fonction"));
+				users.add(user);
+			}
+		} catch (SQLException e) {
+			LOG.error(Constants.ERROR_DURING_GET_USERS, e);
+		}
 
-	    return users;
+		return users;
 	}
 
 }
