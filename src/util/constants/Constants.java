@@ -1,6 +1,5 @@
 package util.constants;
 
-
 public class Constants {
 
 	public static final String USER_DTO_IS_EMPTY = "User dto submited is empty.";
@@ -69,8 +68,10 @@ public class Constants {
 	public static final String EMPTY_ROOM_DTO = "Room DTO submitted is empty";
 	public static final String ERROR_DURING_ROOM_INSERTION = "Error during room insertion!";
 	public static final String ERROR_CREATE_ROOM = "Error while creating the room";
-	public static final String ERROR_GET_PLANNING = "Error during operation to get planning. Error message: {}";
+	public static final String ERROR_GET_ALL_PLANNING = "Error retrieving all planning.";
 	public static final String ERROR_GET_PLANNING_BY_PERIOD = "Error during operation to get planning by piriod. Error message: {}";
 	public static final String ERROR_GET_ALL_ROOMS = "Error retrieving all rooms";
+	public static final String ERROR_DURING_GET_USERS = "Erreur lors de la récupération des utilisateurs ";
+	public static final String ERROR_DURING_GET_USERS_BY_ROLE = "Erreur lors de la récupération des utilisateurs par rôle";
 
 }
