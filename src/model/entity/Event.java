@@ -5,8 +5,10 @@ import java.util.List;
 
 import model.entity.enumeration.TypeEvent;
 import model.dto.EventRoomdto;
+import model.dto.Planningdto;
 import model.dto.Userdto;
 import model.entity.enumeration.Format;
+import model.entity.enumeration.StatusEvents;
 
 public class Event {
 
@@ -15,56 +17,51 @@ public class Event {
 	private LocalDateTime dateDebut;
 	private LocalDateTime dateFin;
 	private TypeEvent typeEvent;
-	private EventRoomdto eventRoom;
 	private Format format;
-	private String moderator;
+	private EventRoomdto eventRoom;
+	private StatusEvents status;
 	private String tutor;
+	private String moderator;
+	private Planningdto idPlanning;
 	private List<Userdto> users;
 	private List<String> externalParticipantsEmails;
 
 	public Event(int id, String title, LocalDateTime dateDebut, LocalDateTime dateFin, TypeEvent typeEvent,
-			EventRoomdto eventRoom, Format format,List<String> externalParticipantsEmails, String moderator, String tutor, List<Userdto> users) {
+			Format format, EventRoomdto eventRoom, StatusEvents status, String tutor,
+			String moderator, List<Userdto> users, List<String> externalParticipantsEmails, Planningdto idPlanning) {
+		super();
 		this.id = id;
 		this.title = title;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.typeEvent = typeEvent;
-		this.eventRoom = eventRoom;
 		this.format = format;
-		this.moderator = moderator;
+		this.eventRoom = eventRoom;
+		this.idPlanning = idPlanning;
+		this.status = status;
 		this.tutor = tutor;
+		this.moderator = moderator;
 		this.users = users;
 		this.externalParticipantsEmails = externalParticipantsEmails;
 	}
 
-	public Event(String title, LocalDateTime dateDebut, LocalDateTime dateFin, TypeEvent typeEvent,
-			EventRoomdto eventRoom, Format format, String moderator, String tutor, List<Userdto> users, List<String> externalParticipantsEmails) {
-		this.title = title;
-		this.dateDebut = dateDebut;
-		this.dateFin = dateFin;
-		this.typeEvent = typeEvent;
-		this.eventRoom = eventRoom;
-		this.format = format;
-		this.moderator = moderator;
-		this.tutor = tutor;
-		this.users = users;
-		this.externalParticipantsEmails = externalParticipantsEmails;
-	}
-
-	
-	public Event(String title, LocalDateTime dateDebut, LocalDateTime dateFin, TypeEvent typeEvent, EventRoomdto eventRoom,
-			List<Userdto> users, Format format, String moderator, String tutor) {
+	public Event(String title, LocalDateTime dateDebut, LocalDateTime dateFin, TypeEvent typeEvent, Format format,
+			EventRoomdto eventRoom, Planningdto idPlanning, StatusEvents status, String tutor, String moderator,
+			List<Userdto> users, List<String> externalParticipantsEmails) {
 		super();
 		this.title = title;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 		this.typeEvent = typeEvent;
-		this.eventRoom = eventRoom;
 		this.format = format;
+		this.eventRoom = eventRoom;
+		this.idPlanning = idPlanning;
+		this.status = status;
+		this.tutor = tutor;
+		this.moderator = moderator;
 		this.users = users;
-
+		this.externalParticipantsEmails = externalParticipantsEmails;
 	}
-
 
 	public Event() {
 	}
@@ -117,6 +114,22 @@ public class Event {
 		this.eventRoom = eventRoom;
 	}
 
+	public Planningdto getIdPlanning() {
+		return idPlanning;
+	}
+
+	public void setIdPlanning(Planningdto idPlanning) {
+		this.idPlanning = idPlanning;
+	}
+
+	public StatusEvents getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusEvents status) {
+		this.status = status;
+	}
+
 	public List<Userdto> getUsers() {
 		return users;
 	}
@@ -132,7 +145,7 @@ public class Event {
 	public void setFormat(Format format) {
 		this.format = format;
 	}
-	
+
 	public String getModerator() {
 		return moderator;
 	}
@@ -145,10 +158,10 @@ public class Event {
 		return tutor;
 	}
 
-	public void setTutor(String tutor) {
-		this.tutor = tutor;
+	public void setTutor(String string) {
+		this.tutor = string;
 	}
-	
+
 	public List<String> getExternalParticipantsEmails() {
 		return externalParticipantsEmails;
 	}
@@ -156,8 +169,5 @@ public class Event {
 	public void setExternalParticipantsEmails(List<String> externalParticipantsEmails) {
 		this.externalParticipantsEmails = externalParticipantsEmails;
 	}
-
-
-
 
 }
