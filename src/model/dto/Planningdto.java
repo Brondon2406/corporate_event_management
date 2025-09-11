@@ -9,9 +9,6 @@ public class Planningdto {
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
 	private Userdto tutorPlanning;
-	
-	
-
 
 	public Planningdto(String motif, LocalDate dateDebut, LocalDate dateFin, Userdto tutorPlanning) {
 		super();
@@ -21,16 +18,18 @@ public class Planningdto {
 		this.tutorPlanning = tutorPlanning;
 	}
 
-	public Planningdto() {
-		super();
-	}
-
-	public Planningdto(int id, String newMotif, LocalDate newDateDebut, LocalDate newDateFin, Userdto newTutorPlanning) {
+	public Planningdto(int id, String newMotif, LocalDate newDateDebut, LocalDate newDateFin,
+			Userdto newTutorPlanning) {
 		super();
 		this.motif = newMotif;
 		this.dateDebut = newDateDebut;
 		this.dateFin = newDateFin;
 		this.tutorPlanning = newTutorPlanning;
+	}
+
+	
+	
+	public Planningdto() {
 	}
 
 	public int getId() {
@@ -78,7 +77,5 @@ public class Planningdto {
 		return "Planningdto [id=" + id + ", motif=" + motif + ", dateDebut=" + dateDebut + ", dateFin=" + dateFin
 				+ ", tutorPlanning=" + tutorPlanning + "]";
 	}
-
-	
 
 }

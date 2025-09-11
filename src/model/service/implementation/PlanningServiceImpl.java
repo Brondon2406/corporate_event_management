@@ -194,7 +194,7 @@ public class PlanningServiceImpl implements PlanningService {
 	@Override
 	public List<Planningdto> getAllPlannings() {
 		String query = Query.SELECT_ALL_PLANNING;
-		List<Planningdto> plannings = new ArrayList<>();
+		List<Planningdto> planningdto = new ArrayList<>();
 
 		try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
 
@@ -210,14 +210,14 @@ public class PlanningServiceImpl implements PlanningService {
 				tutor.setId(tutorId);
 				planning.setTutorPlanning(tutor);
 
-				plannings.add(planning);
+				planningdto.add(planning);
 			}
 
 		} catch (SQLException e) {
-			LOG.error(Constants.ERROR_GET_PLANNING, e);
+			LOG.error(Constants.ERROR_GET_ALL_PLANNING, e);
 		}
 
-		return plannings;
+		return planningdto;
 	}
 
 }

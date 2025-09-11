@@ -37,6 +37,7 @@ public class MappingUserImpl implements MappingUser {
 			Userdto userdto = new Userdto();
 			userdto.setEmail(user.getEmail().isEmpty() ? null : user.getEmail());
 			userdto.setFonction(user.getFonction().isEmpty() ? null : user.getFonction());
+			userdto.setFirstName(user.getFirstName().isEmpty() ? null : user.getFirstName());
 			userdto.setName(user.getName().isEmpty() ? null : user.getName());
 			userdto.setPassword(user.getPassword().isEmpty() ? null : user.getPassword());
 			userdto.setId(user.getId() <= 0 ? 0 : user.getId());
@@ -66,6 +67,7 @@ public class MappingUserImpl implements MappingUser {
 			user.setEmail(userdto.getEmail().isEmpty() ? null : userdto.getEmail());
 			user.setFonction(userdto.getFonction().isEmpty() ? null : userdto.getFonction());
 			user.setName(userdto.getName().isEmpty() ? null : userdto.getName());
+			user.setFirstName(userdto.getFirstName().isEmpty() ? null : userdto.getFirstName());
 			user.setPassword(userdto.getPassword().isEmpty() ? null : userdto.getPassword());
 			user.setRole(userdto.getRole().isEmpty() ? null : Role.fromString(userdto.getRole()));
 			return user;

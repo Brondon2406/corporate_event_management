@@ -196,12 +196,12 @@ public class PlanningManagerView {
 				for (Planningdto e : events) {
 					String tutorName = (e.getTutorPlanning() != null) ? e.getTutorPlanning().getName() : "Non assigné";
 					String tutorFirstName = (e.getTutorPlanning() != null) ? e.getTutorPlanning().getFirstName() : "";
-					 System.out.println("ID = " + e.getId());
-					    System.out.println("Motif = " + e.getMotif());
-					    System.out.println("Début = " + e.getDateDebut());
-					    System.out.println("Fin = " + e.getDateFin());
-					    System.out.println("Tuteur = " + tutorName + " " + tutorFirstName);
-					    System.out.println("-----------------------------------");
+					System.out.println("ID = " + e.getId());
+					System.out.println("Motif = " + e.getMotif());
+					System.out.println("Début = " + e.getDateDebut());
+					System.out.println("Fin = " + e.getDateFin());
+					System.out.println("Tuteur = " + tutorName + " " + tutorFirstName);
+					System.out.println("-----------------------------------");
 				}
 			}
 		} catch (DateTimeParseException dtpe) {
@@ -280,8 +280,8 @@ public class PlanningManagerView {
 
 		if (room != null) {
 			System.out.println(" Salle trouvée : " + room.getName());
-		    System.out.println(" Capacité=" + room.getCapacity());
-		    System.out.println("Active="+ room.isActive());
+			System.out.println(" Capacité=" + room.getCapacity());
+			System.out.println("Active=" + room.isActive());
 			System.out.println("-------------------------------");
 		} else {
 			System.out.println("Aucune salle trouvée avec cet ID.");
@@ -289,6 +289,7 @@ public class PlanningManagerView {
 	}
 
 	public void getAllRoom() {
+		
 		var rooms = roomController.getAllRoomsController();
 
 		if (rooms.isEmpty()) {
