@@ -15,7 +15,7 @@ public interface UserService {
 	public Userdto getUserById(int userId);
 
 	public List<Userdto> getAllUsers();
-
+	
 	public List<Userdto> findUsersByRole(String role);
 
 }

@@ -50,9 +50,10 @@ public class UserServiceImpl implements UserService {
 
 			Userdto userDTO = new Userdto();
 			userDTO.setId(user.getId());
-			userDTO.setFirstName(user.getFirstName());
 			userDTO.setName(user.getName());
+			userDTO.setFirstName(user.getFirstName());
 			userDTO.setEmail(user.getEmail());
+			userDTO.setName(user.getPassword());
 			userDTO.setRole(user.getRole());
 			userDTO.setFonction(user.getFonction());
 
@@ -75,7 +76,8 @@ public class UserServiceImpl implements UserService {
 			ps.setString(2, userDTO.getFirstName());
 			ps.setString(3, userDTO.getEmail());
 			ps.setString(4, userDTO.getPassword());
-			ps.setInt(5, userDTO.getId());
+			ps.setString(5, userDTO.getFonction());
+			ps.setInt(6, userDTO.getId());
 
 			int rows = ps.executeUpdate();
 			return rows > 0;
@@ -88,11 +90,18 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean deleteUser(int userId) {
-		String query = Query.DELETE_USER;
+		String deleteEventUsers = Query.DELETE_USER_FROM_EVENTUSERS;
+		String deleteUser = Query.DELETE_USER;
+
 		try {
-			PreparedStatement ps = connection.prepareStatement(query);
+			PreparedStatement ps = connection.prepareStatement(deleteEventUsers);
+			PreparedStatement ps2 = connection.prepareStatement(deleteUser);
+
 			ps.setInt(1, userId);
-			int rows = ps.executeUpdate();
+			ps.executeUpdate();
+
+			ps2.setInt(1, userId);
+			int rows = ps2.executeUpdate();
 
 			if (rows > 0) {
 				LOG.info("Utilisateur avec ID {} supprimé avec succès", userId);
@@ -156,7 +165,7 @@ public class UserServiceImpl implements UserService {
 			}
 
 		} catch (SQLException e) {
-		LOG.error(Constants.ERROR_DURING_GET_USERS_BY_ROLE, e);
+			LOG.error(Constants.ERROR_DURING_GET_USERS_BY_ROLE, e);
 		}
 
 		return users;

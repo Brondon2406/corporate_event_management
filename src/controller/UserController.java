@@ -24,7 +24,7 @@ public class UserController {
 			return null;
 		}
 		return dto;
-	}
+	}	
 
 	/**
 	 * Met à jour les informations d'un utilisateur
@@ -52,11 +52,6 @@ public class UserController {
 		}
 	}
 
-	public static Userdto getCurrentUser1() {
-
-		return null;
-	}
-
 	public boolean userDeleteController(int userId) {
 		return userService.deleteUser(userId);
 	}
@@ -74,7 +69,7 @@ public class UserController {
 	public static void setCurrentUser(Userdto user) {
 		currentUser = user;
 	}
-
+	
 	public static Userdto getCurrentUser() {
 		return currentUser;
 	}
@@ -95,6 +90,7 @@ public class UserController {
 
 	    return users;
 	}
+	
 
 
 }

@@ -71,7 +71,14 @@ public class Constants {
 	public static final String ERROR_GET_ALL_PLANNING = "Error retrieving all planning.";
 	public static final String ERROR_GET_PLANNING_BY_PERIOD = "Error during operation to get planning by piriod. Error message: {}";
 	public static final String ERROR_GET_ALL_ROOMS = "Error retrieving all rooms";
-	public static final String ERROR_DURING_GET_USERS = "Erreur lors de la récupération des utilisateurs ";
-	public static final String ERROR_DURING_GET_USERS_BY_ROLE = "Erreur lors de la récupération des utilisateurs par rôle";
+	public static final String ERROR_DURING_GET_USERS = "Error during retrieving users.";
+	public static final String ERROR_DURING_GET_USERS_BY_ROLE = "Error during retrieving users by role.";
+	public static final String ERROR_DURING_USERS_INSERTION_EVENT = "Error during inserting participants for event ID ";
+	public static final String ERROR_DURING_GET_INTERNALUSERS_FOR_EVENT = "Error during retrieving internal users for event ID ";
+	public static final String ERROR_DURING_GET_EXTERNALUSERS_FOR_EVENT = "Error during retrieving external users for event ID ";
+	public static final String ERROR_DURING_UPDATE_USERS_OF_EVENT = "Error during updating participants for event ID ";
+	public static final String ERROR_UPDATE_STATUS_OF_EVENT = "Error during updating status for event ID ";
+	public static final String ERROR_UPDATE_EVENT_WITH_STATUS_ = "Error during retrieving events with status ";
+	public static final String ERROR_DURING_GET_EVENT_ASSIGNED_FOR_USERS = "Error during retrieving assigned events for user ";
 
 }
