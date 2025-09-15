@@ -47,19 +47,19 @@ public class DashboardPlanningManager {
 			case 1:
 				planningView.creatPlanning();
 				break;
-				
+
 			case 2:
 				planningView.updatePlanning();
 				break;
-				
+
 			case 3:
 				planningView.deletePlanning();
 				break;
-				
+
 			case 4:
 				planningView.getEventByPeriod();
 				break;
-				
+
 			case 5:
 				planningView.creatRoom();
 				break;
@@ -71,26 +71,25 @@ public class DashboardPlanningManager {
 			case 7:
 				planningView.deleteRoom();
 				break;
-				
+
 			case 8:
-				planningView.getRoomById();	
+				planningView.getRoomById();
 				break;
 
 			case 9:
-				planningView.getAllRoom();		
+				planningView.getAllRoom();
 				break;
 
 			case 10:
-				System.out.println("Au revoir !");
+				System.out.println("Déconnexion en cours...");
 				continuer = false;
 				break;
-				
+
 			default:
-				System.out.println("Choix invalide, veuillez réessayer.");
-				break;
+				System.out.println("Choix invalide ! Veuillez réessayer.");
 			}
 		}
-
 		scanner.close();
+		System.out.println("Déconnecté avec succès !");
 	}
 }
