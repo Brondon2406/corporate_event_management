@@ -155,14 +155,16 @@ public class EventRoomServiceImpl implements EventRoomService {
 		String query = Query.GET_ALL_ACTIVE_ROOMS;
 		List<EventRoomdto> rooms = new ArrayList<>();
 
-		try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
-
+		try {
+			PreparedStatement ps = connection.prepareStatement(query);
+			ResultSet rs = ps.executeQuery() ;
 			while (rs.next()) {
-				EventRoom room = new EventRoom();
+				EventRoomdto room = new EventRoomdto();
 				room.setId(rs.getInt("id"));
 				room.setName(rs.getString("name"));
 				room.setCapacity(rs.getInt("capacity"));
 				room.setActive(rs.getBoolean("active"));
+				rooms.add(room);
 			}
 
 		} catch (SQLException e) {
