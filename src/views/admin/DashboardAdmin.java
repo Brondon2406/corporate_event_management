@@ -2,114 +2,93 @@ package views.admin;
 
 import java.util.Scanner;
 
-import controller.AuthenticationController;
-
 public class DashboardAdmin {
-	private static Scanner scanner = new Scanner(System.in);
-	AuthenticationController controller = new AuthenticationController();
 
 	public static void AdminMenu() {
+		AdminView adminView = new AdminView();
+		Scanner scanner = new Scanner(System.in);
 		boolean continuer = true;
 
-		System.out.println("=================== TABLEAU DE BORD ===================");
+		System.out.println("=================== TABLEAU DE BORD ADMIN ===================");
 
 		while (continuer) {
+
 			System.out.println("\n============== Gestion des utilisateurs ==============");
-			System.out.println("1 - Modifier un Utilisateur ");
-			System.out.println("2 - Supprimer un Utilisateur");
-			System.out.println("3 - Rechercher un Utilisateur par son Id ");
-			System.out.println("4 - Lister les utlisateurs");
+			System.out.println("1 - Modifier mon profil");
+			System.out.println("2 - Créer un utilisateur");
+			System.out.println("3 - Supprimer un utilisateur");
+			System.out.println("4 - Rechercher un utilisateur par ID");
+			System.out.println("5 - Rechercher les utilisateurs par rôle");
+			System.out.println("6 - Lister tous les utilisateurs");
 
-			System.out.println("\n============== Gestion des Planning ==============");
-			System.out.println("5 - Ajouter un planning ");
-			System.out.println("6 - Modiffier un planning");
-			System.out.println("7 - Supprimer un planning ");
-			System.out.println("8 - Lister les Evenemants par periode");
+			System.out.println("\n============== Gestion des événements ==============");
+			System.out.println("7 - Modifier le statut d'un événement");
+			System.out.println("8 - Liste des événements à valider (en attente)");
+			System.out.println("9 - Liste des événements validés");
+			System.out.println("10 - Liste des événements rejetés");
+			System.out.println("11 - Liste des événements expirés");
+			System.out.println("12 - Voir les statistiques et rapports");
 
-			System.out.println("\n============== Gestion des Gestion des salles ==============");
-			System.out.println("9 - Ajouter un Salle ");
-			System.out.println("10 - Modiffier un Salle");
-			System.out.println("11 - Supprimer un Salle ");
-			System.out.println("12 - Rechercher un Salle par son Id");
-			System.out.println("13 - Lister les Salles");
+			System.out.println("\n13 - Se déconnecter");
 
-			System.out.println("\n14 - Se deconnecter");
-
-			int choix = -1;
-			while (choix == -1) {
-			    System.out.print("Choisissez une option : ");
-			    String input = scanner.nextLine();
-
-			    try {
-			        choix = Integer.parseInt(input);
-			    } catch (NumberFormatException e) {
-			        System.out.println("Veuillez entrer un nombre valide .");
-			    }
-			}
+			System.out.print("\nEntrez votre choix : ");
+			int choix = scanner.nextInt();
+			scanner.nextLine();
 
 			switch (choix) {
 			case 1:
-				// LOG.info("Modifier un Utilisateur ");
-
+				adminView.modifyProfile();
 				break;
 			case 2:
-				// LOG.info("Supprimer un Utilisateur");
-
+				adminView.creatUser();
 				break;
 			case 3:
-				// LOG.info("Rechercher un Utilisateur par son Id ");
-
+				adminView.deleteUser();
 				break;
 			case 4:
-				// LOG.info("Lister les utlisateurs ");
-
+				adminView.searchUserById();
 				break;
 			case 5:
-				// LOG.info("Ajouter un planning ");
+				adminView.searchUsersByRole();
 				break;
-
 			case 6:
-				// LOG.info("Modifier un planning ");
+				adminView.listAllUsers();
 				break;
 
 			case 7:
-				// LOG.info("Supprimer un planning ");
+				adminView.modifyEventStatus();
 				break;
+
 			case 8:
-				// LOG.info("Lister les Evenemants par periode ");
+				adminView.listPendingEvents();
 				break;
 
 			case 9:
-				// LOG.info("Ajouter un Salle ");
+				adminView.listValidatedEvents();
 				break;
 
 			case 10:
-				// LOG.info("Modifier un Salle ");
+				adminView.listRejectedEvents();
 				break;
-
+			
 			case 11:
-				// LOG.info("Supprimer un Salle ");
+				adminView.listExpiredEvents();
 				break;
 
 			case 12:
-				// LOG.info("Rechercher la salle par son Id ");
+				adminView.viewStatistics();
 				break;
 
 			case 13:
-				// LOG.info("Lister les Salles ");
-				break;
-
-			case 14:
-				System.out.println("Au revoir !");
+				System.out.println("Déconnexion en cours...");
 				continuer = false;
 				break;
+
 			default:
-				System.out.println("Choix invalide, veuillez réessayer.");
-				break;
+				System.out.println("Choix invalide ! Veuillez réessayer.");
 			}
 		}
-
 		scanner.close();
+		System.out.println("Déconnecté avec succès !");
 	}
-
 }

@@ -6,16 +6,18 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import controller.EventController;
 import controller.UserController;
-
+import model.dto.Eventdto;
 import model.dto.Userdto;
-
 import model.entity.enumeration.Role;
+import model.entity.enumeration.StatusEvents;
 
 public class AdminView {
 	private static final Logger LOG = LogManager.getLogger(UserController.class);
 	private static final Scanner scanner = new Scanner(System.in);
 	private static final UserController userController = new UserController();
+	private static final EventController eventController = new EventController();
 
 	public void modifyProfile() {
 		System.out.println("\n=== Modification du profil ===");
@@ -32,13 +34,15 @@ public class AdminView {
 			currentUser.setName(name);
 		}
 
-		System.out.print("Prénom actuel : " + currentUser.getFirstName() + " | Nouveau prénom (laisser vide pour conserver) : ");			
+		System.out.print(
+				"Prénom actuel : " + currentUser.getFirstName() + " | Nouveau prénom (laisser vide pour conserver) : ");
 		String firstName = scanner.nextLine().trim();
 		if (!firstName.isEmpty() && checkName(firstName)) {
 			currentUser.setFirstName(firstName);
 		}
 
-		System.out.print("Email actuel : " + currentUser.getEmail() + " | Nouveau email (laisser vide pour conserver) : ");				
+		System.out.print(
+				"Email actuel : " + currentUser.getEmail() + " | Nouveau email (laisser vide pour conserver) : ");
 		String email = scanner.nextLine().trim();
 		if (!email.isEmpty() && checkEmail(email)) {
 			currentUser.setEmail(email);
@@ -50,7 +54,8 @@ public class AdminView {
 			currentUser.setPassword(password);
 		}
 
-		System.out.print("Fonction actuelle : " + currentUser.getFonction()+ " | Nouvelle fonction (laisser vide pour conserver) : ");			
+		System.out.print("Fonction actuelle : " + currentUser.getFonction()
+				+ " | Nouvelle fonction (laisser vide pour conserver) : ");
 		String fonction = scanner.nextLine().trim();
 		if (!fonction.isEmpty()) {
 			currentUser.setFonction(fonction);
@@ -173,7 +178,7 @@ public class AdminView {
 	}
 
 	public void deleteUser() {
-		System.out.print("ID de l'événement à supprimer : ");
+		System.out.print("ID de l'Utilisateur à supprimer : ");
 		int id = Integer.parseInt(scanner.nextLine());
 
 		boolean success = userController.userDeleteController(id);
@@ -264,33 +269,127 @@ public class AdminView {
 			}
 		}
 	}
-/*
-	public void listPendingEvents() {
 
+	public void modifyEventStatus() {
+
+		List<Eventdto> allEvents = eventController.getAllEvents();
+		if (allEvents.isEmpty()) {
+			System.out.println("Aucun événement disponible.");
+			return;
+		}
+
+		System.out.println("===== Tous les événements =====");
+		for (Eventdto e : allEvents) {
+			System.out.println(e.getId() + " - " + e.getTitle() + " | Statut actuel : " + e.getStatus());
+		}
+
+		System.out.print("Entrez l'ID de l'événement à modifier : ");
+		int eventId = scanner.nextInt();
+		scanner.nextLine();
+
+		Eventdto selectEvent = eventController.getEventByIdController(eventId);
+		if (selectEvent == null) {
+			System.out.println("Événement introuvable !");
+			return;
+		}
+
+		System.out.println("===== Choisissez le nouveau statut =====");
+
+		List<String> statuses = StatusEvents.getAllStatus();
+		for (int i = 0; i < statuses.size(); i++) {
+			System.out.println((i + 1) + " - " + statuses.get(i));
+		}
+
+		int statusChoice;
+		while (true) {
+			System.out.print("Numéro du statut : ");
+			if (scanner.hasNextInt()) {
+				statusChoice = scanner.nextInt();
+				scanner.nextLine();
+				if (statusChoice >= 1 && statusChoice <= statuses.size()) {
+					break;
+				} else {
+					System.out.println("Numéro invalide ! Choisissez entre 1 et " + statuses.size() + ".");
+				}
+			} else {
+				System.out.println("Entrée invalide ! Veuillez entrer un chiffre.");
+				scanner.nextLine();
+			}
+		}
+
+		StatusEvents newStatus = StatusEvents.valueOf(statuses.get(statusChoice - 1));
+
+		boolean success = eventController.updateEventStatusController(selectEvent, newStatus);
+
+		if (success) {
+			System.out.println("Statut de l'événement '" + selectEvent.getTitle() + "' modifié en : " + newStatus);
+		} else {
+			System.out.println("Erreur lors de la mise à jour du statut de l'événement.");
+		}
+	}
+
+	public void listPendingEvents() {
+		List<Eventdto> events = eventController.getEventsByStatusController(StatusEvents.PENDING);
+		if (events.isEmpty()) {
+			System.out.println("Aucun événement en attente.");
+		} else {
+			System.out.println("===== Événements en attente =====");
+			for (Eventdto e : events) {
+				System.out.println(" | Id : " + e.getId() + " | Title : " + e.getTitle() + " | DateDebut : "
+						+ e.getDateDebut() + " | DateFin : " + e.getDateFin() + " | Statut : " + e.getStatus());
+			}
+		}
+	}
+
+	public void listValidatedEvents() {
+		List<Eventdto> events = eventController.getEventsByStatusController(StatusEvents.VALIDATED);
+		if (events.isEmpty()) {
+			System.out.println("Aucun événement validé.");
+		} else {
+			System.out.println("===== Événements validés =====");
+			for (Eventdto e : events) {
+				System.out.println(" | Id : " + e.getId() + " | Title : " + e.getTitle() + " | DateDebut : "
+						+ e.getDateDebut() + " | DateFin : " + e.getDateFin() + " | Statut : " + e.getStatus());
+			}
+		}
 	}
 
 	public void listRejectedEvents() {
-
-	}
-
-	public void listCanceledEvents() {
-
-	}
-
-	public void sendNotification() {
-
+		List<Eventdto> events = eventController.getEventsByStatusController(StatusEvents.REJECTED);
+		if (events.isEmpty()) {
+			System.out.println("Aucun événement rejeté.");
+		} else {
+			System.out.println("===== Événements rejetés =====");
+			for (Eventdto e : events) {
+				System.out.println(" | Id : " + e.getId() + " | Title : " + e.getTitle() + " | DateDebut : "
+						+ e.getDateDebut() + " | DateFin : " + e.getDateFin() + " | Statut : " + e.getStatus());
+			}
+		}
 	}
 
 	public void listExpiredEvents() {
-
+		List<Eventdto> events = eventController.getEventsByStatusController(StatusEvents.EXPIRED);
+		if (events.isEmpty()) {
+			System.out.println("Aucun événement expiré.");
+		} else {
+			System.out.println("===== Événements expirés =====");
+			for (Eventdto e : events) {
+				System.out.println(" | Id : " + e.getId() + " | Title : " + e.getTitle() + " | DateDebut : "
+						+ e.getDateDebut() + " | DateFin : " + e.getDateFin() + " | Statut : " + e.getStatus());
+			}
+		}
 	}
 
 	public void viewStatistics() {
+		int total = eventController.getAllEvents().size();
+		int pending = eventController.getEventsByStatusController(StatusEvents.PENDING).size();
+		int validated = eventController.getEventsByStatusController(StatusEvents.VALIDATED).size();
+		int rejected = eventController.getEventsByStatusController(StatusEvents.REJECTED).size();
+		int expired = eventController.getEventsByStatusController(StatusEvents.EXPIRED).size();
 
+		System.out.println("===== Statistiques =====");
+		System.out.println("Total : " + total + ", En attente : " + pending + ", Validés : " + validated
+				+ ", Rejetés : " + rejected + ", Expirés : " + expired);
 	}
 
-	public void manageGlobalEvents() {
-
-	}
-	*/
 }
