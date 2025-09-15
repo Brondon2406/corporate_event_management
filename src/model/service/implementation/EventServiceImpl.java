@@ -12,6 +12,8 @@ import model.database.DatabaseConnection;
 import model.dto.EventRoomdto;
 import model.dto.Eventdto;
 import model.dto.Planningdto;
+import model.entity.enumeration.ParticipationUserToEvent;
+import model.entity.enumeration.StatusEvents;
 import model.service.EventService;
 import model.service.sql.Query;
 import util.constants.Constants;
@@ -119,39 +121,41 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public Eventdto getEventById(int id) {
-		String query = Query.GET_EVENT_BY_ID;
-		Eventdto events = null;
-		try (PreparedStatement ps = connection.prepareStatement(query)) {
-			ps.setInt(1, id);
+	    String query = Query.GET_EVENT_BY_ID;
+	    Eventdto event = null;
 
-			try (ResultSet rs = ps.executeQuery()) {
-				if (rs.next()) {
-					Eventdto event = new Eventdto();
-					event.setId(rs.getInt("id"));
-					event.setTitle(rs.getString("title"));
-					event.setDateDebut((LocalDateTime) rs.getObject("date_debut"));
-					event.setDateFin((LocalDateTime) rs.getObject("date_fin"));
-					event.setTypeEvent(rs.getString("type_event"));
-					event.setFormat(rs.getString("format"));
-					int eventRoomId = rs.getInt("room_id");
-					EventRoomdto eventRoom = new EventRoomdto();
-					eventRoom.setId(eventRoomId);
-					event.setStatus(rs.getString("status"));
-					event.setModerator(rs.getString("moderator"));
-					event.setTutor(rs.getString("tutor"));
-					int planningId = rs.getInt("id_planning");
-					Planningdto idplanning = new Planningdto();
-					idplanning.setId(planningId);
+	    try (PreparedStatement ps = connection.prepareStatement(query)) {
+	        ps.setInt(1, id);
 
-				}
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                event = new Eventdto();
+	                event.setId(rs.getInt("id"));
+	                event.setTitle(rs.getString("title"));
+	                event.setDateDebut(rs.getTimestamp("date_debut").toLocalDateTime());
+	                event.setDateFin(rs.getTimestamp("date_fin").toLocalDateTime());
+	                event.setTypeEvent(rs.getString("type_event"));
+	                event.setFormat(rs.getString("format_event"));
+	                int eventRoomId = rs.getInt("room_id");
+	                EventRoomdto eventRoom = new EventRoomdto();
+	                eventRoom.setId(eventRoomId);
+	                event.setEventRoom(eventRoom);
+	                event.setStatus(rs.getString("status"));
+	                event.setModerator(rs.getString("moderator"));
+	                event.setTutor(rs.getString("tutor"));
+	                int planningId = rs.getInt("id_planning"); 
+	                Planningdto idplanning = new Planningdto(); 
+	                idplanning.setId(planningId);
+	         
+	            }
+	        }
+	    } catch (SQLException e) {
+	        LOG.error(Constants.ERROR_GET_EVENT_BY_ID, e);
+	    }
 
-			}
-
-		} catch (SQLException e) {
-			LOG.error(Constants.ERROR_GET_EVENT_BY_ID, e);
-		}
-		return events;
+	    return event;
 	}
+
 
 	@Override
 	public List<Eventdto> getAllEvents() {
@@ -196,7 +200,6 @@ public class EventServiceImpl implements EventService {
 	public boolean linkUsersToEvent(int eventId, List<Integer> internalUsersIds, List<String> externalUsersEmails) {
 		String query = Query.LINK_EVENT_WITH_INTERNAL_USERS;
 
-		
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
 			for (Integer userId : internalUsersIds) {
 				ps.setInt(1, eventId);
@@ -219,47 +222,46 @@ public class EventServiceImpl implements EventService {
 			return true;
 
 		} catch (SQLException e) {
-			LOG.error("Erreur lors de l'insertion des participants pour l'événement ID " + eventId, e);
+			LOG.error(Constants.ERROR_DURING_USERS_INSERTION_EVENT,eventId ,e);
 			return false;
 		}
 	}
-	
+
 	@Override
 	public List<Integer> getInternalUsersForEvent(int eventId) {
-	    List<Integer> internalUsers = new ArrayList<>();
-	    String query = "SELECT user_id FROM event_users WHERE event_id = ?";
+		List<Integer> internalUsers = new ArrayList<>();
+		String query = Query.GET_INTERNALUSERS_FOR_EVENT;
 
-	    try (PreparedStatement ps = connection.prepareStatement(query)) {
-	        ps.setInt(1, eventId);
-	        try (ResultSet rs = ps.executeQuery()) {
-	            while (rs.next()) {
-	                internalUsers.add(rs.getInt("user_id"));
-	            }
-	        }
-	    } catch (SQLException e) {
-	        LOG.error("Erreur lors de la récupération des utilisateurs internes pour l'événement ID " + eventId, e);
-	    }
-	    return internalUsers;
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+			ps.setInt(1, eventId);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					internalUsers.add(rs.getInt("user_id"));
+				}
+			}
+		} catch (SQLException e) {
+			LOG.error(Constants.ERROR_DURING_GET_INTERNALUSERS_FOR_EVENT,eventId ,e);
+		}
+		return internalUsers;
 	}
 
 	@Override
 	public List<String> getExternalUsersForEvent(int eventId) {
-	    List<String> externalUsers = new ArrayList<>();
-	    String query = "SELECT external_email FROM event_users WHERE event_id = ?";
+		List<String> externalUsers = new ArrayList<>();
+		String query = Query.GET_EXTERNALUSERS_FOR_EVENT;
 
-	    try (PreparedStatement ps = connection.prepareStatement(query)) {
-	        ps.setInt(1, eventId);
-	        try (ResultSet rs = ps.executeQuery()) {
-	            while (rs.next()) {
-	                externalUsers.add(rs.getString("external_email"));
-	            }
-	        }
-	    } catch (SQLException e) {
-	        LOG.error("Erreur lors de la récupération des utilisateurs externes pour l'événement ID " + eventId, e);
-	    }
-	    return externalUsers;
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+			ps.setInt(1, eventId);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					externalUsers.add(rs.getString("external_email"));
+				}
+			}
+		} catch (SQLException e) {
+			LOG.error(Constants.ERROR_DURING_GET_EXTERNALUSERS_FOR_EVENT,eventId ,e);
+		}
+		return externalUsers;
 	}
-
 
 	@Override
 	public boolean updateParticipantsForEvent(int eventId, List<Integer> internalUsersToAdd,
@@ -311,9 +313,187 @@ public class EventServiceImpl implements EventService {
 			return true;
 
 		} catch (SQLException e) {
-			LOG.error("Erreur lors de la mise à jour des participants pour l'événement ID " + eventId, e);
+			LOG.error(Constants.ERROR_DURING_UPDATE_USERS_OF_EVENT,eventId ,e);
 			return false;
 		}
 	}
 
+	@Override
+	public boolean updateEventStatusService(Eventdto eventDTO, StatusEvents newStatus) {
+		if (eventDTO == null || newStatus == null) {
+			return false;
+		}
+
+		String query = Query.UPDATE_EVENTS_STATUS;
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+
+			ps.setString(1, newStatus.name());
+			ps.setInt(2, eventDTO.getId());
+
+			int rowsUpdated = ps.executeUpdate();
+			if (rowsUpdated > 0) {
+				return true;
+			}
+
+		} catch (SQLException e) {
+			LOG.error(Constants.ERROR_UPDATE_STATUS_OF_EVENT,eventDTO.getId(),e);
+		}
+
+		return false;
+	}
+
+	@Override
+	public List<Eventdto> getEventsByStatusService(StatusEvents status) {
+		List<Eventdto> events = new ArrayList<>();
+		String query = Query.GET_EVENTS_BY_STATUS;
+
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+			ps.setString(1, status.name());
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					Eventdto event = new Eventdto();
+					event.setId(rs.getInt("id"));
+					event.setTitle(rs.getString("title"));
+					event.setDateDebut((LocalDateTime) rs.getObject("date_debut"));
+					event.setDateFin((LocalDateTime) rs.getObject("date_fin"));
+					event.setDateFin((LocalDateTime) rs.getObject("date_fin"));
+					event.setFormat(rs.getString("format_event"));
+					int eventRoomId = rs.getInt("room_id");
+					EventRoomdto eventRoom = new EventRoomdto();
+					eventRoom.setId(eventRoomId);
+					event.setStatus(rs.getString("status"));
+					event.setModerator(rs.getString("moderator"));
+					event.setTutor(rs.getString("tutor"));
+					int planningId = rs.getInt("id_planning");
+					Planningdto idplanning = new Planningdto();
+					idplanning.setId(planningId);
+					events.add(event);
+				}
+
+			}
+		} catch (SQLException e) {
+			LOG.error(Constants.ERROR_UPDATE_EVENT_WITH_STATUS_,status,e);
+		}
+
+		return events;
+	}
+
+	@Override
+	public boolean sendNotificationService(int eventId, String message) {
+		List<String> recipients = new ArrayList<>();
+
+		String queryInternal = Query.GET_ALL_EMAIL_TO_USER_INTERNEL;
+		try (PreparedStatement ps = connection.prepareStatement(queryInternal)) {
+			ps.setInt(1, eventId);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					recipients.add(rs.getString("email"));
+				}
+			}
+		} catch (SQLException e) {
+			LOG.error(Constants.ERROR_DURING_GET_INTERNALUSERS_FOR_EVENT,eventId ,e);
+			return false;
+		}
+
+		String queryExternal = Query.GET_ALL_EMAIL_TO_USER_EXTERNEL;
+		try (PreparedStatement ps = connection.prepareStatement(queryExternal)) {
+			ps.setInt(1, eventId);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					recipients.add(rs.getString("external_email"));
+				}
+			}
+		} catch (SQLException e) {
+			LOG.error(Constants.ERROR_DURING_GET_EXTERNALUSERS_FOR_EVENT,eventId ,e);
+			return false;
+		}
+
+		for (String email : recipients) {
+			LOG.info("Notification envoyée à " + email + " : " + message);
+			System.out.println(" Email envoyé à " + email + " : " + message);
+		}
+
+		return true;
+	}
+
+	@Override
+	public List<Eventdto> getAssignedEventsService(int userId) {
+		List<Eventdto> events = new ArrayList<>();
+		String query = Query.GET_ASSIGNED_EVENT;
+
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+			ps.setInt(1, userId);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					Eventdto event = new Eventdto();
+					event.setId(rs.getInt("id"));
+					event.setTitle(rs.getString("title"));
+					event.setDateDebut((LocalDateTime) rs.getObject("date_debut"));
+					event.setDateFin((LocalDateTime) rs.getObject("date_fin"));
+					event.setDateFin((LocalDateTime) rs.getObject("date_fin"));
+					event.setFormat(rs.getString("format_event"));
+					int eventRoomId = rs.getInt("room_id");
+					EventRoomdto eventRoom = new EventRoomdto();
+					eventRoom.setId(eventRoomId);
+					event.setStatus(rs.getString("status"));
+					event.setModerator(rs.getString("moderator"));
+					event.setTutor(rs.getString("tutor"));
+					int planningId = rs.getInt("id_planning");
+					Planningdto idplanning = new Planningdto();
+					idplanning.setId(planningId);
+					events.add(event);
+				}
+			}
+		} catch (SQLException e) {
+			LOG.error(Constants.ERROR_DURING_GET_EVENT_ASSIGNED_FOR_USERS,userId ,e);
+		}
+
+		return events;
+	}
+
+	@Override
+	public ParticipationUserToEvent getUserStatusForEventService(int userId, int eventId) {
+		String query =  Query.GET_USERSTATUS_FOR_EVENT;
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+			ps.setInt(1, userId);
+			ps.setInt(2, eventId);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return ParticipationUserToEvent.valueOf(rs.getString("status_user"));
+				}
+			}
+		} catch (SQLException e) {
+			LOG.error("Erreur récupération statut user " + userId + " pour event " + eventId, e);
+		}
+		return ParticipationUserToEvent.PENDING;
+	}
+
+	@Override
+	public boolean updateUserStatusForEventService(int userId, int eventId, ParticipationUserToEvent newStatus) {
+		String query = Query.UPDATE_USERSTATUS_FOR_EVENT;
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+			ps.setString(1, newStatus.name());
+			ps.setInt(2, userId);
+			ps.setInt(3, eventId);
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			LOG.error("Erreur mise à jour statut user " + userId + " pour event " + eventId, e);
+			return false;
+		}
+	}
+
+	@Override
+	public void updateExpiredEvents() {
+	 String query = Query.UPDATE_EXPIRED_EVENTS; 
+		    try (PreparedStatement ps = connection.prepareStatement(query)) {
+		        int updated = ps.executeUpdate();
+		        if (updated > 0) {
+		            System.out.println(updated + " événements ont expiré automatiquement.");
+		        }
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		}
+
+	
 }

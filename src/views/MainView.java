@@ -2,9 +2,15 @@ package views;
 
 import java.util.Scanner;
 
-public class MainView {
+import controller.EventController;
+import scheduler.EventExpirationScheduler;
 
+public class MainView {
+	
 	public static void main(String[] args) {
+		EventController eventController = new EventController();
+		EventExpirationScheduler scheduler = new EventExpirationScheduler(eventController);
+        scheduler.start();
 		AuthenticationView view = new AuthenticationView();
 		Scanner scanner = new Scanner(System.in);
 		boolean continuer = true;

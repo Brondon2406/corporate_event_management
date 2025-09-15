@@ -1,12 +1,15 @@
 package controller;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import model.dto.Eventdto;
+import model.entity.enumeration.ParticipationUserToEvent;
+import model.entity.enumeration.StatusEvents;
 import model.service.EventService;
 import model.service.implementation.EventServiceImpl;
 import util.constants.Constants;
@@ -44,6 +47,13 @@ public class EventController {
 
 	}
 
+	public boolean updateEventStatusController(Eventdto eventDTO, StatusEvents newStatus) {
+		if (eventDTO == null || newStatus == null) {
+			return false;
+		}
+		return eventService.updateEventStatusService(eventDTO, newStatus);
+	}
+
 	public Eventdto getEventByIdController(int id) {
 		return eventService.getEventById(id);
 	}
@@ -56,13 +66,15 @@ public class EventController {
 		return eventService.getAllEvents();
 	}
 
-	public boolean linkUsersToEventController(int eventId, List<Integer> internalUsersIds, List<String> externalUsersEmails) {
+	public boolean linkUsersToEventController(int eventId, List<Integer> internalUsersIds,
+			List<String> externalUsersEmails) {
 		return eventService.linkUsersToEvent(eventId, internalUsersIds, externalUsersEmails);
 	}
-	
+
 	public boolean updateParticipantsForEventController(int eventId, List<Integer> internalUsersToAdd,
 			List<Integer> internalUsersToRemove, List<String> externalUsersToAdd, List<String> externalUsersToRemove) {
-		return eventService.updateParticipantsForEvent(eventId, internalUsersToAdd, internalUsersToRemove, externalUsersToAdd, externalUsersToRemove);
+		return eventService.updateParticipantsForEvent(eventId, internalUsersToAdd, internalUsersToRemove,
+				externalUsersToAdd, externalUsersToRemove);
 	}
 
 	public List<Integer> getInternalUsersForEvent(int eventId) {
@@ -73,6 +85,35 @@ public class EventController {
 		return eventService.getExternalUsersForEvent(eventId);
 	}
 
+	public List<Eventdto> getEventsByStatusController(StatusEvents status) {
+		if (status == null) {
+			return new ArrayList<>();
+		}
+		return eventService.getEventsByStatusService(status);
+	}
 	
+	public boolean sendNotificationController(int eventId, String message) {
+	    return eventService.sendNotificationService(eventId, message);
+	}
 
+	
+	public List<Eventdto> getAssignedEventsController(int userId) {
+	    if (userId <= 0) return new ArrayList<>();
+	    return eventService.getAssignedEventsService(userId);
+	}
+
+	public ParticipationUserToEvent getUserStatusForEventController(int userId, int eventId) {
+	    return eventService.getUserStatusForEventService(userId, eventId);
+	}
+	
+	public boolean updateUserStatusForEventController(int userId, int eventId, ParticipationUserToEvent newStatus) {
+	    return eventService.updateUserStatusForEventService(userId, eventId, newStatus);
+	}
+	
+	public void checkAndExpireEvents() {
+	    eventService.updateExpiredEvents();
+	}
+
+
+	
 }

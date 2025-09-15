@@ -19,6 +19,7 @@ import model.dto.Eventdto;
 import model.dto.Planningdto;
 import model.dto.Userdto;
 import model.entity.enumeration.Format;
+import model.entity.enumeration.ParticipationUserToEvent;
 import model.entity.enumeration.TypeEvent;
 
 public class SessionAdminView {
@@ -164,11 +165,11 @@ public class SessionAdminView {
 			}
 		}
 
-		List<EventRoomdto> salles = roomController.getAllActiveRooms();
+		List<EventRoomdto> room = roomController.getAllActiveRooms();
 		EventRoomdto eventRoom = null;
 		while (eventRoom == null) {
 			System.out.println("Liste des salles disponibles :");
-			for (EventRoomdto r : salles) {
+			for (EventRoomdto r : room) {
 				System.out.println(r.getId() + " - " + r.getName());
 			}
 
@@ -289,7 +290,6 @@ public class SessionAdminView {
 		eventdto.setModerator(moderator.getFirstName() + " " + moderator.getName());
 		eventdto.setTutor(tutor.getFirstName() + " " + tutor.getName());
 		eventdto.setIdPlanning(planningdto);
-		eventdto.setUsers(allUsers);
 		eventdto.setStatus("PENDING");
 
 		eventdto = eventController.createEvent(eventdto);
@@ -400,7 +400,7 @@ public class SessionAdminView {
 			System.out.println(" ID invalide.");
 			return;
 		}
-		
+
 		Eventdto selectedEvent = allEvents.stream().filter(ev -> ev.getId() == eventId).findFirst().orElse(null);
 
 		if (selectedEvent == null) {
@@ -485,59 +485,69 @@ public class SessionAdminView {
 		System.out.print("ID de l'événement à modifier : ");
 		int id = Integer.parseInt(scanner.nextLine());
 
-		System.out.print("Nouveau titre : ");
+		Eventdto currentEvent = eventController.getEventByIdController(id);
+		if (currentEvent == null) {
+			System.out.println("Erreur : événement introuvable !");
+			return;
+		}
+
+		System.out.print("Nouveau titre (laisser vide pour conserver : " + currentEvent.getTitle() + ") : ");
 		String newTitle = scanner.nextLine();
+		if (newTitle.isEmpty()) {
+			newTitle = currentEvent.getTitle();
+		}
 
-		System.out.print("Nouvelle date début (yyyy-MM-dd HH:mm) : ");
-		LocalDateTime newDateDebut = LocalDateTime.parse(scanner.nextLine(), formatter);
+		System.out.print("Nouvelle date début (yyyy-MM-dd HH:mm, laisser vide pour conserver : "
+				+ currentEvent.getDateDebut().format(formatter) + ") : ");
+		String inputDebut = scanner.nextLine();
+		LocalDateTime newDateDebut = inputDebut.isEmpty() ? currentEvent.getDateDebut()
+				: LocalDateTime.parse(inputDebut, formatter);
 
-		System.out.print("Nouvelle date fin (yyyy-MM-dd HH:mm) : ");
-		LocalDateTime newDateFin = LocalDateTime.parse(scanner.nextLine(), formatter);
+		System.out.print("Nouvelle date fin (yyyy-MM-dd HH:mm, laisser vide pour conserver : "
+				+ currentEvent.getDateFin().format(formatter) + ") : ");
+		String inputFin = scanner.nextLine();
+		LocalDateTime newDateFin = inputFin.isEmpty() ? currentEvent.getDateFin()
+				: LocalDateTime.parse(inputFin, formatter);
 
 		List<String> typeEvents = TypeEvent.getAllTypeEvent();
 		for (int i = 0; i < typeEvents.size(); i++) {
 			System.out.println((i + 1) + "- " + typeEvents.get(i));
 		}
-		System.out.print("Choisissez un type d'événement : ");
-		int typeIndex = Integer.parseInt(scanner.nextLine());
-		String newTypeEvent = typeEvents.get(typeIndex - 1);
+		System.out.print("Choisissez un type d'événement (laisser vide pour conserver : " + currentEvent.getTypeEvent()
+				+ ") : ");
+		String inputType = scanner.nextLine();
+		String newTypeEvent = inputType.isEmpty() ? currentEvent.getTypeEvent()
+				: typeEvents.get(Integer.parseInt(inputType) - 1);
 
 		List<String> formatList = Format.getAllFormat();
 		for (int i = 0; i < formatList.size(); i++) {
 			System.out.println((i + 1) + "- " + formatList.get(i));
 		}
-		System.out.print("Choisissez un format : ");
-		int formatIndex = Integer.parseInt(scanner.nextLine());
-		String newFormat = formatList.get(formatIndex - 1);
+		System.out.print("Choisissez un format (laisser vide pour conserver : " + currentEvent.getFormat() + ") : ");
+		String inputFormat = scanner.nextLine();
+		String newFormat = inputFormat.isEmpty() ? currentEvent.getFormat()
+				: formatList.get(Integer.parseInt(inputFormat) - 1);
 
 		EventRoomController roomController = new EventRoomController();
 		List<EventRoomdto> salles = roomController.getAllActiveRooms();
 		for (EventRoomdto r : salles) {
 			System.out.println(r.getId() + " - " + r.getName());
 		}
-		System.out.print("Nouvel ID de salle : ");
-		int roomId = Integer.parseInt(scanner.nextLine());
-		EventRoomdto newRoom = roomController.findRoomById(roomId);
+		System.out.print(
+				"Nouvel ID de salle (laisser vide pour conserver : " + currentEvent.getEventRoom().getId() + ") : ");
+		String inputRoom = scanner.nextLine();
+		EventRoomdto newRoom = inputRoom.isEmpty() ? currentEvent.getEventRoom()
+				: roomController.findRoomById(Integer.parseInt(inputRoom));
 
 		List<Userdto> allUsers = userController.getAllUsers();
 		for (int i = 0; i < allUsers.size(); i++) {
 			System.out.println((i + 1) + " - " + allUsers.get(i).getName());
 		}
-		System.out.print("Numéro du modérateur : ");
-		int modIndex = Integer.parseInt(scanner.nextLine());
-		Userdto newModerator = allUsers.get(modIndex - 1);
-
-		/*
-		 * List<Userdto> newUsers = new ArrayList<>(); while (true) { System.out.
-		 * print("Ajouter l'email d'un participant interne (ou vide pour arrêter) : ");
-		 * String email = scanner.nextLine(); if (email.isEmpty()) break; Userdto user =
-		 * new Userdto(); user.setEmail(email); newUsers.add(user); }
-		 * 
-		 * List<String> newExternal = new ArrayList<>(); while (true) { System.out.
-		 * print("Ajouter email d'un participant externe (ou vide pour arrêter) : ");
-		 * String email = scanner.nextLine(); if (email.isEmpty()) break;
-		 * newExternal.add(email); }
-		 */
+		System.out.print("Nom du modérateur (laisser vide pour conserver : " + currentEvent.getModerator() + ") : ");
+		String newModerator = scanner.nextLine();
+		if (newModerator.isEmpty()) {
+			newModerator = currentEvent.getModerator();
+		}
 
 		Eventdto eventDTO = new Eventdto();
 		eventDTO.setId(id);
@@ -624,4 +634,100 @@ public class SessionAdminView {
 		}
 	}
 
+	public void sendNotification() {
+		List<Eventdto> allEvents = eventController.getAllEvents();
+		if (allEvents.isEmpty()) {
+			System.out.println("Aucun événement disponible.");
+			return;
+		}
+
+		System.out.println("===== Sélectionnez un événement =====");
+		for (Eventdto e : allEvents) {
+			System.out.println(e.getId() + " - " + e.getTitle());
+		}
+
+		System.out.print("Entrez l'ID de l'événement : ");
+		int eventId = scanner.nextInt();
+		scanner.nextLine();
+
+		Eventdto selectedEvent = eventController.getEventByIdController(eventId);
+		if (selectedEvent == null) {
+			System.out.println("Événement introuvable !");
+			return;
+		}
+
+		System.out.print("Entrez le message de la notification : ");
+		String message = scanner.nextLine();
+
+		boolean success = eventController.sendNotificationController(eventId, message);
+
+		if (success) {
+			System.out.println(
+					" Notification envoyée à tous les participants de l'événement '" + selectedEvent.getTitle() + "'.");
+		} else {
+			System.out.println(" Erreur lors de l'envoi des notifications.");
+		}
+	}
+
+	public void viewAssignedEvents() {
+		Userdto currentUser = UserController.getCurrentUser();
+		if (currentUser == null) {
+			System.out.println("Erreur : aucun utilisateur connecté !");
+			return;
+		}
+
+		List<Eventdto> assignedEvents = eventController.getAssignedEventsController(currentUser.getId());
+
+		if (assignedEvents.isEmpty()) {
+			System.out.println("Aucun événement assigné.");
+			return;
+		}
+
+		System.out.println("===== Événements assignés =====");
+		for (Eventdto e : assignedEvents) {
+			ParticipationUserToEvent status = eventController.getUserStatusForEventController(currentUser.getId(),
+					e.getId());
+			System.out.println(e.getId() + " - " + e.getTitle() + " | Statut : " + status);
+		}
+
+		System.out.print("Entrez l'ID de l'événement pour répondre (0 pour quitter) : ");
+		int eventId = scanner.nextInt();
+		scanner.nextLine();
+		if (eventId == 0)
+			return;
+
+		Eventdto selectedEvent = assignedEvents.stream().filter(e -> e.getId() == eventId).findFirst().orElse(null);
+		if (selectedEvent == null) {
+			System.out.println("Événement introuvable !");
+			return;
+		}
+
+		System.out.println("1 - Accepter");
+		System.out.println("2 - Refuser");
+		int choice = 0;
+		while (choice != 1 && choice != 2) {
+			System.out.print("Votre choix : ");
+			if (scanner.hasNextInt()) {
+				choice = scanner.nextInt();
+				scanner.nextLine();
+				if (choice != 1 && choice != 2) {
+					System.out.println("Choix invalide !");
+				}
+			} else {
+				System.out.println("Entrée invalide !");
+				scanner.nextLine();
+			}
+		}
+
+		ParticipationUserToEvent newStatus = (choice == 1) ? ParticipationUserToEvent.ACCEPTED
+				: ParticipationUserToEvent.REFUSED;
+
+		boolean success = eventController.updateUserStatusForEventController(currentUser.getId(), eventId, newStatus);
+
+		if (success) {
+			System.out.println("Votre réponse a été enregistrée : " + newStatus);
+		} else {
+			System.out.println("Erreur lors de l'enregistrement de votre réponse.");
+		}
+	}
 }
