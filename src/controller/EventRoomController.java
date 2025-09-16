@@ -20,6 +20,13 @@ public class EventRoomController {
 	private static EventRoomService roomService = new EventRoomServiceImpl();
 	private MappingEventRoom mapper = new MappingEventRoomImpl();
 
+	/**
+	 * Creates a new event room.
+	 *
+	 * @param eventRoomdto DTO containing room information
+	 * @return {@code true} if the room was successfully created, {@code false}
+	 *         otherwise
+	 */
 	public boolean createRoomController(EventRoomdto eventRoomdto) {
 		if (eventRoomdto == null) {
 			LOG.error(Constants.EMPTY_ROOM_DTO);
@@ -38,6 +45,15 @@ public class EventRoomController {
 		}
 	}
 
+	/**
+	 * Updates an existing event room.
+	 *
+	 * @param eventRoomdto DTO of the room to update
+	 * @param newName      New name of the room
+	 * @param newCapacity  New capacity of the room
+	 * @param newActive    New active status of the room
+	 * @return {@code true} if update was successful, {@code false} otherwise
+	 */
 	public boolean updateRoomController(EventRoomdto eventRoomdto, String newName, int newCapacity, boolean newActive) {
 		if (eventRoomdto == null) {
 			LOG.error(Constants.EMPTY_ROOM_DTO);
@@ -56,6 +72,12 @@ public class EventRoomController {
 		return success;
 	}
 
+	/**
+	 * Deletes a room by its ID.
+	 *
+	 * @param roomId ID of the room to delete
+	 * @return {@code true} if deletion was successful, {@code false} otherwise
+	 */
 	public boolean deleteRoomController(int roomId) {
 		boolean success = roomService.deleteEventRoom(roomId);
 		if (success) {
@@ -66,6 +88,12 @@ public class EventRoomController {
 		return success;
 	}
 
+	/**
+	 * Retrieves a room by its ID.
+	 *
+	 * @param roomId ID of the room
+	 * @return The {@link EventRoomdto} if found, otherwise {@code null}
+	 */
 	public EventRoomdto getRoomByIdController(int roomId) {
 		EventRoomdto dto = roomService.getRoomById(roomId);
 		if (dto == null) {
@@ -74,10 +102,21 @@ public class EventRoomController {
 		return dto;
 	}
 
+	/**
+	 * Retrieves all event rooms.
+	 *
+	 * @return List of {@link EventRoomdto}
+	 */
 	public List<EventRoomdto> getAllRoomsController() {
 		return roomService.getAllRooms();
 	}
 
+	/**
+	 * Finds a room by its ID.
+	 *
+	 * @param id ID of the room
+	 * @return The {@link EventRoomdto} if found, otherwise {@code null}
+	 */
 	public EventRoomdto findRoomById(int id) {
 		if (id <= 0) {
 			LOG.error("ID de salle invalide : {}", id);
@@ -95,6 +134,11 @@ public class EventRoomController {
 		return room;
 	}
 
+	/**
+	 * Retrieves all rooms that are marked as active.
+	 *
+	 * @return List of active {@link EventRoomdto}
+	 */
 	public List<EventRoomdto> getAllActiveRooms() {
 		List<EventRoomdto> rooms = roomService.getAllActiveRooms();
 

@@ -17,10 +17,10 @@ public class LoginController {
     private final AuthenticationService authenticationService = new AuthenticationServiceImpl();
 
     /**
-     * Permet de connecter un utilisateur.
-     * @param email Email de l'utilisateur
-     * @param password Mot de passe de l'utilisateur
-     * @return Userdto si connexion réussie, sinon null
+     * Allows a user to log in.
+     * @param email User's email address
+     * @param password User's password
+     * @return Userdto if login is successful, otherwise null
      */
     public Userdto loginUser(String email, String password) {
         Userdto user = authenticationService.loginUser(email, password);
@@ -58,8 +58,8 @@ public class LoginController {
     }
 
     /**
-     * Permet de récupérer l'utilisateur actuellement connecté.
-     * @return Userdto connecté ou null si aucun utilisateur
+     * Retrieves the currently logged-in user.
+     * @return Logged-in user or null if no user is logged in.
      */
     public static Userdto getCurrentUser() {
         return UserController.getCurrentUser();
