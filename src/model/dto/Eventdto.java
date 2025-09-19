@@ -178,5 +178,4 @@ public class Eventdto {
 	public void setStatus(StatusEvents pending) {
 		
 	}
-
 }

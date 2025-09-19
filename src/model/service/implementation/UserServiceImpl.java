@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,6 +27,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Userdto createUser(Userdto user) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.CREATE_USER;
 
 		try {
@@ -63,11 +67,16 @@ public class UserServiceImpl implements UserService {
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_CREATE_USER, e);
 			return null;
+		}finally {
+			watch.stop();
+			LOG.info("Time to execute getPlanningById: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 	}
 
 	@Override
 	public boolean updateUser(Userdto userDTO) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.UPDATE_USER;
 		try {
 			PreparedStatement ps = connection.prepareStatement(query);
@@ -85,11 +94,16 @@ public class UserServiceImpl implements UserService {
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_UPDATE_USER, e);
 			return false;
+		}finally {
+			watch.stop();
+			LOG.info("Time to execute getPlanningById: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 	}
 
 	@Override
 	public boolean deleteUser(int userId) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String deleteEventUsers = Query.DELETE_USER_FROM_EVENTUSERS;
 		String deleteUser = Query.DELETE_USER;
 
@@ -113,11 +127,16 @@ public class UserServiceImpl implements UserService {
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_DELETE_USER, userId, e);
 			return false;
+		}finally {
+			watch.stop();
+			LOG.info("Time to execute getPlanningById: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 	}
 
 	@Override
 	public Userdto getUserById(int userId) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.GET_USER_BY_ID;
 		Userdto user = null;
 
@@ -138,12 +157,18 @@ public class UserServiceImpl implements UserService {
 			}
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_GET_USER_BY_ID, e);
+		}finally {
+			watch.stop();
+			LOG.info("Time to execute getPlanningById: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 
 		return user;
 	}
-
+	
+	@Override
 	public List<Userdto> findUsersByRole(String role) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		List<Userdto> users = new ArrayList<>();
 		String query = Query.GET_USERS_BY_ROLE;
 
@@ -166,6 +191,9 @@ public class UserServiceImpl implements UserService {
 
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_DURING_GET_USERS_BY_ROLE, e);
+		}finally {
+			watch.stop();
+			LOG.info("Time to execute getPlanningById: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 
 		return users;
@@ -173,6 +201,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<Userdto> getAllUsers() {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.GET_ALL_USERS;
 		List<Userdto> users = new ArrayList<>();
 

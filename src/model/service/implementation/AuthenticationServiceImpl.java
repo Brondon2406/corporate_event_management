@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,6 +25,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	@Override
 	public Userdto registerUser(Users user) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.CREATE_USER;
 
 		try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -61,11 +65,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_CREATE_USER, e);
 			return null;
-		}
+		}finally {
+            watch.stop();
+            LOG.info("⏱ Temps d'exécution registerUser [{}] : {} ms",
+                    user.getEmail(),
+                    watch.getTime(TimeUnit.MILLISECONDS));
+        }
 	}
 
 	@Override
 	public Userdto loginUser(String email, String password) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.GET_USER;
 
 		Userdto userDTO = null;
@@ -94,6 +105,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_GET_USER, e);
 			return null;
+		}finally {
+		    watch.stop();
+		    LOG.info("Time to login user [{}]: {} ms", email, watch.getTime(TimeUnit.MILLISECONDS));
 		}
 
 		return userDTO;

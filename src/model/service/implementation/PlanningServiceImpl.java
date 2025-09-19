@@ -8,7 +8,9 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,6 +29,8 @@ public class PlanningServiceImpl implements PlanningService {
 
 	@Override
 	public Planningdto createPlanning(Planning planning) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.CREATE_PLANNING;
 
 		try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -59,11 +63,16 @@ public class PlanningServiceImpl implements PlanningService {
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_CREATE_PLANNING + " Planning=" + planning, e);
 			return null;
+		}finally {
+			watch.stop();
+			LOG.info("Time to execute createPlanning: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 	}
 
 	@Override
 	public boolean updatePlanning(Planningdto planning) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.UPDATE_PLANNING;
 
 		if (planning.getTutorPlanning() == null) {
@@ -94,12 +103,16 @@ public class PlanningServiceImpl implements PlanningService {
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_UPDATE_PLANNING + " Planning=" + planning, e);
 			return false;
+		}finally {
+			watch.stop();
+			LOG.info("Time to execute updatePlanning: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 	}
 
 	@Override
 	public boolean deletePlanning(int planningId) {
-
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query1 = Query.DELETE_EVENTS_IN_PLANNING;
 		try {
 			PreparedStatement ps = connection.prepareStatement(query1);
@@ -125,11 +138,16 @@ public class PlanningServiceImpl implements PlanningService {
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_DELETE_PLANNING + " PlanningId=" + planningId, e);
 			return false;
+		}finally {
+			watch.stop();
+			LOG.info("Time to execute deletePlanning: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 	}
 
 	@Override
 	public Planningdto getPlanningById(int planningId) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.GET_PLANNING_BY_ID;
 		Planningdto planning = null;
 
@@ -152,12 +170,17 @@ public class PlanningServiceImpl implements PlanningService {
 			}
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_GET_PLANNING_BY_ID + " ID=" + planningId, e);
+		}finally {
+			watch.stop();
+			LOG.info("Time to execute getPlanningById: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 		return planning;
 	}
 
 	@Override
 	public List<Planningdto> getEventsByPeriod(LocalDate debut, LocalDate fin) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.GET_PLANNINGS_BY_PERIOD;
 		List<Planningdto> plannings = new ArrayList<>();
 
@@ -186,6 +209,9 @@ public class PlanningServiceImpl implements PlanningService {
 			}
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_GET_PLANNING_BY_PERIOD, e);
+		}finally {
+			watch.stop();
+			LOG.info("Time to execute getEventsByPeriod: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 
 		return plannings;
@@ -193,6 +219,8 @@ public class PlanningServiceImpl implements PlanningService {
 
 	@Override
 	public List<Planningdto> getAllPlannings() {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.GET_ALL_PLANNING;
 		List<Planningdto> planningdto = new ArrayList<>();
 
@@ -215,6 +243,9 @@ public class PlanningServiceImpl implements PlanningService {
 
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_GET_ALL_PLANNING, e);
+		}finally {
+			watch.stop();
+			LOG.info("Time to execute getAllPlannings: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 
 		return planningdto;

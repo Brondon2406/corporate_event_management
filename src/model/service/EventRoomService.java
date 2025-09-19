@@ -9,7 +9,7 @@ public interface EventRoomService {
 
 	public EventRoomdto createEventRoom(EventRoom eventRoom);
 
-	public boolean updateEventRoom(EventRoomdto EventRoomdto);
+	public boolean updateEventRoom(EventRoomdto eventRoomdto);
 
 	public boolean deleteEventRoom(int id);
 

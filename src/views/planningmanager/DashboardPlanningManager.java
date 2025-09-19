@@ -3,6 +3,7 @@ package views.planningmanager;
 import java.util.Scanner;
 
 import controller.PlanningController;
+import views.MainView;
 
 public class DashboardPlanningManager {
 	private static Scanner scanner = new Scanner(System.in);
@@ -30,7 +31,7 @@ public class DashboardPlanningManager {
 			System.out.println("8 - Rechercher un Salle par son Id");
 			System.out.println("9 - Lister les Salles");
 
-			System.out.println("\n10 - Se deconnecter");
+			System.out.println("\n0 - Se deconnecter");
 
 			int choix = -1;
 			while (choix == -1) {
@@ -80,16 +81,15 @@ public class DashboardPlanningManager {
 				planningView.getAllRoom();
 				break;
 
-			case 10:
-				System.out.println("Déconnexion en cours...");
-				continuer = false;
-				break;
+			case 0:
+			    System.out.println("Déconnecté avec succès !");
+			    continuer = false; 
+			   MainView.main(null);
+			    break;
 
 			default:
 				System.out.println("Choix invalide ! Veuillez réessayer.");
 			}
 		}
-		scanner.close();
-		System.out.println("Déconnecté avec succès !");
 	}
 }

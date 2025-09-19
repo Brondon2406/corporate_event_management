@@ -2,6 +2,7 @@ package views.sessionadmin;
 
 import java.util.Scanner;
 import model.dto.Userdto;
+import views.MainView;
 
 public class DashboardSessionAdmin {
 
@@ -26,7 +27,7 @@ public class DashboardSessionAdmin {
 			System.out.println("8 - Rechercher un événement par son Id ");
 			System.out.println("9 - Lister les événements");
 			System.out.println("10 - Consulter les évènements Assignées");
-			System.out.println("11 - Se deconnecter");
+			System.out.println("0 - Se deconnecter");
 
 			int choix = -1;
 			while (choix == -1) {
@@ -81,16 +82,15 @@ public class DashboardSessionAdmin {
 				sessionview.viewAssignedEvents();
 				break;
 
-			case 11:
-				System.out.println("Déconnexion en cours...");
-				continuer = false;
-				break;
+			case 0:
+			    System.out.println("Déconnecté avec succès !");
+			    continuer = false; 
+			   MainView.main(null);
+			    break;
 
 			default:
 				System.out.println("Choix invalide ! Veuillez réessayer.");
 			}
 		}
-		scanner.close();
-		System.out.println("Déconnecté avec succès !");
 	}
 }

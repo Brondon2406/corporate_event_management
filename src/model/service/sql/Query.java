@@ -97,6 +97,4 @@ public class Query {
 
 	public static final String UPDATE_EXPIRED_EVENTS = "UPDATE events SET status = 'EXPIRED' "
 			+ "WHERE date_fin < NOW() AND status <> 'EXPIRED'";
-
-
 }

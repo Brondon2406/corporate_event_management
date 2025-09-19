@@ -4,7 +4,9 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,6 +27,8 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public Eventdto createEvent(Eventdto events) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.CREATE_EVENT;
 
 		try {
@@ -71,11 +75,16 @@ public class EventServiceImpl implements EventService {
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_CREATE_EVENT, e);
 			return null;
+		} finally {
+			watch.stop();
+			LOG.info("Time to execute createEvent: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 	}
 
 	@Override
 	public boolean updateEvent(Eventdto event) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.UPDATE_EVENT;
 		try {
 			PreparedStatement ps = connection.prepareStatement(query);
@@ -94,11 +103,16 @@ public class EventServiceImpl implements EventService {
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_UPDATE_EVENT, e);
 			return false;
+		} finally {
+			watch.stop();
+			LOG.info("Time to execute updateEvent: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 	}
 
 	@Override
 	public boolean deleteEvent(int eventId) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.DELETE_EVENT;
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
 
@@ -116,49 +130,58 @@ public class EventServiceImpl implements EventService {
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_DELETE_EVENT, eventId, e);
 			return false;
+		} finally {
+			watch.stop();
+			LOG.info("Time to execute deleteEvent: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 	}
 
 	@Override
 	public Eventdto getEventById(int id) {
-	    String query = Query.GET_EVENT_BY_ID;
-	    Eventdto event = null;
+		StopWatch watch = new StopWatch();
+		watch.start();
+		String query = Query.GET_EVENT_BY_ID;
+		Eventdto event = null;
 
-	    try (PreparedStatement ps = connection.prepareStatement(query)) {
-	        ps.setInt(1, id);
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+			ps.setInt(1, id);
 
-	        try (ResultSet rs = ps.executeQuery()) {
-	            if (rs.next()) {
-	                event = new Eventdto();
-	                event.setId(rs.getInt("id"));
-	                event.setTitle(rs.getString("title"));
-	                event.setDateDebut(rs.getTimestamp("date_debut").toLocalDateTime());
-	                event.setDateFin(rs.getTimestamp("date_fin").toLocalDateTime());
-	                event.setTypeEvent(rs.getString("type_event"));
-	                event.setFormat(rs.getString("format_event"));
-	                int eventRoomId = rs.getInt("room_id");
-	                EventRoomdto eventRoom = new EventRoomdto();
-	                eventRoom.setId(eventRoomId);
-	                event.setEventRoom(eventRoom);
-	                event.setStatus(rs.getString("status"));
-	                event.setModerator(rs.getString("moderator"));
-	                event.setTutor(rs.getString("tutor"));
-	                int planningId = rs.getInt("id_planning"); 
-	                Planningdto idplanning = new Planningdto(); 
-	                idplanning.setId(planningId);
-	         
-	            }
-	        }
-	    } catch (SQLException e) {
-	        LOG.error(Constants.ERROR_GET_EVENT_BY_ID, e);
-	    }
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					event = new Eventdto();
+					event.setId(rs.getInt("id"));
+					event.setTitle(rs.getString("title"));
+					event.setDateDebut(rs.getTimestamp("date_debut").toLocalDateTime());
+					event.setDateFin(rs.getTimestamp("date_fin").toLocalDateTime());
+					event.setTypeEvent(rs.getString("type_event"));
+					event.setFormat(rs.getString("format_event"));
+					int eventRoomId = rs.getInt("room_id");
+					EventRoomdto eventRoom = new EventRoomdto();
+					eventRoom.setId(eventRoomId);
+					event.setEventRoom(eventRoom);
+					event.setStatus(rs.getString("status"));
+					event.setModerator(rs.getString("moderator"));
+					event.setTutor(rs.getString("tutor"));
+					int planningId = rs.getInt("id_planning");
+					Planningdto idplanning = new Planningdto();
+					idplanning.setId(planningId);
 
-	    return event;
+				}
+			}
+		} catch (SQLException e) {
+			LOG.error(Constants.ERROR_GET_EVENT_BY_ID, e);
+		} finally {
+			watch.stop();
+			LOG.info("Time to execute getEventById: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
+		}
+
+		return event;
 	}
-
 
 	@Override
 	public List<Eventdto> getAllEvents() {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.GET_ALL_EVENTS;
 		List<Eventdto> eventdto = new ArrayList<>();
 
@@ -192,12 +215,17 @@ public class EventServiceImpl implements EventService {
 
 		} catch (SQLException e) {
 			LOG.error(Constants.ERROR_GET_ALL_EVENTS, e);
+		} finally {
+			watch.stop();
+			LOG.info("Time to execute getAllEvents: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 		return eventdto;
 	}
 
 	@Override
 	public boolean linkUsersToEvent(int eventId, List<Integer> internalUsersIds, List<String> externalUsersEmails) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.LINK_EVENT_WITH_INTERNAL_USERS;
 
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
@@ -222,13 +250,18 @@ public class EventServiceImpl implements EventService {
 			return true;
 
 		} catch (SQLException e) {
-			LOG.error(Constants.ERROR_DURING_USERS_INSERTION_EVENT,eventId ,e);
+			LOG.error(Constants.ERROR_DURING_USERS_INSERTION_EVENT, eventId, e);
 			return false;
+		} finally {
+			watch.stop();
+			LOG.info("Time to execute linkUsersToEvent: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 	}
 
 	@Override
 	public List<Integer> getInternalUsersForEvent(int eventId) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		List<Integer> internalUsers = new ArrayList<>();
 		String query = Query.GET_INTERNALUSERS_FOR_EVENT;
 
@@ -240,13 +273,18 @@ public class EventServiceImpl implements EventService {
 				}
 			}
 		} catch (SQLException e) {
-			LOG.error(Constants.ERROR_DURING_GET_INTERNALUSERS_FOR_EVENT,eventId ,e);
+			LOG.error(Constants.ERROR_DURING_GET_INTERNALUSERS_FOR_EVENT, eventId, e);
+		} finally {
+			watch.stop();
+			LOG.info("Time to execute getInternalUsersForEvent: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 		return internalUsers;
 	}
 
 	@Override
 	public List<String> getExternalUsersForEvent(int eventId) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		List<String> externalUsers = new ArrayList<>();
 		String query = Query.GET_EXTERNALUSERS_FOR_EVENT;
 
@@ -258,7 +296,10 @@ public class EventServiceImpl implements EventService {
 				}
 			}
 		} catch (SQLException e) {
-			LOG.error(Constants.ERROR_DURING_GET_EXTERNALUSERS_FOR_EVENT,eventId ,e);
+			LOG.error(Constants.ERROR_DURING_GET_EXTERNALUSERS_FOR_EVENT, eventId, e);
+		} finally {
+			watch.stop();
+			LOG.info("Time to execute getExternalUsersForEvent: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 		return externalUsers;
 	}
@@ -266,6 +307,8 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public boolean updateParticipantsForEvent(int eventId, List<Integer> internalUsersToAdd,
 			List<Integer> internalUsersToRemove, List<String> externalUsersToAdd, List<String> externalUsersToRemove) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 
 		try {
 
@@ -313,13 +356,18 @@ public class EventServiceImpl implements EventService {
 			return true;
 
 		} catch (SQLException e) {
-			LOG.error(Constants.ERROR_DURING_UPDATE_USERS_OF_EVENT,eventId ,e);
+			LOG.error(Constants.ERROR_DURING_UPDATE_USERS_OF_EVENT, eventId, e);
 			return false;
+		} finally {
+			watch.stop();
+			LOG.info("Time to execute updateParticipantsForEvent: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 	}
 
 	@Override
 	public boolean updateEventStatusService(Eventdto eventDTO, StatusEvents newStatus) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		if (eventDTO == null || newStatus == null) {
 			return false;
 		}
@@ -336,7 +384,10 @@ public class EventServiceImpl implements EventService {
 			}
 
 		} catch (SQLException e) {
-			LOG.error(Constants.ERROR_UPDATE_STATUS_OF_EVENT,eventDTO.getId(),e);
+			LOG.error(Constants.ERROR_UPDATE_STATUS_OF_EVENT, eventDTO.getId(), e);
+		} finally {
+			watch.stop();
+			LOG.info("Time to execute updateEventStatusService: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 
 		return false;
@@ -344,6 +395,8 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public List<Eventdto> getEventsByStatusService(StatusEvents status) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		List<Eventdto> events = new ArrayList<>();
 		String query = Query.GET_EVENTS_BY_STATUS;
 
@@ -372,7 +425,10 @@ public class EventServiceImpl implements EventService {
 
 			}
 		} catch (SQLException e) {
-			LOG.error(Constants.ERROR_UPDATE_EVENT_WITH_STATUS_,status,e);
+			LOG.error(Constants.ERROR_UPDATE_EVENT_WITH_STATUS_, status, e);
+		} finally {
+			watch.stop();
+			LOG.info("Time to execute getEventsByStatusService: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 
 		return events;
@@ -380,6 +436,8 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public boolean sendNotificationService(int eventId, String message) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		List<String> recipients = new ArrayList<>();
 
 		String queryInternal = Query.GET_ALL_EMAIL_TO_USER_INTERNEL;
@@ -391,7 +449,7 @@ public class EventServiceImpl implements EventService {
 				}
 			}
 		} catch (SQLException e) {
-			LOG.error(Constants.ERROR_DURING_GET_INTERNALUSERS_FOR_EVENT,eventId ,e);
+			LOG.error(Constants.ERROR_DURING_GET_INTERNALUSERS_FOR_EVENT, eventId, e);
 			return false;
 		}
 
@@ -404,20 +462,26 @@ public class EventServiceImpl implements EventService {
 				}
 			}
 		} catch (SQLException e) {
-			LOG.error(Constants.ERROR_DURING_GET_EXTERNALUSERS_FOR_EVENT,eventId ,e);
+			LOG.error(Constants.ERROR_DURING_GET_EXTERNALUSERS_FOR_EVENT, eventId, e);
 			return false;
+		} finally {
+			watch.stop();
+			LOG.info("Time to execute sendNotificationService: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
+
 		}
 
 		for (String email : recipients) {
 			LOG.info("Notification envoyée à " + email + " : " + message);
-			System.out.println(" Email envoyé à " + email + " : " + message);
+			LOG.info(" Email envoyé à " + email + " : " + message);
 		}
-
 		return true;
+
 	}
 
 	@Override
 	public List<Eventdto> getAssignedEventsService(int userId) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		List<Eventdto> events = new ArrayList<>();
 		String query = Query.GET_ASSIGNED_EVENT;
 
@@ -445,7 +509,10 @@ public class EventServiceImpl implements EventService {
 				}
 			}
 		} catch (SQLException e) {
-			LOG.error(Constants.ERROR_DURING_GET_EVENT_ASSIGNED_FOR_USERS,userId ,e);
+			LOG.error(Constants.ERROR_DURING_GET_EVENT_ASSIGNED_FOR_USERS, userId, e);
+		} finally {
+			watch.stop();
+			LOG.info("Time to execute getAssignedEventsService: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 
 		return events;
@@ -453,7 +520,9 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public ParticipationUserToEvent getUserStatusForEventService(int userId, int eventId) {
-		String query =  Query.GET_USERSTATUS_FOR_EVENT;
+		StopWatch watch = new StopWatch();
+		watch.start();
+		String query = Query.GET_USERSTATUS_FOR_EVENT;
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
 			ps.setInt(1, userId);
 			ps.setInt(2, eventId);
@@ -464,12 +533,17 @@ public class EventServiceImpl implements EventService {
 			}
 		} catch (SQLException e) {
 			LOG.error("Erreur récupération statut user " + userId + " pour event " + eventId, e);
+		} finally {
+			watch.stop();
+			LOG.info("Time to execute getUserStatusForEventService: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 		return ParticipationUserToEvent.PENDING;
 	}
 
 	@Override
 	public boolean updateUserStatusForEventService(int userId, int eventId, ParticipationUserToEvent newStatus) {
+		StopWatch watch = new StopWatch();
+		watch.start();
 		String query = Query.UPDATE_USERSTATUS_FOR_EVENT;
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
 			ps.setString(1, newStatus.name());
@@ -479,21 +553,21 @@ public class EventServiceImpl implements EventService {
 		} catch (SQLException e) {
 			LOG.error("Erreur mise à jour statut user " + userId + " pour event " + eventId, e);
 			return false;
+		} finally {
+			watch.stop();
+			LOG.info("Time to execute updateUserStatusForEventService: {} ms", watch.getTime(TimeUnit.MILLISECONDS));
 		}
 	}
 
 	@Override
 	public void updateExpiredEvents() {
-	 String query = Query.UPDATE_EXPIRED_EVENTS; 
-		    try (PreparedStatement ps = connection.prepareStatement(query)) {
-		        int updated = ps.executeUpdate();
-		        if (updated > 0) {
-		            System.out.println(updated + " événements ont expiré automatiquement.");
-		        }
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
+		String query = Query.UPDATE_EXPIRED_EVENTS;
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+			int updated = ps.executeUpdate();
+			LOG.info(updated + " événements passés en statut EXPIRÉ.");
+		} catch (SQLException e) {
+			LOG.error("Erreur lors de la mise à jour des événements expirés", e);
 		}
+	}
 
-	
 }
