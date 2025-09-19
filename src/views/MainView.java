@@ -2,15 +2,13 @@ package views;
 
 import java.util.Scanner;
 
-import model.service.EventService;
-import model.service.implementation.EventServiceImpl;
-import scheduler.EventStatusScheduler;
+import model.service.scheduler.EventStatusScheduler;
 
 public class MainView {
-	
+
 	public static void main(String[] args) {
-		EventService eventService = new EventServiceImpl();
-       EventStatusScheduler scheduler = new EventStatusScheduler(eventService);
+		EventStatusScheduler scheduler = new EventStatusScheduler();
+		scheduler.start(30, 30);
 		AuthenticationView view = new AuthenticationView();
 		Scanner scanner = new Scanner(System.in);
 		boolean continuer = true;
@@ -54,7 +52,5 @@ public class MainView {
 
 		scanner.close();
 	}
-
-	
 
 }
