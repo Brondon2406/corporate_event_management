@@ -6,15 +6,20 @@ import java.util.stream.Collectors;
 
 public enum TypeEvent {
 
-	REUNION,
-	FORMATION,
-	ATELIER,
-	TEAM_BUILDING;
-	
-	public static List<String> getAllTypeEvent(){
-		List<String> roles = Arrays.asList(Role.values()).stream()
-				.map(e-> e.name())
+	REUNION, FORMATION, ATELIER, TEAM_BUILDING;
+
+	public static List<String> getAllTypeEvent() {
+		List<String> typeEvent = Arrays.asList(TypeEvent.values()).stream().map(e -> e.name())
 				.collect(Collectors.toList());
-		return roles;
+		return typeEvent;
 	}
+
+	public static TypeEvent fromString(String typeEvent) {
+		return typeEvent.isEmpty() ? null : TypeEvent.valueOf(typeEvent);
+	}
+
+	public boolean isEmpty() {
+		return false;
+	}
+
 }

@@ -6,24 +6,28 @@ public class Users {
 
 	private int id;
 	private String name;
-	private String email ;
-	private String password ;
+	private String firstName;
+	private String email;
+	private String password;
 	private Role role;
 	private String fonction;
-	
-	public Users() {}
-	
-	public Users(int id, String name, String email, String password, Role role, String fonction) {
+
+	public Users() {
+	}
+
+	public Users(int id, String name, String email, String password, Role role, String fonction, String firstName) {
 		this.id = id;
 		this.name = name;
+		this.firstName = firstName;
 		this.email = email;
 		this.password = password;
 		this.role = role;
 		this.fonction = fonction;
 	}
-	
-	public Users(String name, String email, String password, Role role, String fonction) {
+
+	public Users(String name, String email, String password, Role role, String fonction, String firstName) {
 		this.name = name;
+		this.firstName = firstName;
 		this.email = email;
 		this.password = password;
 		this.role = role;
@@ -44,6 +48,14 @@ public class Users {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 	public String getEmail() {
@@ -80,7 +92,13 @@ public class Users {
 
 	@Override
 	public String toString() {
-		return "Users [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", role=" + role
-				+ ", fonction=" + fonction + "]";
+		return "Users [id=" + id + ", name=" + name + ", firstName=" + firstName + ", email=" + email + ", password="
+				+ password + ", role=" + role + ", fonction=" + fonction + "]";
 	}
+
+	public static Object stream() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

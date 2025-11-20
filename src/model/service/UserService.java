@@ -1,12 +1,21 @@
 package model.service;
 
-import controller.dto.Userdto;
+import java.util.List;
+
+import model.dto.Userdto;
 
 public interface UserService {
+
+	public Userdto createUser(Userdto userdto);
+
+	public boolean updateUser(Userdto userDTO);
+
+	public boolean deleteUser(int userId);
+
+	public Userdto getUserById(int userId);
+
+	public List<Userdto> getAllUsers();
 	
-	public Userdto createUser (Userdto userDTO);
-	public Userdto updateUser (Userdto userDTO);
-	public String deleteUser (int userId);
-	public Userdto getUserById (int userId);
+	public List<Userdto> findUsersByRole(String role);
 
 }
